@@ -1,0 +1,45 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["inputs", "outputs", "instances", "gates", "flipflops"],
+  "properties": {
+    "inputs": {"type": "array", "items": {"type": "string"}},
+    "outputs": {"type": "object", "additionalProperties": {"type": "string"}},
+    "instances": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "part", "wire"],
+        "properties": {
+          "name": {"type": "string"},
+          "part": {"type": "string"},
+          "wire": {"type": "object", "additionalProperties": {"type": "string"}}
+        }
+      }
+    },
+    "gates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "type", "inputs", "output"],
+        "properties": {
+          "name": {"type": "string"},
+          "type": {"type": "string", "enum": ["AND", "OR", "XOR", "NOT", "NAND"]},
+          "inputs": {"type": "array", "items": {"type": "string"}, "minItems": 1, "maxItems": 2},
+          "output": {"type": "string"}
+        }
+      }
+    },
+    "flipflops": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "d"],
+        "properties": {"name": {"type": "string"}, "d": {"type": "string"}}
+      }
+    }
+  }
+}

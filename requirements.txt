@@ -1,0 +1,5 @@
+openai>=1.50
+fastapi>=0.115
+uvicorn>=0.30
+yowasp-yosys>=0.70
+pillow>=10

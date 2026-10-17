@@ -1,0 +1,21 @@
+{
+  "name": "autofab",
+  "description": "A chip fab run by Nemotron agents on Crusoe that learns between shifts.",
+  "defaults": {"provider": "crusoe", "subagents": {"maxSpawnDepth": 2}},
+  "agents": [
+    {"id": "architect", "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B", "thinking": true,
+     "description": "Turns an order into a plan and a definition of done; spawns one designer per part.",
+     "subagents": {"allowAgents": ["designer", "assembler"]}},
+    {"id": "designer", "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B", "thinking": true,
+     "description": "Designs one part as a blueprint, reusing verified library parts first."},
+    {"id": "assembler", "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B", "thinking": true,
+     "description": "Wires parts into the top-level blueprint; every port connected."},
+    {"id": "inspector", "model": "code", "description": "Flattens, tests every input, checks fab rules. Never trusts self-reports."},
+    {"id": "inspector_eyes", "model": "nvidia/NVIDIA-Nemotron-3.5-Super-VL", "thinking": true,
+     "description": "Looks at the drawn failed circuit and names the wrong wire."},
+    {"id": "investigator", "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B", "thinking": true,
+     "description": "Categorizes failures, detects loops in thinking traces, writes lessons in the fault's words."},
+    {"id": "gate", "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B", "thinking": true,
+     "description": "Proposes one factory change per shift; kept only if a fresh validation batch improves."}
+  ]
+}

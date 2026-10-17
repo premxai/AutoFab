@@ -1,0 +1,99 @@
+{
+  "updated": "2026-10-17T14:12:03",
+  "status": "running",
+  "current_version": "v2",
+  "versions": ["v1", "v2"],
+  "shifts": [
+    {
+      "shift": 1,
+      "version": "v1",
+      "practice": [
+        {
+          "run_id": "run_00001",
+          "version": "v1",
+          "attempts": 2,
+          "order": {"id": "ord_0001", "pool": "practice", "rung": 1, "title": "Calculator that adds two 4-bit numbers",
+                    "spec": "Output s = a + b for 4-bit a and b, with cout as the carry out.",
+                    "inputs": ["a3","a2","a1","a0","b3","b2","b1","b0"], "outputs": ["s3","s2","s1","s0","cout"],
+                    "allowed_gates": ["AND","OR","XOR","NOT"], "gate_budget": null, "flipflops_allowed": false, "seed": 101},
+          "events": [
+            {"t": 0.0, "type": "order"},
+            {"t": 0.4, "type": "spawn", "agent": "architect", "role": "architect", "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"},
+            {"t": 2.1, "type": "plan", "parts": ["fa0","fa1","fa2","fa3"], "definition_of_done": ["all 256 input pairs add correctly", "every pin wired", "fan-out ≤ 4"]},
+            {"t": 3.0, "type": "spawn", "agent": "designer:fa0", "role": "designer", "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"},
+            {"t": 3.0, "type": "spawn", "agent": "designer:fa1", "role": "designer", "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"},
+            {"t": 3.0, "type": "spawn", "agent": "designer:fa2", "role": "designer", "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"},
+            {"t": 3.0, "type": "spawn", "agent": "designer:fa3", "role": "designer", "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"},
+            {"t": 5.2, "type": "place", "block": "fa0", "kind": "part", "label": "FA0"},
+            {"t": 5.6, "type": "place", "block": "fa1", "kind": "part", "label": "FA1"},
+            {"t": 6.0, "type": "place", "block": "fa2", "kind": "part", "label": "FA2"},
+            {"t": 6.4, "type": "place", "block": "fa3", "kind": "part", "label": "FA3"},
+            {"t": 6.8, "type": "spawn", "agent": "assembler", "role": "assembler", "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"},
+            {"t": 7.0, "type": "wire", "from": "a0", "to": "fa0.a"}, {"t": 7.1, "type": "wire", "from": "b0", "to": "fa0.b"},
+            {"t": 7.2, "type": "wire", "from": "fa0.cout", "to": "fa1.cin"}, {"t": 7.3, "type": "wire", "from": "b3", "to": "fa2.cin"},
+            {"t": 7.4, "type": "wire", "from": "fa2.cout", "to": "fa3.cin"}, {"t": 7.5, "type": "wire", "from": "fa3.cout", "to": "cout"},
+            {"t": 8.0, "type": "test", "attempt": 1, "inputs": {"a": 7, "b": 5}, "expected": 12, "got": 10},
+            {"t": 8.1, "type": "fail", "attempt": 1, "category": "assembly", "note": "carry wire into fa2 comes from b3 (should be fa1.cout)", "bad_wires": [["b3","fa2.cin"]], "bad_blocks": ["fa2"]},
+            {"t": 9.0, "type": "retry", "attempt": 2},
+            {"t": 9.5, "type": "wire", "from": "fa1.cout", "to": "fa2.cin"},
+            {"t": 13.0, "type": "test", "attempt": 2, "inputs": {"a": 7, "b": 5}, "expected": 12, "got": 12},
+            {"t": 14.0, "type": "pass", "attempt": 2},
+            {"t": 14.1, "type": "lesson", "id": "L001", "text": "carry wire into fa2 came from b3 → check every instance port against the previous part's outputs before handing in"},
+            {"t": 14.2, "type": "done"}
+          ],
+          "blueprint": {"inputs": ["a3","a2","a1","a0","b3","b2","b1","b0"], "outputs": {"s3":"s3","s2":"s2","s1":"s1","s0":"s0","cout":"c4"},
+                        "instances": [{"name":"fa0","part":"full_adder","wire":{"a":"a0","b":"b0","cin":"zero","sum":"s0","cout":"c1"}},
+                                      {"name":"fa1","part":"full_adder","wire":{"a":"a1","b":"b1","cin":"c1","sum":"s1","cout":"c2"}},
+                                      {"name":"fa2","part":"full_adder","wire":{"a":"a2","b":"b2","cin":"c2","sum":"s2","cout":"c3"}},
+                                      {"name":"fa3","part":"full_adder","wire":{"a":"a3","b":"b3","cin":"c3","sum":"s3","cout":"c4"}}],
+                        "gates": [{"name":"zero","type":"XOR","inputs":["a0","a0"],"output":"zero"}], "flipflops": []},
+          "yosys_json": null,
+          "inspection": {"order_id": "ord_0001", "version": "v1", "attempt": 2, "pass": true,
+                         "correct": {"ok": true, "passed": 256, "total": 256},
+                         "rules": {"format":"ok","allowed_gates":"ok","pins":"ok","fanout":"ok","depth":"ok","unused":"ok","budget":"ok"},
+                         "gates": 21, "best_known_gates": 20, "depth": 9, "failure_category": "none", "note": "", "bad_wires": [], "bad_blocks": [],
+                         "metrics": {"model": "nvidia/Nemotron-3.5-Lightning-30B-A3B", "thinking": true, "tokens_in": 3100, "tokens_out": 1400,
+                                     "thinking_chars": 7400, "cached_tokens": 0, "cost_usd": 0.0046, "time_s": 14.2, "ttft_s": 0.4}}
+        },
+        {
+          "run_id": "run_00002",
+          "version": "v1",
+          "attempts": 3,
+          "order": {"id": "ord_0002", "pool": "practice", "rung": 2, "title": "Door lock that opens only for codes 3, 9, 13, 14",
+                    "spec": "Output y = 1 only when the 4-bit input abcd (a = highest bit) equals 3, 9, 13 or 14; otherwise 0.",
+                    "inputs": ["a","b","c","d"], "outputs": ["y"], "allowed_gates": ["AND","OR","XOR","NOT"], "gate_budget": null, "flipflops_allowed": false, "seed": 102},
+          "events": [
+            {"t": 0.0, "type": "order"},
+            {"t": 0.3, "type": "spawn", "agent": "architect", "role": "architect", "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"},
+            {"t": 1.8, "type": "plan", "parts": ["lock"], "definition_of_done": ["all 16 inputs correct"]},
+            {"t": 2.0, "type": "spawn", "agent": "designer:lock", "role": "designer", "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"},
+            {"t": 122.0, "type": "spiral", "attempt": 1, "thinking_chars": 66800, "note": "repeated 'm14 and m?' 61 times"},
+            {"t": 122.1, "type": "fail", "attempt": 1, "category": "spiral", "note": "no answer within 12k tokens", "bad_wires": [], "bad_blocks": []},
+            {"t": 123.0, "type": "retry", "attempt": 2},
+            {"t": 243.0, "type": "fail", "attempt": 2, "category": "spiral", "note": "no answer within 12k tokens", "bad_wires": [], "bad_blocks": []},
+            {"t": 244.0, "type": "retry", "attempt": 3},
+            {"t": 364.0, "type": "fail", "attempt": 3, "category": "spiral", "note": "no answer within 12k tokens", "bad_wires": [], "bad_blocks": []},
+            {"t": 364.5, "type": "human_ping", "note": "3 attempts exhausted"},
+            {"t": 364.6, "type": "done"}
+          ],
+          "blueprint": null, "yosys_json": null,
+          "inspection": {"order_id": "ord_0002", "version": "v1", "attempt": 3, "pass": false,
+                         "correct": {"ok": false, "passed": 0, "total": 16},
+                         "rules": {"format":"fail","allowed_gates":"ok","pins":"ok","fanout":"ok","depth":"ok","unused":"ok","budget":"ok"},
+                         "gates": 0, "best_known_gates": 5, "depth": 0, "failure_category": "spiral", "note": "no answer within 12k tokens", "bad_wires": [], "bad_blocks": [],
+                         "metrics": {"model": "nvidia/Nemotron-3.5-Lightning-30B-A3B", "thinking": true, "tokens_in": 900, "tokens_out": 36000,
+                                     "thinking_chars": 200000, "cached_tokens": 0, "cost_usd": 0.0074, "time_s": 364.0, "ttft_s": null}}
+        }
+      ],
+      "validation": {"proposal": "schema_on", "old": [], "new": [], "verdict": "keep", "delta": {"pass": 0.20, "cost_usd": -0.11}},
+      "lessons_added": ["L001"],
+      "categories": {"format": 14, "wrong_logic": 3, "assembly": 2, "rules": 1, "budget": 0, "spiral": 4}
+    }
+  ],
+  "exam": {
+    "v1": {"pass_rate": 0.15, "by_rung": {"1": 0.6, "2": 0.0, "3": 0.0, "4": 0.1, "5": 0.0, "6": 0.2},
+           "categories": {"format": 20, "wrong_logic": 6, "assembly": 3, "rules": 2, "budget": 1, "spiral": 2}, "runs": []}
+  },
+  "live": null,
+  "gauges": {"tok_s": 333, "ttft_s": 0.31, "cache_rate": 0.0, "cost_total_usd": 0.41, "chips_per_hour": 12, "human_pings": 1}
+}

@@ -1,0 +1,80 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Lights Out · board mock</title>
+<style>
+body{margin:0;background:#0b0f14;color:#cfd8dc;font:15px/1.4 system-ui,Segoe UI,sans-serif}
+#bar{display:flex;gap:10px;padding:10px 16px;align-items:center;flex-wrap:wrap}
+button,input{background:#17202a;color:#e6edf3;border:1px solid #2b3a48;border-radius:6px;padding:7px 14px;font-size:15px}
+button{cursor:pointer}button:disabled{opacity:.35;cursor:default}input{width:44px;text-align:center}
+canvas{display:block;margin:0 auto;width:100%;max-width:960px;height:auto}
+#say{max-width:900px;margin:6px auto;padding:10px 14px;min-height:44px;font-size:16px}
+#say.bad{color:#ff5c6c}#say.ok{color:#5cff8a}#say.amb{color:#ffc857}
+#lesson{max-width:900px;margin:0 auto 10px;padding:8px 14px;border:1px dashed #3a4a5c;border-radius:6px;color:#ffc857;display:none}
+</style></head><body>
+<div id="bar"><b>Lights Out · board mock</b>
+<button id="bReplay">▶ Replay the story</button>
+<span style="margin-left:18px">Try your own:</span><input id="ia" value="7"> + <input id="ib" value="5">
+<button id="bTest">Test</button><button id="bFix" disabled>Fix</button></div>
+<canvas id="c" width="960" height="430"></canvas>
+<div id="say">Press ▶ to watch the team build, test, fail, fix and learn.</div>
+<div id="lesson"></div>
+<script>
+const g=c.getContext('2d'),say=document.getElementById('say'),les=document.getElementById('lesson');
+const bit=(v,i)=>(v>>i)&1;
+// parts: 4 chunky blocks, one per bit (BIT 1 = right), plus connectors A, B and the RESULT display
+const BITS=[{n:'BIT 1',x:720},{n:'BIT 2',x:520},{n:'BIT 3',x:320},{n:'BIT 4',x:120}];
+let P,bug,busy=false,result=null,shownA=7,shownB=5;
+function reset(){P=BITS.map(b=>({...b,y:190,w:150,h:80,s:'off',drop:0}));P.A={n:'A',x:150,y:60,w:130,h:48,s:'off',drop:0};P.B={n:'B',x:680,y:60,w:130,h:48,s:'off',drop:0};
+ P.R={n:'RESULT',x:330,y:340,w:300,h:66,s:'off',drop:0};bug=true;result=null;les.style.display='none';bFix.disabled=true;}
+// --- the real circuit underneath (ripple-carry adder; the bug: BIT 2's carry comes from connector B instead of BIT 1)
+function run(a,b){const v=[];for(let i=0;i<4;i++){const ai=bit(a,i),bi=bit(b,i),c=i==0?0:(i==1&&bug?bit(b,3):v[i-1].cout);v.push({s:ai^bi^c,cout:(ai&bi)|(c&(ai^bi))});}
+ return v.reduce((t,x,i)=>t|(x.s<<i),0)|(v[3].cout<<4);}
+function wrongCount(){let n=0;for(let a=0;a<16;a++)for(let b=0;b<16;b++)if(run(a,b)!=a+b)n++;return n;}
+// --- drawing: board slab, chunky blocks, traces, four colours
+const COL={off:'#1b2631',on:'#1e3a5f',ok:'#1d4d33',bad:'#5a1d26',amb:'#5a4414'},EDGE={off:'#2b3a48',on:'#38a0ff',ok:'#5cff8a',bad:'#ff5c6c',amb:'#ffc857'};
+let traces=0,pulse=null,t0=performance.now();
+function block(b){if(b.drop<=0)return;const k=1+0.5*(1-b.drop),cx=b.x+b.w/2,cy=b.y+b.h/2,w=b.w*k,h=b.h*k,x=cx-w/2,y=cy-h/2;
+ g.globalAlpha=b.drop;g.fillStyle='#07100c';g.beginPath();g.roundRect(x+6,y+8,w,h,8);g.fill();
+ const flash=b.s=='bad'&&Math.sin(performance.now()/120)>0;g.fillStyle=flash?'#7a2531':COL[b.s];g.strokeStyle=EDGE[b.s];g.lineWidth=2.5;
+ g.beginPath();g.roundRect(x,y,w,h,8);g.fill();g.stroke();g.fillStyle='#e6edf3';g.font='bold 18px system-ui';g.textAlign='center';
+ if(b.n=='RESULT'&&result!==null){g.font='bold 34px system-ui';g.fillStyle=result.ok?'#5cff8a':'#ff5c6c';g.fillText(shownA+' + '+shownB+' = '+result.v+(result.ok?'  ✓':'  ✗'),cx,cy+12);}
+ else g.fillText(b.n,cx,cy+7);g.textAlign='left';g.globalAlpha=1;}
+function tr(pts,col,prog=1,w=4){g.strokeStyle=col;g.lineWidth=w;g.lineCap='round';g.beginPath();let L=0,seg=[];for(let i=1;i<pts.length;i++){const d=Math.hypot(pts[i][0]-pts[i-1][0],pts[i][1]-pts[i-1][1]);seg.push(d);L+=d;}
+ let rem=prog*L;g.moveTo(...pts[0]);for(let i=1;i<pts.length;i++){if(rem>=seg[i-1]){g.lineTo(...pts[i]);rem-=seg[i-1];}else{const t=rem/seg[i-1];g.lineTo(pts[i-1][0]+(pts[i][0]-pts[i-1][0])*t,pts[i-1][1]+(pts[i][1]-pts[i-1][1])*t);break;}}g.stroke();}
+function draw(){g.fillStyle='#0b0f14';g.fillRect(0,0,960,430);
+ // board slab + grid
+ g.fillStyle='#0f1b17';g.beginPath();g.roundRect(60,30,840,390,14);g.fill();g.strokeStyle='#15261f';g.lineWidth=1;
+ for(let x=60;x<=900;x+=30){g.beginPath();g.moveTo(x,30);g.lineTo(x,420);g.stroke();}for(let y=30;y<=420;y+=30){g.beginPath();g.moveTo(60,y);g.lineTo(900,y);g.stroke();}
+ const tc=t=>t.s=='ok'?'#2f7a4d':t.s=='bad'?'#ff5c6c':'#2b4a5c';
+ if(traces>0){const p=Math.min(1,traces);
+  // A and B buses feed every BIT; carries chain right-to-left; every BIT feeds RESULT
+  for(const b of P){tr([[P.A.x+P.A.w/2,P.A.y+P.A.h],[P.A.x+P.A.w/2,150],[b.x+45,150],[b.x+45,b.y]],'#2b4a5c',p);
+   tr([[P.B.x+P.B.w/2,P.B.y+P.B.h],[P.B.x+P.B.w/2,165],[b.x+105,165],[b.x+105,b.y]],'#2b4a5c',p);
+   tr([[b.x+b.w/2,b.y+b.h],[b.x+b.w/2,300],[P.R.x+P.R.w/2,300],[P.R.x+P.R.w/2,P.R.y]],'#2b4a5c',p);}
+  for(let i=0;i<3;i++){const from=P[i],to=P[i+1];if(i==0&&bug){const red=result&&!result.ok;
+    tr([[P.B.x+P.B.w-10,P.B.y+P.B.h],[P.B.x+P.B.w-10,120],[to.x+to.w+25,120],[to.x+to.w+25,to.y+to.h/2],[to.x+to.w,to.y+to.h/2]],red?'#ff5c6c':'#2b4a5c',p,red?5:4);}
+   else tr([[from.x,from.y+from.h/2],[to.x+to.w,to.y+to.h/2]],'#2b4a5c',p);}}
+ for(const b of P)block(b);block(P.A);block(P.B);block(P.R);
+ if(pulse){g.fillStyle='#38e8ff';g.shadowColor='#38e8ff';g.shadowBlur=16;g.beginPath();g.arc(pulse[0],pulse[1],7,0,7);g.fill();g.shadowBlur=0;}
+ requestAnimationFrame(draw);}
+// --- helpers
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+async function dropIn(b){b.s='on';for(let k=0;k<=1.001;k+=0.08){b.drop=k;await wait(16);}b.drop=1;}
+async function glide(a,b,ms){const n=Math.max(1,ms/16);for(let i=0;i<=n;i++){const t=i/n;pulse=[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t];await wait(16);}pulse=null;}
+function tell(txt,cls=''){say.textContent=txt;say.className=cls;}
+async function assemble(){reset();tell('Order received: “a chip that adds two numbers.” The team splits it into four parts and pulls each one from the proven library.');
+ await dropIn(P.A);await dropIn(P.B);for(const b of P){await dropIn(b);await wait(120);}await dropIn(P.R);
+ tell('Wiring the parts together…');for(let k=0;k<=1.001;k+=0.03){traces=k;await wait(16);}traces=1;for(const b of P)b.s='off';P.A.s=P.B.s=P.R.s='off';}
+async function test(a,b){if(busy)return;busy=true;shownA=a;shownB=b;result=null;for(const x of P)x.s='off';P.R.s='off';bFix.disabled=true;
+ tell('Testing '+a+' + '+b+' …');P.A.s=P.B.s='on';await wait(250);
+ for(let i=0;i<4;i++){P[i].s='on';if(i<3)await glide([P[i].x,P[i].y+40],[P[i+1].x+P[i+1].w,P[i+1].y+40],350);else await wait(300);}
+ await glide([P[3].x+75,P[3].y+80],[P.R.x+150,P.R.y],350);
+ const v=run(a,b),ok=v==a+b,wrong=wrongCount();result={v,ok};
+ if(ok){for(const x of P)x.s='ok';P.R.s='ok';tell('Inspector checked all 256 possible sums: all correct.','ok');if(!bug){les.style.display='block';les.textContent='Lesson the team wrote for itself: “The carry wire on BIT 2 went to the wrong block. Check where every wire lands before handing a chip in.”  Kept only if the next unseen chips do better.';}}
+ else{P[1].s='bad';P.R.s='bad';tell('Inspector checked all 256 possible sums: '+wrong+' are wrong. The carry wire into BIT 2 goes to the wrong block.','bad');bFix.disabled=false;}
+ busy=false;}
+async function fix(){if(busy)return;busy=true;bFix.disabled=true;P[1].s='amb';tell('The team re-reads the inspector’s note, pulls the wrong wire and lays the right one…','amb');
+ for(let k=1;k>=0;k-=0.04){traces=k;await wait(14);}bug=false;result=null;for(let k=0;k<=1.001;k+=0.04){traces=k;await wait(14);}traces=1;P[1].s='off';
+ tell('Re-wired. Test it again.');busy=false;}
+async function replay(){if(busy)return;busy=true;await assemble();busy=false;await wait(600);await test(7,5);await wait(2200);await fix();await wait(500);await test(7,5);}
+bReplay.onclick=replay;bTest.onclick=()=>test((+ia.value||0)&15,(+ib.value||0)&15);bFix.onclick=fix;reset();draw();
+</script></body></html>

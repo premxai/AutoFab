@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+node_modules/
+runs/*
+!runs/.gitkeep
+snapshots/*
+!snapshots/.gitkeep
+orders/*
+!orders/.gitkeep
+!orders/exam_seed.json
+.crusoe_key
+.env
+*.log
+.DS_Store

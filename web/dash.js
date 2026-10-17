@@ -944,12 +944,34 @@ function selectChip(id, { force } = {}) {
     $('#caption').textContent = S.ver ? `No chips for ${verLabel(S.ver).toLowerCase()} yet.` : ' '; $('#stamp').hidden = true;
     renderBench(true); return;
   }
-  if (!same || force) { replay?.load(c.run); if (replay) replay.paused = false; setPauseLabel(); renderBench(true); return; }
+  if (!same || force) {
+    replay?.load(c.run); if (replay) replay.paused = false; setPauseLabel(); renderBench(true);
+    S.stepPinned = false; setStep(isRunning(c.run) ? stepForRun(c.run) : 'c3d'); return;
+  }
   if (prevSig !== S.sig) {
     if (c.live) replay?.extend(c.run); else replay?.load(c.run);
     renderBench(false);
+    if (!S.stepPinned && isRunning(c.run)) setStep(stepForRun(c.run));
+    else if (!S.stepPinned && c.live && !isRunning(c.run) && S.step !== 'cTest') setStep('cTest');
   }
 }
+
+/* ═════════ stepped stage: one of Order / 3D build / Circuit test at a time ═════════ */
+const STEPS = ['cOrder', 'c3d', 'cTest'];
+function setStep(id, { user } = {}) {
+  if (!STEPS.includes(id)) return;
+  S.step = id; if (user) S.stepPinned = true;
+  STEPS.forEach(s => $('#' + s).classList.toggle('on', s === id));
+  document.querySelectorAll('.stepnav button[data-step]').forEach(b => { const on = b.dataset.step === id; b.classList.toggle('on', on); b.setAttribute('aria-selected', String(on)); });
+  requestAnimationFrame(() => { replay?.resize(); if (bench?.sch) bench.sch.fit(bench.schHost); });
+}
+function stepForRun(run) {            // the step the team is on right now, from its last event
+  const ev = run?.events || [], last = ev[ev.length - 1]?.type;
+  if (!last || ['order', 'spawn', 'plan'].includes(last)) return 'cOrder';
+  if (['place', 'wire', 'fail', 'retry', 'spiral', 'human_ping'].includes(last)) return 'c3d';
+  return 'cTest';
+}
+function stepBy(delta) { const i = STEPS.indexOf(S.step || 'cOrder'); setStep(STEPS[Math.min(STEPS.length - 1, Math.max(0, i + delta))], { user: true }); }
 function renderBench(force) {
   const run = S.chip?.run, host = $('#bench');
   const sig = run ? `${S.chip.id}|${JSON.stringify(run.blueprint || null)}|${run.inspection ? 1 : 0}|${S.lib ? Object.keys(S.lib.parts || {}).length : 0}` : '';
@@ -1342,6 +1364,13 @@ async function boot() {
   $('#runIn').addEventListener('input', () => { if ($('#runIn').value) $('#runPast').value = ''; });
   document.addEventListener('click', e => { if (!e.target.closest('.dd')) closeMenus(); });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { if (S.ov) collapse(); closeMenus(); } });
+  document.querySelectorAll('.stepnav button[data-step]').forEach(b => b.addEventListener('click', () => setStep(b.dataset.step, { user: true })));
+  document.addEventListener('keydown', e => {
+    if (S.ov || e.altKey || e.ctrlKey || e.metaKey) return;
+    const t = e.target; if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.tagName === 'SELECT' || t.isContentEditable)) return;
+    if (e.key === 'ArrowRight') { stepBy(1); e.preventDefault(); } else if (e.key === 'ArrowLeft') { stepBy(-1); e.preventDefault(); }
+  });
+  setStep('c3d');
 
   S.apiMode = await detectMode();
   if (!S.apiMode) { const t = await getText(LIVE_FB); if (t) { try { S.extra = JSON.parse(t); } catch (e) { S.extra = null; } } }

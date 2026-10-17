@@ -253,7 +253,20 @@ a.btn{text-decoration:none;color:var(--ink)}
 
 main.wrap{padding-top:20px}
 .row1{display:grid;grid-template-columns:minmax(0,66fr) minmax(0,34fr);gap:18px;align-items:stretch}
-.stages{display:grid;grid-template-columns:minmax(0,1fr) 22px minmax(0,1fr) 22px minmax(0,1fr);align-items:stretch}
+.stagecard{display:flex;flex-direction:column;min-width:0}
+.stepnav{display:flex;align-items:center;gap:8px;margin:-2px 0 14px;flex-wrap:wrap}
+.stepnav button{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line);background:var(--card);border-radius:999px;padding:7px 16px 7px 7px;font-size:15px;color:var(--muted);cursor:pointer}
+.stepnav button:hover{border-color:var(--off);color:var(--ink)}
+.stepnav button .n{width:26px;height:26px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-size:13px;font-weight:500;color:var(--ink)}
+.stepnav button svg.lucide{width:18px;height:18px}
+.stepnav button.on{border-color:var(--amber);color:var(--ink);background:#FFF6E6}
+.stepnav button.on .n{background:var(--amber);color:#fff}
+.stepnav .sep{color:var(--off);display:grid;place-items:center}.stepnav .sep svg.lucide{width:16px;height:16px}
+.stepnav .hint{margin-left:auto;font-size:12.5px;color:var(--muted)}
+.stages{display:block;flex:1;min-height:0}
+.stages>.stage{display:none;border:0;box-shadow:none;padding:0;border-radius:0}
+.stages>.stage.on{display:flex}
+.stage>.chead{display:none}
 .arrow{display:grid;place-items:center;color:var(--off)}
 .arrow svg.lucide{width:18px;height:18px}
 .card{padding:16px 18px}
@@ -264,7 +277,7 @@ main.wrap{padding-top:20px}
 .exp{border:0;background:none;cursor:pointer;color:var(--muted);padding:4px;border-radius:6px;display:grid;place-items:center}
 .exp:hover{background:var(--soft);color:var(--ink)}
 .exp svg.lucide{width:16px;height:16px}
-.stage{display:flex;flex-direction:column;height:560px;min-width:0}
+.stage{flex-direction:column;height:600px;min-width:0}
 .cbody{flex:1;min-height:0}
 .cbody.scroll{overflow:auto}
 .stage .canvas{flex:1;height:auto;min-height:0}

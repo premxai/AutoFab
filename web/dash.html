@@ -57,12 +57,20 @@
 
 <main class="wrap">
   <div class="row1">
+    <section class="card stagecard">
+      <nav class="stepnav" aria-label="Build steps">
+        <button type="button" data-step="cOrder" class="on" aria-selected="true"><span class="n">1</span><i data-lucide="clipboard-list"></i><span>Order</span></button>
+        <span class="sep" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+        <button type="button" data-step="c3d" aria-selected="false"><span class="n">2</span><i data-lucide="box"></i><span>3D build</span></button>
+        <span class="sep" aria-hidden="true"><i data-lucide="arrow-right"></i></span>
+        <button type="button" data-step="cTest" aria-selected="false"><span class="n">3</span><i data-lucide="pointer"></i><span>Circuit test</span></button>
+        <span class="hint" id="stepHint">one step at a time · ← → to move</span>
+      </nav>
     <div class="stages">
       <section class="card stage" id="cOrder">
         <div class="chead"><h2><i data-lucide="clipboard-list"></i>Order</h2><button class="exp" type="button" aria-label="Expand"><i data-lucide="maximize-2"></i></button></div>
         <div class="cbody" id="orderBody"></div>
       </section>
-      <div class="arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></div>
       <section class="card stage" id="c3d">
         <div class="chead"><h2><i data-lucide="box"></i>3D build</h2><button class="exp" type="button" aria-label="Expand"><i data-lucide="maximize-2"></i></button></div>
         <div class="canvas" id="canvas3d"><div class="stamp" id="stamp" hidden></div></div>
@@ -74,12 +82,12 @@
           </div>
         </div>
       </section>
-      <div class="arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></div>
       <section class="card stage" id="cTest">
         <div class="chead"><h2><i data-lucide="pointer"></i>Circuit test</h2><button class="exp" type="button" aria-label="Expand"><i data-lucide="maximize-2"></i></button></div>
         <div class="cbody scroll" id="bench"></div>
       </section>
     </div>
+    </section>
     <div class="graphs">
       <section class="card graph" id="cPractice">
         <div class="chead"><h2><i data-lucide="chart-column"></i>Practice, shift by shift</h2><button class="exp" type="button" aria-label="Expand"><i data-lucide="maximize-2"></i></button></div>

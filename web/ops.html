@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AutoFab · Fab Ops</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%230b0f14'/%3E%3Crect x='3' y='3' width='10' height='10' rx='2' fill='%2338e8ff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="ops.css">
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+"three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}
+</script>
+</head>
+<body>
+<header id="top">
+  <div class="brand"><span class="logo"></span>AutoFab <span class="dim">·</span> Fab Ops</div>
+  <div class="pipe mono">design <b>→</b> assemble <b>→</b> inspect <b>→</b> learn</div>
+  <div class="sels">
+    <label>Version <select id="selVer"></select></label>
+    <label>Chip <select id="selChip"></select></label>
+    <label>Compare <select id="selA"></select><span class="dim">vs</span><select id="selB"></select></label>
+  </div>
+</header>
+
+<main id="grid">
+  <section id="left">
+    <div class="card tabs-card">
+      <nav class="tabs">
+        <button class="tab" data-tab="3d" type="button">3D Chip</button>
+        <button class="tab" data-tab="test" type="button">Circuit Test</button>
+        <button class="tab" data-tab="cmp" type="button">Compare</button>
+        <span class="tabmeta mono dim" id="testMeta"></span>
+      </nav>
+
+      <div class="pane" id="p-3d" hidden>
+        <div class="v3">
+          <div id="view3d">
+            <div id="boardHost"></div>
+            <div id="v3msg" class="v3msg" hidden></div>
+            <div class="vbtns">
+              <button id="vPersp" class="btn ghost on" type="button">Perspective</button>
+              <button id="vTop" class="btn ghost" type="button">Top</button>
+              <button id="vFull" class="btn ghost" type="button" title="Fullscreen">⛶</button>
+            </div>
+          </div>
+          <aside id="tree"></aside>
+        </div>
+      </div>
+
+      <div class="pane" id="p-test">
+        <div class="testhead">
+          <div><h2 id="testTitle">loading…</h2><p id="testSpec" class="dim"></p></div>
+          <button id="benchReset" class="btn ghost" type="button">All switches off</button>
+        </div>
+        <div id="bench"></div>
+      </div>
+
+      <div class="pane" id="p-cmp" hidden>
+        <div class="cmptop"><span id="cmpHead"></span>
+          <label class="chk"><input type="checkbox" id="link" checked> link inputs</label></div>
+        <div class="cmpgrid"><div id="cmpL" class="cmpcol"></div><div id="cmpR" class="cmpcol"></div></div>
+      </div>
+    </div>
+
+    <div id="bottom">
+      <div class="card"><div class="ch">Design Status</div><div id="dstatus"></div></div>
+      <div class="card"><div class="ch">Key Metrics</div><div id="kmetrics" class="kgrid"></div></div>
+      <div class="card"><div class="ch">Recent chips</div><div id="recent"></div></div>
+    </div>
+  </section>
+
+  <aside id="right">
+    <div class="card">
+      <div class="ch">Agent Ops</div>
+      <div class="rs">
+        <div><span class="k">status</span><span id="rsStatus" class="pill">—</span></div>
+        <div><span class="k">version</span><span id="rsVer" class="mono">—</span></div>
+        <div><span class="k">updated</span><span id="rsUpd" class="mono">—</span></div>
+        <div><span class="k">chips</span><span id="rsChips" class="mono">—</span></div>
+      </div>
+      <div class="src mono dim" id="rsSrc"></div>
+    </div>
+    <div class="card">
+      <div class="ch">Current task</div>
+      <div id="curTask" class="cur">—</div>
+      <div id="curDetail" class="dim small"></div>
+      <div id="curSub" class="dim small mono"></div>
+    </div>
+    <div class="card">
+      <div class="ch">Task Queue</div>
+      <div id="queue"></div>
+    </div>
+    <div class="card">
+      <div class="ch">Run Logs</div>
+      <div id="logs" class="mono"></div>
+    </div>
+    <div class="card">
+      <div class="ch">Lessons <span class="dim small" id="lesSrc"></span></div>
+      <div id="lessons"></div>
+    </div>
+    <div class="card">
+      <div class="ch">Agent Performance <span class="dim small">exam pass rate · held-out chips</span></div>
+      <div id="perf"></div>
+      <div id="gauges"></div>
+    </div>
+  </aside>
+</main>
+
+<script type="module" src="ops.js"></script>
+</body>
+</html>

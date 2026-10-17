@@ -66,9 +66,16 @@ def tried(snapshot):
     return {e["proposal"] for e in snapshot["change_log"]}
 
 
+def recently_tried(snapshot, window=2):
+    """Kept changes are never re-proposed; a reverted change becomes eligible again after `window` shifts (the situation may have changed)."""
+    log = snapshot["change_log"]
+    last = log[-1]["shift"] if log else 0
+    return applied(snapshot) | {e["proposal"] for e in log if e["verdict"] != "keep" and last - e["shift"] < window}
+
+
 def propose(snapshot, categories, cost_per_chip, pass_rate):
-    """Deterministic policy: the first untried MENU item that targets the dominant failure category; then cost; then experiments."""
-    done = tried(snapshot)
+    """Deterministic policy: the first eligible MENU item that targets the dominant failure category; then cost; then experiments."""
+    done = recently_tried(snapshot)
     ranked = sorted(categories.items(), key=lambda kv: -kv[1])
     for cat, n in ranked:
         if n == 0:

@@ -7,35 +7,19 @@
 
 ---
 
-## Minute 1 — the problem, in plain words (0:00–1:00)
+## The cut: six things a judge must see, in this order
 
-| Time | On screen | Say |
-|---|---|---|
-| 0:00 | Dashboard, chip **Calculator**, step **1 Order** | "A chip is just a bunch of tiny switches wired together. Wire them right and it adds two numbers. Wire one pin wrong and it adds wrong, and you can't see it. That's the whole job of a chip fab: get every wire right, every time." |
-| 0:15 | Press **▶ 2 3D build** · Replay | "We built a factory that does this job with AI agents. A planner splits the order into blocks. Designers build the blocks. A wirer connects them. Watch." *(let the blocks drop in silence for 3 seconds)* |
-| 0:30 | The red wire + caption | "There. A wrong wire. And this is the important bit: no AI grades the AI. A piece of code tries **every single input**, all 256 of them, and catches it." |
-| 0:45 | Press **3 Circuit test** · set 7 + 5 · flip one switch | "Fixed on the next try. Seven plus five, twelve. Flip a switch, the current flows, the answer lights up. Every chip on this screen was checked this way." |
+| Time | Must show | On screen | Say |
+|---|---|---|---|
+| 0:00 | **Live build** | Dashboard · **▶ Run** · type "a door lock that opens for 3, 5 and 8" · Build. Step 2 follows it. | "A chip is tiny switches wired together. Wire one pin wrong and it's wrong, and you can't see it. So we built a factory of AI agents that gets the wires right, and here it is building a judge's order, live." |
+| 0:40 | **Agent logs** | Agent log card (live dot) | "Planner started. Block designer built the lock. Wirer connected nine wires. Checker tried every code, all sixteen. No AI grades the AI; a piece of code does, and every line here is from the run file." |
+| 1:10 | **Version improvements** | Scoreboard: 40 chips per version, +10 / +1 | "Forty orders it never practiced on. Version 1: five. Version 5: fifteen. Version 8: sixteen. Same model, same prompts, same budget." *(pause)* |
+| 1:35 | **Improved learning** | Lessons by version · Practice chart, Gate row | "Seven lessons it wrote itself, filed under the version that wrote them. And eight changes it proposed to its own rules, all eight rejected by its own Gate on a fresh batch. It kept what helped and refused what didn't." |
+| 2:00 | **Comparison build** | Compare tab · 4-bit calculator · v1 vs v8 · flip a switch | "Same order, two versions. Version 1 failed it. Version 8 passed it. Switches are linked: one flip, both chips answer." |
+| 2:25 | **Proof of RSI** | Scroll to "What this version knew" · the green *helped* lesson | "This is the proof. Version 1 started with an empty notebook. Version 8 read this lesson, the exact one version 1 was missing on this order. Nobody wrote it. The factory did." |
+| 2:50 | Close | Back to the live door lock, finished | "And the judge's order is done on both versions. We changed nothing. The factory did. Five of forty became sixteen. Questions?" |
 
-## Minute 2 — how it got better (1:00–2:00)
-
-| Time | On screen | Say |
-|---|---|---|
-| 1:00 | Scroll to **Practice, shift by shift** | "Here's the part that matters. The factory ran eight shifts on its own. Ten fresh orders per shift. After each shift, an investigator agent reads what failed and writes the team a lesson." |
-| 1:15 | Hover a dot · point at the **Gate** row | "Every shift it also proposed one change to how it works, and tested that change on a fresh batch. Eight proposals. Eight rejected. The factory refused to keep anything that didn't measurably help." *(pause)* "That's the brake. Self-improvement without a brake is just drift." |
-| 1:35 | **Same 40 orders, every version** | "And here's the proof. Forty orders it never practiced on. Same model, same prompts, same budget. Version 1, empty notebook: five of forty. Version 8, seven lessons and seven tested parts it built itself: sixteen." |
-| 1:50 | Point at the green chips | "Each green square is a real chip that passed an exhaustive check. Nothing on this page is typed in. It all comes from one file the factory writes." |
-
-## Minute 3 — prove it live (2:00–3:00)
-
-| Time | On screen | Say |
-|---|---|---|
-| 2:00 | Switch to the **Compare** tab, 4-bit calculator, v1 vs v8 | "Same order, two versions. Version 1 failed it. Version 8 passed it. Scroll: here's what version 8 knew that version 1 didn't." *(read the green 'helped' lesson aloud)* |
-| 2:20 | Scroll down to the live door-lock build (posted earlier) | "And this one is live. A judge typed 'a door lock that opens for 3, 5 and 8' a few minutes ago. Both versions built it on Crusoe while we talked." |
-| 2:35 | Flip the lock switches · both lamps | "Code 5: opens on both. Code 6: stays shut. The switches are linked, one flip tests both chips." |
-| 2:50 | Back to the dashboard, step 2 | "Nemotron agents, Crusoe inference, every number from run.json." |
-| 2:58 | Stop. Look up. | "We changed nothing. The factory did. Five of forty became sixteen. Questions?" |
-
----
+**Timing:** the live lock takes 3–6 minutes on Lightning. Post it the second you walk up. If it is not done at 2:50, open the finished one from the chip menu: "here's the one from the last run."
 
 ## Speaker craft (the stuff that makes it land)
 

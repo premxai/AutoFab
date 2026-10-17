@@ -111,7 +111,8 @@ v1 = all Lightning, thinking on, every flag false, empty playbook and library.
 
 ## 9. HTTP (server.py, laptop B)
 - `GET /run.json` → the file above. `GET /runs/{run_id}.json` → one ChipRun.
-- `POST /order` `{"title": "...", "spec": "...", "version": "v8"}` → `202 {"run_id": "..."}`; the runner picks it up and the ChipRun appears in `live`. Fallback file: `samples/live_fallback.json`.
+- `GET /menu.json` → `orders/menu.json`: `[{"id","rung","title"}]`, the orders a judge may pick (no answers inside).
+- `POST /order` `{"order_id": "ord_x4242_007"}` **or** `{"rung": 2}` (a fresh unseen order of that rung), plus optional `"version": "v8"` → `202 {"run_id": "live_<ts>"}`; the file `orders/live_<ts>.json` is written with the body; the runner (`--live`) picks it up and the ChipRun appears in `run.json.live`. Fallback file: `samples/live_fallback.json`.
 - `GET /snapshots/{version}.json`.
 
 ## 10. Yosys JSON export (engine/yosys_io.py → netlistsvg)

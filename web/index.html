@@ -872,11 +872,11 @@ async function poll() {
   state.data = d; const old = state.chips; state.chips = collect(d);
   renderShelf(d.versions); renderScore(d); renderGauges(d.gauges);
   if (!chipA) { if (state.chips.length) playA(state.chips[0], ''); }
-  else { const same = state.chips.find(c => c.id === chipA.id); if (same) { chipA = same; if (A.run?.run_id === same.id && same.run.events.length !== A.events.length) A.setEvents(same.run); } }
-  if (chipB) { const sameB = state.chips.find(c => c.id === chipB.id); if (sameB) { chipB = sameB; if (B?.run?.run_id === sameB.id && sameB.run.events.length !== B.events.length) B.setEvents(sameB.run); } }
+  else { const same = state.chips.find(c => c.id === chipA.id); if (same) { chipA = same; if (A.run?.run_id === same.id && (same.run.events || []).length !== A.events.length) A.setEvents(same.run); } }
+  if (chipB) { const sameB = state.chips.find(c => c.id === chipB.id); if (sameB) { chipB = sameB; if (B?.run?.run_id === sameB.id && (sameB.run.events || []).length !== B.events.length) B.setEvents(sameB.run); } }
   if (old.map(c => c.id).join() !== state.chips.map(c => c.id).join()) renderPicker();
-  if (d.live && d.live.run_id !== liveId) { liveId = d.live.run_id; const c = state.chips.find(x => x.id === d.live.run_id); if (c) { playA(c, 'live order'); if (state.race) { const cp = counterpart(c); playB(cp.chip, cp.note); } } }
-  if (d.live && d.live.run_id === liveId) { const c = state.chips.find(x => x.id === liveId); if (c && A.run?.run_id === liveId && c.run.events.length !== A.events.length) A.setEvents(c.run); }
+  if (d.live && d.live.run_id !== liveId) { liveId = d.live.run_id; const c = state.chips.find(x => x.id === d.live.run_id); if (c && !(c.run.events || []).length) { A.capNote.textContent = `live order ${c.id} running on ${c.run.version}…`; liveId = null; } else if (c) { playA(c, 'live order'); if (state.race) { const cp = counterpart(c); playB(cp.chip, cp.note); } } }
+  if (d.live && d.live.run_id === liveId) { const c = state.chips.find(x => x.id === liveId); if (c && A.run?.run_id === liveId && (c.run.events || []).length !== A.events.length) A.setEvents(c.run); }
   markShelf();
 }
 

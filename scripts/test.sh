@@ -8,7 +8,7 @@ echo "== schema is valid JSON"; python -c "import json;json.load(open('docs/blue
 # --- engine/orders (owner: engine/orders branch)
 # python -m engine.orders --selftest
 # --- engine/inspector (owner: engine/inspector branch)
-# python -m engine.inspector --selftest
+python -m engine.inspector --selftest
 # --- engine/client (owner: engine/client branch; import-only without a key)
 # python -c "import engine.client"
 # --- web/api (owner: web/api branch)

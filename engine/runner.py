@@ -129,7 +129,9 @@ async def run_shifts(n_shifts, n_practice, n_validation, parallel, exam_versions
         proposal = GATE.propose(snapshot, inv["categories"], old_sum["cost_usd"], old_sum["pass"])
         if proposal:
             cand = GATE.apply(snapshot, proposal)
-            val = ORD.make_orders("validation", n_validation, seed + 100 * shift + 50)
+            n_focus = max(1, (n_validation * 6) // 10)
+            val = (ORD.make_orders("validation", n_focus, seed + 100 * shift + 50, rungs=GATE.focus_rungs(proposal)) +
+                   ORD.make_orders("validation", n_validation - n_focus, seed + 100 * shift + 60))
             orders_by_id.update({o["id"]: o for o in val})
             old_runs = await run_batch(val, snapshot, library_for(snapshot, library), parallel, False, shift, f"vo{shift}")
             cand["playbook"] = [l["id"] for l in library.active_lessons()]; cand["library"] = sorted(library.parts)

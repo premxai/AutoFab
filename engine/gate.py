@@ -55,7 +55,15 @@ MENU = [  # (name, fixes categories, applies) — order within a category = orde
     ("super_everywhere", ("wrong_logic",), _super_everywhere),
     ("fast_lane_easy", ("cost",), _fast_lane_easy),
 ]
-MIN_RUNG_SAMPLES = 3
+MIN_RUNG_SAMPLES = 5
+# which rungs a change is meant to help: the validation batch is built to contain them ("test what you changed")
+FOCUS = {"schema_on": [1, 2, 3, 6], "route_novel_to_super": [2, 3], "loop_cutter": [2, 3, 4], "library_first": [1],
+         "fanout_buffer_rule": [1, 3], "tidy_tool": [4], "stable_prefix": [1, 2, 6], "no_fast_lane": [2, 6],
+         "super_everywhere": [2, 3, 4], "fast_lane_easy": [1, 6]}
+
+
+def focus_rungs(proposal):
+    return FOCUS.get(proposal["proposal"], [1, 2, 3, 4, 5, 6])
 
 
 def applied(snapshot):

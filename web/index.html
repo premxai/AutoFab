@@ -136,6 +136,10 @@ body.lights,body.lights #app{background:#020305}
       <button id="bRace" title="Two boards, same order, two versions">Race</button>
       <label class="ctl">speed <input id="speed" type="range" min="0.5" max="8" step="0.5" value="2"><span id="speedV" class="mono">2×</span></label>
       <button id="bLights" title="Lights off">Lights</button>
+      <span id="orderBox" class="shelf" style="display:none"><span class="lab">Order</span>
+        <select id="menu" title="Orders a judge may pick"></select>
+        <select id="orderVer" title="Which version of the factory builds it"></select>
+        <button id="bOrder" title="Run this order live on the chosen version">Place order</button></span>
       <div id="attempt" class="mono">attempt <b>–</b> / 3</div>
     </div>
     <div class="row2">
@@ -870,13 +874,14 @@ async function fetchData() {
   return null;
 }
 async function poll() {
+  loadMenu();
   const r = await fetchData();
   if (!r) { $('#err').textContent = 'no run.json — is the server up?'; return; }
   $('#err').textContent = r.src.includes('sample') ? 'showing samples/run.sample.json' : '';
   if (r.text === lastText) return; lastText = r.text;
   let d; try { d = JSON.parse(r.text); } catch (e) { $('#err').textContent = 'run.json is not valid JSON yet'; return; }
   state.data = d; const old = state.chips; state.chips = collect(d);
-  renderShelf(d.versions); renderScore(d); renderGauges(d.gauges);
+  renderShelf(d.versions); renderScore(d); renderGauges(d.gauges); fillOrderVersions(d.versions);
   if (!chipA) { if (state.chips.length) playA(state.chips[0], ''); }
   else { const same = state.chips.find(c => c.id === chipA.id); if (same) { chipA = same; if (A.run?.run_id === same.id && (same.run.events || []).length !== A.events.length) A.setEvents(same.run); } }
   if (chipB) { const sameB = state.chips.find(c => c.id === chipB.id); if (sameB) { chipB = sameB; if (B?.run?.run_id === sameB.id && (sameB.run.events || []).length !== B.events.length) B.setEvents(sameB.run); } }
@@ -885,6 +890,36 @@ async function poll() {
   if (d.live && d.live.run_id === liveId) { const c = state.chips.find(x => x.id === liveId); if (c && A.run?.run_id === liveId && (c.run.events || []).length !== A.events.length) A.setEvents(c.run); }
   markShelf();
 }
+
+/* ── live order: menu pick or fresh unseen rung → POST /order; the runner (--live) replays into run.json.live ── */
+let menuTries = 0, lastMenuTry = -1e9;
+async function loadMenu() {
+  if (!apiMode || state.menu || performance.now() - lastMenuTry < 15000 || menuTries > 40) return;
+  lastMenuTry = performance.now(); menuTries++;
+  try {
+    const r = await fetch('/menu.json', { cache: 'no-store' }); if (!r.ok) return;
+    state.menu = await r.json();
+    const m = $('#menu'); m.innerHTML = '';
+    const g1 = el('optgroup'); g1.label = 'Pick an order'; state.menu.forEach(o => { const op = el('option', '', `rung ${o.rung} · ${o.title}`); op.value = 'id:' + o.id; g1.append(op); });
+    const g2 = el('optgroup'); g2.label = 'Fresh, never seen'; for (let k = 1; k <= 6; k++) { const op = el('option', '', `a new rung ${k} order`); op.value = 'rung:' + k; g2.append(op); }
+    m.append(g1, g2); $('#orderBox').style.display = '';
+  } catch (e) {}
+}
+function fillOrderVersions(vs) {
+  const sel = $('#orderVer'), cur = sel.value; sel.innerHTML = '';
+  const l = el('option', '', 'latest version'); l.value = ''; sel.append(l);
+  (vs || []).forEach(v => { const o = el('option', '', v); o.value = v; sel.append(o); }); sel.value = cur;
+}
+$('#bOrder').onclick = async () => {
+  const [k, v] = $('#menu').value.split(':'), body = k === 'id' ? { order_id: v } : { rung: +v };
+  if ($('#orderVer').value) body.version = $('#orderVer').value;
+  A.capNote.textContent = 'order sent…';
+  try {
+    const r = await fetch('/order', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+    if (!r.ok) throw new Error(r.status);
+    const { run_id } = await r.json(); A.capNote.textContent = `order ${run_id} sent — waiting for the runner…`;
+  } catch (e) { A.capNote.textContent = 'could not place the order (' + e.message + ')'; }
+};
 
 /* ── wiring ── */
 $('#picker').addEventListener('change', e => { const c = state.chips.find(x => x.id === e.target.value); if (c) { chipA = c; if (state.race) { const cp = counterpart(c); chipB = cp.chip; playA(c, ''); playB(chipB, cp.note); } else playA(c, ''); } });

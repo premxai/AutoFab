@@ -9,11 +9,11 @@ Owner A = laptop A (Prem + Claude Max session, the architect/reviewer). Owner B 
 | 4 | `engine/orders.py` — order generator, 3 pools, Yosys baseline | A (subagent) | `engine/orders` | tasks/orders.md | ✅ merged |
 | 5 | `engine/inspector.py` — flatten, exhaustive test, fab rules, scoring | A (subagent) | `engine/inspector` | tasks/inspector.md | ✅ merged |
 | 6 | `engine/client.py` — Crusoe calls, schema, thinking, caps, metrics, parallel | A (subagent) | `engine/client` | tasks/client.md | 🟨 in progress (subagent) |
-| 7 | `engine/agents.py` + `library.py` — architect, designers, assembler | A | `engine/agents` | — | 🟨 in progress (architect) |
-| 8 | `engine/investigator.py` — categories, loop detector, lessons | A | `engine/agents` | — | ⬜ todo |
-| 9 | `engine/gate.py` — one change per shift, validation, keep/rollback, snapshots | A | `engine/gate` | — | ⬜ todo |
-| 10 | `engine/runner.py` — shifts, exam mode, parallel, run.json | A | `engine/runner` | — | ⬜ todo |
-| 11 | 2-order smoke run end to end | A | main | — | ⬜ todo |
+| 7 | `engine/agents.py` + `library.py` — architect, designers, assembler | A | `engine/agents` | — | ✅ merged |
+| 8 | `engine/investigator.py` — categories, loop detector, lessons | A | `engine/agents` | — | ✅ merged |
+| 9 | `engine/gate.py` — one change per shift, validation, keep/rollback, snapshots | A | `engine/gate` | — | ✅ merged |
+| 10 | `engine/runner.py` — shifts, exam mode, parallel, run.json | A | `engine/runner` | — | ✅ merged |
+| 11 | 2-order smoke run end to end | A | main | — | ✅ done (2 orders, v1→v2, $0.09) |
 | 12 | 14:00 long run (8 shifts) + exam v1/v4/v8 | A | — | — | ⬜ todo |
 | 13 | README (ablation table, kept/rejected changes, disclosure) | B | `docs/readme` | — | ⬜ todo |
 | 14 | 1-min video (record real stage → HyperFrames) | B | — | — | ⬜ todo |

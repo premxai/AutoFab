@@ -55,9 +55,15 @@ MENU = [  # (name, fixes categories, applies) — order within a category = orde
     ("super_everywhere", ("wrong_logic",), _super_everywhere),
     ("fast_lane_easy", ("cost",), _fast_lane_easy),
 ]
+# a pair the Gate may propose only after BOTH halves were tried alone and reverted (interaction effect: the schema stops the
+# format anxiety, routing gives novel parts a model that can finish; measured last night to work together)
+def _schema_and_route(s):
+    _set_flag("schema_on")(s); _route_novel(s)
+COMBOS = [("schema_and_route", ("spiral", "format"), _schema_and_route, ("schema_on", "route_novel_to_super"))]
+MENU_ALL = MENU + [(n, f, a) for n, f, a, _ in COMBOS]
 MIN_RUNG_SAMPLES = 5
 # which rungs a change is meant to help: the validation batch is built to contain them ("test what you changed")
-FOCUS = {"schema_on": [1, 2, 3, 6], "route_novel_to_super": [2, 3], "loop_cutter": [2, 3, 4], "library_first": [1],
+FOCUS = {"schema_on": [1, 2, 3, 6], "route_novel_to_super": [2, 3], "schema_and_route": [1, 2, 3], "loop_cutter": [2, 3, 4], "library_first": [1],
          "fanout_buffer_rule": [1, 3], "tidy_tool": [4], "stable_prefix": [1, 2, 6], "no_fast_lane": [2, 6],
          "super_everywhere": [2, 3, 4], "fast_lane_easy": [1, 6]}
 
@@ -74,7 +80,7 @@ def tried(snapshot):
     return {e["proposal"] for e in snapshot["change_log"]}
 
 
-def recently_tried(snapshot, window=2):
+def recently_tried(snapshot, window=1):
     """Kept changes are never re-proposed; a reverted change becomes eligible again after `window` shifts (the situation may have changed)."""
     log = snapshot["change_log"]
     last = log[-1]["shift"] if log else 0
@@ -85,9 +91,13 @@ def propose(snapshot, categories, cost_per_chip, pass_rate):
     """Deterministic policy: the first eligible MENU item that targets the dominant failure category; then cost; then experiments."""
     done = recently_tried(snapshot)
     ranked = sorted(categories.items(), key=lambda kv: -kv[1])
+    reverted = {e["proposal"] for e in snapshot["change_log"] if e["verdict"] != "keep"}
     for cat, n in ranked:
         if n == 0:
             break
+        for name, fixes, _, halves in COMBOS:          # pairs first, once both halves failed alone
+            if cat in fixes and name not in done and all(h in reverted for h in halves):
+                return _p(name, f"{halves[0]} and {halves[1]} each failed alone; trying them together ({n} {cat} this shift)")
         for name, fixes, _ in MENU:
             if cat in fixes and name not in done:
                 why = {"schema_on": "most failures are no-answer spirals or unreadable blueprints; enforce the blueprint schema so no thinking is spent on format",
@@ -108,7 +118,7 @@ def _p(name, hypothesis):
 def apply(snapshot, proposal):
     """Return a candidate snapshot (not yet a version) with the change applied."""
     cand = copy.deepcopy(snapshot)
-    fn = next(f for n, _, f in MENU if n == proposal["proposal"])
+    fn = next(f for n, _, f in MENU_ALL if n == proposal["proposal"])
     fn(cand)
     return cand
 

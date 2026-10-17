@@ -19,4 +19,7 @@ Owner A = laptop A (Prem + Claude Max session, the architect/reviewer). Owner B 
 | 14 | 1-min video (record real stage → HyperFrames) | B | — | — | ⬜ todo |
 | 15 | Rehearse ×5, projector test, submit by 16:45 | both | — | — | ⬜ todo |
 
+| 16 | `web/present.html` — presentation mode, one scene at a time (Opus subagent) | A | `web/present` | — | ✅ merged |
+| 17 | `web/ops.html` — judge page: 3D chip, Circuit Test with switches/lamps, Compare, logs, lessons (Opus subagent) | A | `web/ops` | — | ✅ merged |
+
 **Freeze:** 14:30. **Cut order if slipping:** live race → recorded comparison · agent tree → text list · exam v1+v8 only · lights-off/gauges · VL inspector · night shift. **Never cut:** inspector, live order, one real failure, exam numbers.

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AutoFab · present</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%230b0f14'/%3E%3Crect x='3' y='3' width='10' height='10' rx='2' fill='%2338e8ff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="present.css">
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+"three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}
+</script>
+</head>
+<body>
+<!-- 1 · ORDER -->
+<section class="scene" id="s-order">
+  <h1 id="o-title" class="t"></h1>
+  <p id="o-spec" class="t"></p>
+  <div id="o-team"></div>
+</section>
+
+<!-- 2 · BUILD -->
+<section class="scene" id="s-build"><div id="buildHost"></div></section>
+
+<!-- 3 · INSPECTION -->
+<section class="scene" id="s-inspect">
+  <div id="schem"></div>
+  <div id="spiral" hidden></div>
+  <p id="i-note" class="t"></p>
+</section>
+
+<!-- 4 · LESSON -->
+<section class="scene" id="s-lesson">
+  <div id="l-card"><p id="l-text"></p><small id="l-sub"></small></div>
+</section>
+
+<!-- 5 · EVOLUTION -->
+<section class="scene" id="s-evo">
+  <div id="evo">
+    <div id="evo-head" class="t">Exam pass rate · chips it has never seen</div>
+    <div id="evo-line"></div>
+  </div>
+  <div id="race" class="hidden">
+    <div id="race-title" class="t"></div>
+    <div class="race-boards">
+      <div class="rb"><div class="rhost" id="raceL"></div><div class="rcap t" id="capL"></div></div>
+      <div class="rb"><div class="rhost" id="raceR"></div><div class="rcap t" id="capR"></div></div>
+    </div>
+    <div id="race-note" class="t"></div>
+  </div>
+  <button id="raceBtn" type="button">Race</button>
+</section>
+
+<div id="rail"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+<div id="humans" class="mono">HUMANS ON FLOOR: 0</div>
+<div id="toast"></div>
+<div id="picker" hidden><div class="box"></div></div>
+
+<script type="module" src="present.js"></script>
+</body>
+</html>

@@ -831,12 +831,18 @@ function pickVersion(v) {
 
 function renderScore(d) {
   const ex = d.exam || {}, vs = Object.keys(ex);
-  const parts = (d.versions || vs).map(v => ex[v] ? `<span class="k">${v}</span> <b>${Math.round(ex[v].pass_rate * 100)}%</b>` : `<span class="k">${v}</span> —`);
+  const parts = (d.versions || vs).map(v => {
+    const e = ex[v]; if (!e) return `<span class="k">${v}</span> —`;
+    if (e.in_progress) {                       // the runner publishes chips as they finish
+      const n = (e.runs || []).length, done = (e.runs || []).filter(r => r.inspection?.pass).length;
+      return `<span class="k">${v}</span> <b>${n} / ${e.total ?? 40} chips</b> <span class="k">(${done} pass so far)</span>`;
+    }
+    return `<span class="k">${v}</span> <b>${Math.round(e.pass_rate * 100)}%</b>`; });
   let cats = null, catV = null;
   for (const v of [d.current_version, ...vs.slice().reverse()]) if (v && ex[v]?.categories) { cats = ex[v].categories; catV = v; break; }
   if (!cats) { const s = (d.shifts || []).slice(-1)[0]; if (s?.categories) { cats = s.categories; catV = 'shift ' + s.shift; } }
   const c = cats ? Object.entries(cats).filter(([, n]) => n > 0).map(([k, n]) => `${k} ${n}`).join(' · ') : '';
-  $('#score').innerHTML = `<span class="k">exam (40 unseen chips)</span> ${parts.join('<span class="sep">|</span>')}` +
+  $('#score').innerHTML = `<span class="k">exam (unseen chips)</span> ${parts.join('<span class="sep">|</span>')}` +
     (c ? `<span class="sep">||</span><span class="k">failures ${catV}</span> ${c}` : '');
 }
 function renderGauges(g) {
@@ -851,7 +857,7 @@ function renderGauges(g) {
 let lastText = '', liveId = null, apiMode = null;
 async function detectMode() {
   if (new URLSearchParams(location.search).get('data') === 'sample') return false;
-  try { const r = await fetch(location.href, { method: 'HEAD' }); const s = r.headers.get('server') || '';
+  try { const r = await fetch(location.href); const s = r.headers.get('server') || '';
     if (/SimpleHTTP|http\.server/i.test(s)) return false; } catch (e) {}
   return true;
 }

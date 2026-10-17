@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AutoFab · Compare</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%23FBF8F3'/%3E%3Crect x='4' y='4' width='8' height='8' rx='1.5' fill='none' stroke='%23E8A33D' stroke-width='1.6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="compare.css">
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+"three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap topin">
+    <a class="brand" href="compare.html"><i data-lucide="cpu"></i><span>AutoFab <span class="dim">·</span> Compare</span></a>
+    <a class="back" id="back" href="dash.html"><i data-lucide="arrow-left"></i><span>Back to the fab</span></a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="card order">
+    <form id="orderForm" autocomplete="off">
+      <label for="orderIn">Pick a past order, or type your own</label>
+      <div class="orow">
+        <input id="orderIn" type="text" placeholder="e.g. a door lock that opens for 3, 5 and 8">
+        <label class="vpick"><span>Version A</span><select id="verA" aria-label="Version A"></select></label>
+        <label class="vpick"><span>Version B</span><select id="verB" aria-label="Version B"></select></label>
+        <button class="btn primary" type="submit"><i data-lucide="play"></i><span>Build both</span></button>
+      </div>
+    </form>
+    <p class="note" id="ownNote"></p>
+    <div class="pillhead">Past orders</div>
+    <div class="pills" id="pills"></div>
+  </section>
+
+  <div class="midbar">
+    <h1 id="orderTitle"></h1>
+    <label class="linkbox"><input type="checkbox" id="link" checked><span>Link the switches</span></label>
+  </div>
+
+  <section class="cols">
+    <div class="card col" id="colA"></div>
+    <div class="card col" id="colB"></div>
+  </section>
+
+  <section class="card verdictcard">
+    <i data-lucide="scale"></i>
+    <p id="verdict">Pick an order to compare.</p>
+  </section>
+</main>
+
+<footer class="wrap foot">Built on Crusoe · every number on this page comes from run.json</footer>
+
+<script type="module" src="compare.js"></script>
+</body>
+</html>

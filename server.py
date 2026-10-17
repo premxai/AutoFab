@@ -148,8 +148,8 @@ async def post_order(request: Request):
 
 @app.get("/")
 def index():
-    page = os.path.join(ROOT, "web", "home.html")      # the plain-English page; the older stages stay at /web/*.html
-    for alt in ("index.html", "mock-2d.html"):
+    page = os.path.join(ROOT, "web", "dash.html")      # the dashboard; the story page is /web/home.html, older stages /web/*.html
+    for alt in ("home.html", "index.html", "mock-2d.html"):
         if os.path.isfile(page):
             break
         page = os.path.join(ROOT, "web", alt)

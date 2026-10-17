@@ -394,13 +394,23 @@ function buses(names) {
 const busVal = (bus, vals) => bus.bits.reduce((a, b) => a + ((vals[b.sig] ? 1 : 0) << b.bit), 0);
 
 /* ═════════ 3D assembly replay ═════════ */
-const C3 = { board: 0xF1ECE3, chip: 0xFAF7F1, pin: 0xBDB4A7, part: 0xFFFFFF, gate: 0xF7F2EA, edge: 0xD9D0C2, wire: 0x3A332B, bad: 0xD9483B, ok: 0x2E9E5B };
+const C3_LIGHT = { board: 0xF1ECE3, chip: 0xFAF7F1, pin: 0xBDB4A7, part: 0xFFFFFF, gate: 0xF7F2EA, edge: 0xD9D0C2, wire: 0x3A332B, bad: 0xD9483B, ok: 0x2E9E5B, clear: 0xFFFFFF, ground: 0xE6DCCB };
+const C3_DARK = { board: 0x26211C, chip: 0x332C25, pin: 0x6B6257, part: 0xE9E1D4, gate: 0xD9D0C2, edge: 0x5A5147, wire: 0xF1EAE0, bad: 0xF06A5E, ok: 0x4CC27A, clear: 0x1C1916, ground: 0x2A2520 };
+const C3 = { ...C3_LIGHT };
+function isDark() { return document.documentElement.dataset.theme === 'dark'; }
+function applyC3(dark) {                       // recolour every material that still wears a palette colour
+  const from = dark ? C3_LIGHT : C3_DARK, to = dark ? C3_DARK : C3_LIGHT, map = new Map();
+  for (const k in to) if (from[k] !== to[k]) map.set(from[k], to[k]);
+  Object.assign(C3, to);
+  return map;
+}
 const hashOff = s => { let h = 7; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) | 0; return (((h % 5) + 5) % 5 - 2); };
 function labelSprite(text) {
+  const dark = isDark();
   const c = document.createElement('canvas'), ctx = c.getContext('2d'), fs = 56;
   ctx.font = `500 ${fs}px Inter, system-ui, sans-serif`;
   const w = Math.ceil(ctx.measureText(text).width) + 24; c.width = w; c.height = fs + 22;
-  ctx.font = `500 ${fs}px Inter, system-ui, sans-serif`; ctx.fillStyle = '#1F1B16'; ctx.textBaseline = 'middle'; ctx.fillText(text, 12, c.height / 2 + 2);
+  ctx.font = `500 ${fs}px Inter, system-ui, sans-serif`; ctx.fillStyle = dark ? '#1F1B16' : '#1F1B16'; ctx.textBaseline = 'middle'; ctx.fillText(text, 12, c.height / 2 + 2);
   const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace; tex.anisotropy = 4;
   const sp = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthWrite: false }));
   const hgt = .42; sp.scale.set(hgt * c.width / c.height, hgt, 1); sp.renderOrder = 5;
@@ -410,12 +420,12 @@ class Replay3D {
   constructor(host) {
     this.host = host;
     const r = this.renderer = new THREE.WebGLRenderer({ antialias: true });
-    r.setPixelRatio(Math.min(devicePixelRatio || 1, 2)); r.setClearColor(0xffffff, 1);
+    r.setPixelRatio(Math.min(devicePixelRatio || 1, 2)); r.setClearColor(isDark() ? C3_DARK.clear : C3_LIGHT.clear, 1);
     r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFShadowMap;
     host.prepend(r.domElement);
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(30, 1.6, .1, 300);
-    this.scene.add(new THREE.HemisphereLight(0xffffff, 0xE6DCCB, 2.0));
+    this.hemi = new THREE.HemisphereLight(0xffffff, isDark() ? C3_DARK.ground : C3_LIGHT.ground, 2.0); this.scene.add(this.hemi);
     const d = this.sun = new THREE.DirectionalLight(0xffffff, 1.5); d.position.set(6, 16, 9); d.castShadow = true;
     d.shadow.mapSize.set(2048, 2048); d.shadow.radius = 6; d.shadow.bias = -.0005;
     this.scene.add(d, d.target);
@@ -423,6 +433,12 @@ class Replay3D {
     this.t = 0; this.paused = false; this.time = 0; this.items = []; this.anims = [];
     new ResizeObserver(() => this.resize()).observe(host); this.resize();
     this.onCaption = () => {}; this.onStamp = () => {};
+  }
+  setTheme(dark) {
+    const map = applyC3(dark);
+    this.renderer.setClearColor(C3.clear, 1); if (this.hemi) this.hemi.groundColor.setHex(C3.ground);
+    this.scene.traverse(o => { const ms = Array.isArray(o.material) ? o.material : o.material ? [o.material] : []; ms.forEach(m => { if (m.color && map.has(m.color.getHex())) m.color.setHex(map.get(m.color.getHex())); }); });
+    this.frame?.();
   }
   resize() {
     const w = this.host.clientWidth || 800, h = this.host.clientHeight || 460;
@@ -1195,7 +1211,7 @@ function renderPractice() {
   const max = Math.max(10, ...pts.map(x => x.tot));
   const svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, class: 'chart area', role: 'img', 'aria-label': 'practice orders passed per shift' }, host);
   const defs = sv('defs', {}, svg), g = sv('linearGradient', { id: 'pfill', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
-  sv('stop', { offset: '0%', 'stop-color': '#E8A33D', 'stop-opacity': .38 }, g); sv('stop', { offset: '100%', 'stop-color': '#E8A33D', 'stop-opacity': .02 }, g);
+  sv('stop', { offset: '0%', 'stop-color': '#F5A524', 'stop-opacity': .38 }, g); sv('stop', { offset: '100%', 'stop-color': '#F5A524', 'stop-opacity': .02 }, g);
   [0, max / 2, max].forEach(v => { const y = T + ph - ph * v / max; sv('line', { x1: L, x2: W - R, y1: y, y2: y, class: 'grid' }, svg); txt(svg, L - 6, y + 4, String(Math.round(v)), 'ax', 'end'); });
   const step = pw / pts.length, P = pts.map((x, i) => [L + step * (i + .5), T + ph - ph * x.p / max]);
   const curve = ps => {                       // smooth line through the points (Catmull-Rom as cubic beziers)
@@ -1414,6 +1430,16 @@ async function boot() {
     if (e.key === 'ArrowRight') { stepBy(1); e.preventDefault(); } else if (e.key === 'ArrowLeft') { stepBy(-1); e.preventDefault(); }
   });
   setStep('c3d');
+  if (isDark()) applyC3(true);
+  const themeBtn = $('#themeBtn');
+  const paintTheme = () => { const d = isDark(); themeBtn.innerHTML = `<i data-lucide="${d ? 'sun' : 'moon'}"></i>`; themeBtn.title = d ? 'Switch to light' : 'Switch to dark'; icons(); };
+  themeBtn.addEventListener('click', () => {
+    const t = isDark() ? 'light' : 'dark'; document.documentElement.dataset.theme = t;
+    try { localStorage.setItem('autofab-theme', t); } catch (e) { /* private window */ }
+    replay?.setTheme(t === 'dark'); paintTheme();
+    S.practiceSig = ''; S.examSig = ''; renderPractice(); renderExam();
+  });
+  paintTheme();
 
   S.apiMode = await detectMode();
   if (!S.apiMode) { const t = await getText(LIVE_FB); if (t) { try { S.extra = JSON.parse(t); } catch (e) { S.extra = null; } } }

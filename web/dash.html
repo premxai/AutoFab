@@ -7,7 +7,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%23FBF8F3'/%3E%3Crect x='4' y='4' width='8' height='8' rx='1.5' fill='none' stroke='%23E8A33D' stroke-width='1.6'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem("autofab-theme")||(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="stylesheet" href="dash.css">
 <script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
 <script type="importmap">
@@ -28,6 +29,7 @@
         <button class="ddbtn wide" id="chipBtn" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="chipic" id="chipIc"></span><span class="ell" id="chipLab">Chip —</span><i data-lucide="chevron-down" class="chev"></i></button>
         <div class="ddmenu chips" id="chipMenu" role="listbox" hidden></div>
       </div>
+      <button class="btn icon themebtn" id="themeBtn" type="button" aria-label="Switch between light and dark" title="Light / dark"><i data-lucide="moon"></i></button>
       <a class="btn" href="home.html" title="the plain-English story page"><i data-lucide="book-open"></i><span>Story</span></a>
       <a class="btn" id="compareLink" href="compare.html"><i data-lucide="columns-2"></i><span>Compare</span></a>
       <div class="dd" id="runDD">

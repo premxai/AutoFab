@@ -51,7 +51,6 @@ flowchart LR
 
 By rung: {'v1': {'1': 0.0, '5': 0.0, '2': 0.4, '3': 0.0, '6': 0.25, '4': 0.0}, 'v5': {'1': 0.38, '5': 0.25, '2': 0.7, '3': 0.17, '6': 0.75, '4': 0.0}, 'v8': {'1': 0.62, '5': 0.5, '2': 0.6, '3': 0.17, '6': 0.5, '4': 0.0}}
 <!-- /REPORT -->
-_Pending the long run._
 
 Reading guide: bare = one cheap model with no schema, no lessons, no library · v1 = the starting team · vN = the team after N−1 kept changes. Exam pass means: correct on all inputs **and** every fab rule ok **and** within 3 capped attempts.
 
@@ -69,7 +68,6 @@ Reading guide: bare = one cheap model with no schema, no lessons, no library · 
 | 7 | v7 | rules 1, spiral 5 | schema_on | **revert** | pass 0.33->0.25 (noise 0.08), cost x1.25 |
 | 8 | v8 | format 1, spiral 6 | — | **—** |  |
 <!-- /REPORT -->
-_Pending the long run._
 
 ### What the agents wrote for themselves
 
@@ -84,14 +82,12 @@ _Pending the long run._
 - **L006** (rules, shift 6, used 2×): when checking fab rules before handing in: *gate xor_a0_b0 is never used (its output 'x_a0_b0' feeds nothing)* → count fan-out per signal and depth before handing in
 - **L007** (format, shift 8, used 0×): when handing in a blueprint: *name 'ff_q0' is used twice (a instance and a flip-flop); every name must be unique* → check that every gate has a name, a valid type, 1 or 2 inputs and an output, and every output maps to a real signal
 <!-- /REPORT -->
-_Pending the long run._
 
 ### Receipts
 
 <!-- REPORT:RECEIPTS — paste the "Receipts" line from `python tools/report.py` -->
 Total spend $2.02 · 109 tok/s · TTFT 2.48s · cache hit 0% · 100 chips/hour · human pings 49
 <!-- /REPORT -->
-_Pending the long run._
 
 ## The team (all NVIDIA Nemotron on Crusoe)
 

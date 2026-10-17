@@ -11,7 +11,7 @@ import time
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse, JSONResponse, Response
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -148,12 +148,11 @@ async def post_order(request: Request):
 
 @app.get("/")
 def index():
-    page = os.path.join(ROOT, "web", "dash.html")      # the dashboard; the story page is /web/home.html, older stages /web/*.html
-    for alt in ("home.html", "index.html", "mock-2d.html"):
-        if os.path.isfile(page):
-            break
-        page = os.path.join(ROOT, "web", alt)
-    return FileResponse(page, headers={"Cache-Control": "no-store"})
+    """The dashboard lives under /web/ with relative asset paths, so / redirects there (older stages stay at /web/*.html)."""
+    for name in ("dash.html", "home.html", "index.html", "mock-2d.html"):
+        if os.path.isfile(os.path.join(ROOT, "web", name)):
+            return RedirectResponse(f"/web/{name}", status_code=302)
+    raise HTTPException(404, "no stage page in web/")
 
 
 # static: /web/* (the stage + vendored netlistsvg) and /samples/* (the stage's offline fallback)

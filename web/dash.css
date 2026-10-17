@@ -386,3 +386,34 @@ body.noscroll{overflow:hidden}
   .arrow{transform:rotate(90deg);height:22px}
   .ddmenu.chips{min-width:300px}
 }
+
+/* ── cooler graphs ── */
+.chart.area .fill{fill:url(#pfill)}
+.chart.area .line{fill:none;stroke:var(--amber);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1200;stroke-dashoffset:1200;animation:draw 1.6s cubic-bezier(.4,0,.2,1) forwards}
+.chart.area .dot{fill:#fff;stroke:var(--amber);stroke-width:2;transform-box:fill-box;transform-origin:center;animation:pop .45s cubic-bezier(.2,.9,.3,1.3) both}
+.chart.area .dot.on{fill:var(--amber)}
+.chart.area .halo{fill:var(--amber);opacity:.16;transform-box:fill-box;transform-origin:center;animation:pulse 2.2s ease-in-out infinite}
+.chart.area .verdict{fill:#F6F1E8;stroke:var(--off);stroke-width:1}
+.chart.area .verdict.keep{fill:#E6F4EA;stroke:var(--ok)}
+.chart.area .verdict.drop{fill:#FBECEA;stroke:#E9B0AA}
+.chart.area .vmark{font-size:8px;fill:var(--muted);font-family:Inter,system-ui,sans-serif}
+.chart.area .verdict.keep+.vmark{fill:var(--ok)}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.16}50%{transform:scale(1.35);opacity:.06}}
+.xrow{display:grid;grid-template-columns:34px 1fr 92px;align-items:center;gap:12px;padding:8px 10px;border-radius:12px;border:1px solid transparent}
+.xrow.cur{background:#FFF8EB;border-color:#F3DDB4}
+.xl{font-size:14px;color:var(--muted)}.xrow.cur .xl{color:#9A6413;font-weight:500}
+.chips{display:grid;grid-template-columns:repeat(20,1fr);gap:3px}
+.chipdot{display:block;aspect-ratio:1;border-radius:3px;background:#E9E1D4;transform:scale(0);animation:pop .4s cubic-bezier(.2,.9,.3,1.3) forwards}
+.chipdot.ok{background:var(--ok)}
+.chipdot.no{background:#E9E1D4}
+.chipdot.none{background:transparent;border:1px dashed var(--off)}
+.xrow.prog .chipdot.ok{background:var(--amber)}
+.xv{text-align:right;font-size:13px;color:var(--muted);white-space:nowrap}
+.xv b{font-size:20px;font-weight:500;color:var(--ink);margin-right:2px}
+.xrow.cur .xv b{color:#9A6413}
+.xv .delta{display:inline-block;margin-left:6px;font-style:normal;font-size:12px;padding:1px 7px;border-radius:999px;background:#E6F4EA;color:var(--ok)}
+.xv .delta.down{background:#FBECEA;color:var(--bad)}
+.bars{gap:4px}
+@media (prefers-reduced-motion:reduce){.chart.area .line,.chart.area .dot,.chart.area .halo,.chipdot{animation:none;stroke-dashoffset:0;transform:none}}

@@ -1185,38 +1185,81 @@ function renderLessons() {
 
 /* ───────── graphs ───────── */
 function renderPractice() {
-  const host = $('#gPractice'), cap_ = $('#gPracticeCap'), shifts = arr(S.data?.shifts); host.innerHTML = '';
+  const host = $('#gPractice'), cap_ = $('#gPracticeCap'), shifts = arr(S.data?.shifts);
+  const sig = S.ver + '|' + shifts.map(s => `${s.shift}:${s.version}:${arr(s.practice).filter(passed).length}/${arr(s.practice).length}:${s.validation?.verdict || ''}`).join(',');
+  if (sig === S.practiceSig && host.childElementCount) return; S.practiceSig = sig;     // redraw only when the numbers change (the live heartbeat rewrites run.json every second)
+  host.innerHTML = '';
   if (!shifts.length) { host.append(el('p', 'empty', 'The first shift is still running.')); cap_.textContent = ''; return; }
-  const W = 340, H = 170, L = 26, R = 8, T = 18, B = 24, pw = W - L - R, ph = H - T - B;
+  const W = 340, H = 190, L = 26, R = 14, T = 22, B = 44, pw = W - L - R, ph = H - T - B;
   const pts = shifts.map(s => ({ s, tot: arr(s.practice).length, p: arr(s.practice).filter(passed).length }));
   const max = Math.max(10, ...pts.map(x => x.tot));
-  const svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, class: 'chart', role: 'img', 'aria-label': 'practice orders passed per shift' }, host);
+  const svg = sv('svg', { viewBox: `0 0 ${W} ${H}`, class: 'chart area', role: 'img', 'aria-label': 'practice orders passed per shift' }, host);
+  const defs = sv('defs', {}, svg), g = sv('linearGradient', { id: 'pfill', x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+  sv('stop', { offset: '0%', 'stop-color': '#E8A33D', 'stop-opacity': .38 }, g); sv('stop', { offset: '100%', 'stop-color': '#E8A33D', 'stop-opacity': .02 }, g);
   [0, max / 2, max].forEach(v => { const y = T + ph - ph * v / max; sv('line', { x1: L, x2: W - R, y1: y, y2: y, class: 'grid' }, svg); txt(svg, L - 6, y + 4, String(Math.round(v)), 'ax', 'end'); });
-  const step = pw / pts.length, bw = Math.min(34, step * .62), line = [];
+  const step = pw / pts.length, P = pts.map((x, i) => [L + step * (i + .5), T + ph - ph * x.p / max]);
+  const curve = ps => {                       // smooth line through the points (Catmull-Rom as cubic beziers)
+    if (ps.length < 2) return '';
+    let d = `M${ps[0][0].toFixed(1)},${ps[0][1].toFixed(1)}`;
+    for (let i = 0; i < ps.length - 1; i++) {
+      const p0 = ps[i - 1] || ps[i], p1 = ps[i], p2 = ps[i + 1], p3 = ps[i + 2] || p2;
+      const c1 = [p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6], c2 = [p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6];
+      d += ` C${c1[0].toFixed(1)},${c1[1].toFixed(1)} ${c2[0].toFixed(1)},${c2[1].toFixed(1)} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+    }
+    return d;
+  };
+  const d = curve(P), base = T + ph;
+  if (d) {
+    sv('path', { d: `${d} L${P[P.length - 1][0].toFixed(1)},${base} L${P[0][0].toFixed(1)},${base} Z`, class: 'fill' }, svg);
+    sv('path', { d, class: 'line' }, svg);
+  }
   pts.forEach((x, i) => {
-    const cx = L + step * (i + .5), h = ph * x.p / max, y = T + ph - h, on = x.s.version === S.ver;
-    sv('rect', { x: cx - bw / 2, y: T + ph - ph * x.tot / max, width: bw, height: ph * x.tot / max, rx: 3, class: 'tot' }, svg);
-    sv('rect', { x: cx - bw / 2, y, width: bw, height: Math.max(h, 0), rx: 3, class: 'bar' + (on ? ' on' : '') }, svg);
-    txt(svg, cx, y - 5, String(x.p), 'val' + (on ? ' on' : ''), 'middle');
-    txt(svg, cx, H - 7, (pts.length > 12 ? '' : 'S') + x.s.shift, 'ax' + (on ? ' on' : ''), 'middle');
-    line.push(`${cx.toFixed(1)},${y.toFixed(1)}`);
+    const [cx, cy] = P[i], on = x.s.version === S.ver, v = x.s.validation || {};
+    if (on) sv('circle', { cx, cy, r: 11, class: 'halo' }, svg);
+    const dot = sv('circle', { cx, cy, r: on ? 5.5 : 4, class: 'dot' + (on ? ' on' : ''), style: `animation-delay:${(i * 90).toFixed(0)}ms` }, svg);
+    sv('title', {}, dot).textContent = `Shift ${x.s.shift} · ${verLabel(x.s.version)} · ${x.p} of ${x.tot} passed` + (v.proposal ? ` · tried ${(PROPOSAL_PLAIN[v.proposal] || v.proposal)} · ${v.verdict === 'keep' ? 'kept' : 'rolled back'}` : '');
+    txt(svg, cx, cy - (on ? 15 : 11), String(x.p), 'val' + (on ? ' on' : ''), 'middle');
+    txt(svg, cx, H - 24, (pts.length > 12 ? '' : 'S') + x.s.shift, 'ax' + (on ? ' on' : ''), 'middle');
+    if (v.verdict) {                            // the Gate's verdict for the change tried this shift
+      const keep = v.verdict === 'keep';
+      sv('circle', { cx, cy: H - 8, r: 6, class: 'verdict ' + (keep ? 'keep' : 'drop') }, svg);
+      txt(svg, cx, H - 5, keep ? '✓' : '✕', 'vmark', 'middle');
+    }
   });
-  if (line.length > 1) sv('polyline', { points: line.join(' '), class: 'trend' }, svg);
+  txt(svg, L - 6, H - 5, 'Gate', 'ax', 'end');
   const mine = pts.filter(x => x.s.version === S.ver);
-  cap_.textContent = mine.length ? mine.map(x => `Shift ${x.s.shift} ran ${verLabel(S.ver).toLowerCase()}: ${x.p} of ${x.tot} passed`).join(' · ') : `${verLabel(S.ver)} hasn’t run a practice shift yet.`;
+  const tried = mine.map(x => x.s.validation).filter(v => v && v.proposal);
+  cap_.textContent = mine.length
+    ? mine.map(x => `Shift ${x.s.shift} ran ${verLabel(S.ver).toLowerCase()}: ${x.p} of ${x.tot} passed`).join(' · ') + (tried.length ? ` · the Gate ${tried[0].verdict === 'keep' ? 'kept' : 'rolled back'} ${(PROPOSAL_PLAIN[tried[0].proposal] || tried[0].proposal)}` : '')
+    : `${verLabel(S.ver)} hasn’t run a practice shift yet.`;
 }
 function examRows() {
   return Object.entries(S.data?.exam || {}).sort((a, b) => verNum(a[0]) - verNum(b[0]));
 }
 function renderExam() {
   const ex = examRows(), TOTAL = Math.max(40, ...ex.map(([, e]) => arr(e.runs).length));
-  const bars = $('#bars'); bars.innerHTML = '';
-  ex.forEach(([v, e]) => {
+  const bars = $('#bars');
+  const sig = S.ver + '|' + ex.map(([v, e]) => `${v}:${arr(e.runs).filter(passed).length}/${arr(e.runs).length}:${e.pass_rate}:${e.status || ''}`).join(',');
+  if (sig === S.examSig && bars.childElementCount) return; S.examSig = sig;
+  bars.innerHTML = '';
+  let prev = null;
+  ex.forEach(([v, e], ri) => {
     const runs = arr(e.runs), prog = (runs.length && runs.length < TOTAL) || e.pass_rate == null || e.status === 'running';
     const n = runs.length ? runs.filter(passed).length : Math.round((e.pass_rate || 0) * TOTAL);
-    const row = el('div', 'bar' + (prog ? ' prog' : '') + (v === S.ver ? ' cur' : ''));
-    row.innerHTML = `<div class="bl">v${verNum(v)}</div><div class="track"><div class="fill"></div></div><div class="bv">${n}${prog ? ' so far' : ` of ${TOTAL}`}</div>`;
-    row.querySelector('.fill').style.width = (100 * n / TOTAL).toFixed(1) + '%';
+    const row = el('div', 'xrow' + (prog ? ' prog' : '') + (v === S.ver ? ' cur' : ''));
+    const lab = el('div', 'xl', `v${verNum(v)}`), grid = el('div', 'chips'), right = el('div', 'xv');
+    const ordered = runs.length ? [...runs].sort((p, q) => (passed(q) ? 1 : 0) - (passed(p) ? 1 : 0)) : [];
+    for (let i = 0; i < TOTAL; i++) {
+      const r = ordered[i], ok = r ? passed(r) : (!runs.length && i < n);
+      const d = el('i', 'chipdot ' + (r || !runs.length ? (ok ? 'ok' : 'no') : 'none'));
+      d.style.animationDelay = `${(ri * 160 + i * 14).toFixed(0)}ms`;
+      if (r) d.title = `${chipName(r.order?.title || '')[0]} · ${ok ? 'passed' : 'failed'}`;
+      grid.append(d);
+    }
+    right.innerHTML = `<b>${n}</b><span>${prog ? ' so far' : ` of ${TOTAL}`}</span>`;
+    if (prev != null && !prog && n !== prev) right.append(el('em', 'delta ' + (n > prev ? 'up' : 'down'), (n > prev ? '+' : '') + (n - prev)));
+    if (!prog) prev = n;
+    row.append(lab, grid, right);
     row.title = `${verLabel(v)}: ${n} of ${TOTAL} exam orders passed${prog ? ' so far' : ''}`;
     bars.append(row);
   });

@@ -1104,7 +1104,7 @@ const SAMPLE = new URL('../samples/run.sample.json', location.href).href;
 const LIVE_FB = new URL('../samples/live_fallback.json', location.href).href;
 async function detectMode() {           // python -m http.server has no /run.json: don't ask for it (a 404 is a console error)
   if (params.get('data') === 'sample') return false;
-  try { const r = await fetch(location.href, { method: 'HEAD', cache: 'no-store' });
+  try { const r = await fetch(location.href, { method: 'GET', cache: 'no-store' });
     if (/SimpleHTTP|http\.server/i.test(r.headers.get('server') || '')) return false; } catch (e) { /* offline */ }
   return true;
 }

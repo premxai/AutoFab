@@ -70,7 +70,12 @@ async def investigate_shift(chip_runs, orders_by_id, library, shift, routing, sc
     """Returns {"categories": {...}, "lessons_added": [...], "loops": [...]} and (when learn) writes lessons to the library."""
     cats = categories(chip_runs)
     loops, added = [], []
-    failed = [r for r in chip_runs if not (r.get("inspection") or {}).get("pass")]
+    for r in chip_runs:                       # a runner-level error leaves no inspection; treat it as a format failure with the error as the note
+        if r.get("inspection") is None:
+            note = next((e.get("note", "") for e in r.get("events", []) if e.get("type") == "fail"), "runner error")
+            r["inspection"] = {"pass": False, "failure_category": "format", "note": note, "correct": {"ok": False, "passed": 0, "total": 0},
+                               "rules": {}, "gates": 0, "metrics": {}}
+    failed = [r for r in chip_runs if not r["inspection"].get("pass")]
     for r in chip_runs:
         for c in r.get("calls", []):
             looped, info = detect_loop(c.get("reasoning", "") or "")

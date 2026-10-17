@@ -276,11 +276,17 @@ def _emit_wiring(bp, emit):
 
 
 def _emit_test(order, bp, parts, inspection, attempt, emit):
-    """One illustrative test for the stage: calculators get a + b, everything else the first failing or first vector."""
+    """One illustrative test for the stage: calculators get a + b, everything else the first failing or first vector.
+    Display only: it must never raise."""
     try:
-        flat = insp.flatten(bp, parts)
+        _emit_test_inner(order, bp, parts, inspection, attempt, emit)
     except Exception:
-        emit({"type": "test", "attempt": attempt, "inputs": {}, "expected": None, "got": None}); return
+        emit({"type": "test", "attempt": attempt, "inputs": {}, "expected": None, "got": None,
+              "summary": f"{inspection['correct']['passed']}/{inspection['correct']['total']} inputs correct"})
+
+
+def _emit_test_inner(order, bp, parts, inspection, attempt, emit):
+    flat = insp.flatten(bp, parts)
     if order["rung"] == 1 and order.get("truth"):
         n = sum(1 for i in order["inputs"] if i.startswith("a"))
         a, b = min(7, 2 ** n - 1), min(5, 2 ** n - 1)

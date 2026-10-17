@@ -96,16 +96,27 @@ async def run_batch(orders_, snapshot, library, parallel, learn, shift, tag, sin
 
 
 # ---------------------------------------------------------------- the factory loop
-async def run_shifts(n_shifts, n_practice, n_validation, parallel, exam_versions, seed):
+async def run_shifts(n_shifts, n_practice, n_validation, parallel, exam_versions, seed, resume=False):
     library = Library.load()
-    snapshot = GATE.load("v1") if os.path.exists(os.path.join(GATE.SNAP_DIR, "v1.json")) else GATE.make_v1()
+    first_shift = 1
+    if resume and os.path.exists(RUN_JSON):
+        STATE.update(json.load(open(RUN_JSON, encoding="utf-8")))
+        STATE["shifts"] = [s for s in STATE["shifts"] if s.get("validation") is not None]      # drop a partial shift
+        STATE["exam"] = {v: e for v, e in STATE["exam"].items() if not e.get("in_progress")}
+        first_shift = len(STATE["shifts"]) + 1
+        snapshot = GATE.load(STATE["current_version"])
+        print(f"resuming at shift {first_shift} on {snapshot['version']} (exams done: {list(STATE['exam'])})")
+    else:
+        snapshot = GATE.make_v1()
     GATE.save(snapshot)
-    STATE.update({"status": "running", "current_version": snapshot["version"], "versions": [snapshot["version"]]})
+    STATE.update({"status": "running", "current_version": snapshot["version"]})
+    if snapshot["version"] not in STATE["versions"]:
+        STATE["versions"].append(snapshot["version"])
     exam = exam_orders()
     orders_by_id = {o["id"]: o for o in exam}
     if "v1" in exam_versions and "v1" not in STATE["exam"]:
         await run_exam(snapshot, library, exam, parallel)
-    for shift in range(1, n_shifts + 1):
+    for shift in range(first_shift, n_shifts + 1):
         practice = ORD.make_orders("practice", n_practice, seed + 100 * shift)
         orders_by_id.update({o["id"]: o for o in practice})
         entry = {"shift": shift, "version": snapshot["version"], "practice": [], "validation": None, "lessons_added": [], "categories": {}}
@@ -209,6 +220,7 @@ def main():
     ap.add_argument("--shifts", type=int, default=8); ap.add_argument("--practice", type=int, default=10); ap.add_argument("--validation", type=int, default=10)
     ap.add_argument("--parallel", type=int, default=8); ap.add_argument("--exam", default="v1,v4,v8"); ap.add_argument("--seed", type=int, default=7)
     ap.add_argument("--smoke", action="store_true"); ap.add_argument("--exam-only", default=None); ap.add_argument("--live", action="store_true")
+    ap.add_argument("--resume", action="store_true", help="continue from runs/run.json and the latest snapshot")
     a = ap.parse_args()
     if a.live:
         asyncio.run(live_loop(a.parallel)); return
@@ -217,7 +229,7 @@ def main():
         asyncio.run(run_exam(snap, lib, exam_orders(), a.parallel)); return
     if a.smoke:
         asyncio.run(run_shifts(1, 2, 2, 2, [], a.seed)); return
-    asyncio.run(run_shifts(a.shifts, a.practice, a.validation, a.parallel, [v.strip() for v in a.exam.split(",") if v.strip()], a.seed))
+    asyncio.run(run_shifts(a.shifts, a.practice, a.validation, a.parallel, [v.strip() for v in a.exam.split(",") if v.strip()], a.seed, resume=a.resume))
 
 
 if __name__ == "__main__":

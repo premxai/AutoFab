@@ -935,11 +935,15 @@ class Column {
       <div class="under"><p class="caption">&nbsp;</p><button class="btn small" type="button">${icon('rotate-ccw')}<span>Replay</span></button></div>
       <div class="loghead"><span>The team's work</span><span class="live" hidden></span></div>
       <ol class="log"></ol>
+      <div class="loghead"><span>Agents on the job</span></div>
+      <div class="agents"></div>
+      <div class="loghead"><span>What this version knew before it started</span></div>
+      <div class="knew"></div>
       <div class="benchhead">${icon('pointer')}<span>Try it</span></div>
       <div class="bench"></div>`;
     this.canvas = $('.canvas', this.host); this.stamp = $('.stamp', this.host); this.cap = $('.caption', this.host);
     this.logEl = $('.log', this.host); this.liveDot = $('.loghead .live', this.host); this.benchEl = $('.bench', this.host);
-    this.never = $('.never', this.host);
+    this.never = $('.never', this.host); this.agentsEl = $('.agents', this.host); this.knewEl = $('.knew', this.host);
     try { this.replay = new Replay3D(this.canvas); } catch (e) { this.replay = null; this.canvas.append(el('p', 'empty', '3D view needs WebGL.')); }
     if (this.replay) {
       this.replay.onCaption = (t, cls) => { this.cap.textContent = t || ' '; this.cap.className = 'caption ' + (cls || ''); };
@@ -970,6 +974,8 @@ class Column {
     this.host.classList.add('isempty');
     this.replay?.clear(); this.replay?.onStamp(null); this.replay?.onCaption('', '');
     this.logEl.innerHTML = ''; this.benchEl.innerHTML = ''; this.liveDot.hidden = true;
+    this.agentsEl.innerHTML = ''; this.knewEl.innerHTML = ''; this.agentSig = ''; this.knewSig = '';
+    const other = cols[this.side === 'A' ? 'B' : 'A']; if (other?.run) other.renderKnew();
   }
   show(run, v, live) {
     const running = live && run.status !== 'done' && !run.inspection;
@@ -994,8 +1000,67 @@ class Column {
       if (!bp && running) { this.benchEl.innerHTML = ''; this.benchEl.append(el('p', 'empty', 'The test bench appears once the team hands in a plan.')); this.bench = null; }
       else { this.bench = new Bench(this.benchEl, run); this.bench.onChange = (kind, b) => linkFrom(this, kind, b); }
     }
+    this.renderAgents(run, running);
+    this.renderKnew();
+    const other = cols[this.side === 'A' ? 'B' : 'A']; if (other?.run) other.renderKnew();
     icons();
     return true;
+  }
+  /* who worked on this chip: one row per agent the team spawned, joined to the model call it made */
+  renderAgents(run, running) {
+    const spawns = (run.events || []).filter(e => e.type === 'spawn'), calls = run.calls || [];
+    const sig = `${run.run_id}|${spawns.length}|${calls.length}|${running}`;
+    if (sig === this.agentSig) return; this.agentSig = sig;
+    const host = this.agentsEl; host.innerHTML = '';
+    if (!spawns.length) { host.append(el('p', 'empty', running ? 'The planner is about to start.' : 'No agent record for this chip.')); return; }
+    spawns.forEach((e, i) => {
+      const c = calls[i], part = (e.agent || '').includes(':') ? (e.agent.split(':')[1] || '').replace(/_/g, ' ') : '';
+      const who = (ROLE[e.role] || e.role || 'Agent') + (part ? ` · ${part}` : '');
+      const model = /Lightning/i.test(e.model || '') ? 'Lightning 30B' : /Super/i.test(e.model || '') ? 'Super 120B' : (e.model || '').split('/').pop();
+      const state = c ? (c.spiral ? 'stuck' : c.error ? 'error' : 'done') : (running && i === spawns.length - 1 ? 'working' : 'done');
+      const row = el('div', 'agent ' + state);
+      const stat = c ? `${Math.round(c.time_s || 0)} s · ${Math.round((c.thinking_chars || 0) / 1000)}k letters of thinking` : state === 'working' ? 'working…' : '';
+      row.innerHTML = `<span class="ai">${icon(e.role === 'architect' ? 'route' : e.role === 'assembler' ? 'cable' : e.role === 'investigator' ? 'search' : 'puzzle')}</span>
+        <span class="aw">${who}<small>${model}${stat ? ' · ' + stat : ''}</small></span>
+        <span class="as">${state === 'stuck' ? 'got stuck' : state === 'error' ? 'hit an error' : state === 'working' ? 'working…' : 'done'}</span>`;
+      host.append(row);
+    });
+  }
+  /* the lessons and shelf parts this version read before working, with the ones that answered a failure called out */
+  renderKnew() {
+    const run = this.run, v = this.version; if (!run || !v) return;
+    const other = cols[this.side === 'A' ? 'B' : 'A'], orun = other?.run && other.run.run_id !== run.run_id ? other.run : null;
+    const sn = S.snaps[v], ids = sn?.playbook || [], libL = S.lib?.lessons || [];
+    const lessons = ids.map(id => libL.find(l => l.id === id)).filter(Boolean);
+    const parts = sn?.library || [];
+    const cats = evs => new Set((evs || []).filter(e => e.type === 'fail').map(e => e.category).concat((evs || []).some(e => e.type === 'spiral') ? ['spiral'] : []));
+    const theirs = orun ? cats(orun.events) : new Set(), mine = cats(run.events);
+    const used = new Set((run.blueprint?.instances || []).map(i => i.part));
+    const sig = `${run.run_id}|${v}|${ids.join()}|${parts.join()}|${[...theirs].join()}|${[...mine].join()}|${passed(run)}|${libL.length}`;
+    if (sig === this.knewSig) return; this.knewSig = sig;
+    const host = this.knewEl; host.innerHTML = '';
+    if (!sn && verNum(v) !== 1 && !libL.length) { host.append(el('p', 'empty', 'Lesson records for this version are not loaded.')); return; }
+    if (!lessons.length && !parts.length) { host.append(el('p', 'empty', 'Started with an empty notebook: no lessons, nothing on the shelf.')); return; }
+    const ul = el('ul', 'lessons'), groups = new Map();           // one line per kind of lesson, not per lesson
+    lessons.forEach(l => { const g = groups.get(l.category) || { n: 0, hits: 0, cat: l.category, pitfall: l.pitfall }; g.n++; g.hits += l.hits || 0; groups.set(l.category, g); });
+    [...groups.values()].sort((a, b) => b.hits - a.hits).forEach(g => {
+      const helped = passed(run) && (theirs.has(g.cat) || mine.has(g.cat));
+      const li = el('li', helped ? 'helped' : '');
+      let why = '';
+      if (helped && theirs.has(g.cat)) why = `${vlabel(other.version)} ${g.cat === 'spiral' ? 'got stuck thinking' : 'hit this'} on this very order`;
+      else if (helped) why = `this chip ${g.cat === 'spiral' ? 'got stuck' : 'hit this'} on an early try, then got it right`;
+      li.innerHTML = `<span class="li">${icon(helped ? 'check' : 'book-open')}</span><span>${LESSON_PLAIN[g.cat] || g.pitfall}<small> · ${g.n > 1 ? g.n + ' lessons' : '1 lesson'}${g.hits ? `, used ${g.hits}×` : ''}</small>${why ? `<em>helped: ${why}</em>` : ''}</span>`;
+      ul.append(li);
+    });
+    if (lessons.length) host.append(ul);
+    if (parts.length) {
+      const row = el('div', 'shelf'), byLabel = new Map();
+      row.append(el('span', 'sl', 'On the shelf:'));
+      parts.forEach(id => { const k = partLabel(id), g = byLabel.get(k) || { n: 0, used: false }; g.n++; g.used = g.used || used.has(id); byLabel.set(k, g); });
+      byLabel.forEach((g, k) => { const c = el('span', 'part' + (g.used ? ' used' : '')); c.innerHTML = `${icon('package')}${k}${g.n > 1 ? ` ×${g.n}` : ''}${g.used ? '<small>used here</small>' : ''}`; row.append(c); });
+      host.append(row);
+    }
+    if (!lessons.length && verNum(v) === 1) host.prepend(el('p', 'empty', 'No lessons yet: the bare team.'));
   }
 }
 const cols = {};

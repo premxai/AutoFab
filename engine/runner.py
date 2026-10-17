@@ -67,6 +67,7 @@ async def run_batch(orders_, snapshot, library, parallel, learn, shift, tag):
     results = [None] * len(orders_)
 
     async def one(i, o):
+        global _chips_done
         async with sem:
             rid = f"{tag}_{snapshot['version']}_{o['id']}"
             try:

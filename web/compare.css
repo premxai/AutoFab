@@ -1,7 +1,7 @@
 /* AutoFab · Compare. The base is copied from home.css (warm cream theme); the compare layout is at the end. */
 :root{
-  --page:#FBF8F3; --card:#FFFFFF; --line:#EDE6DA; --ink:#1F1B16; --muted:#7A7067;
-  --amber:#E8A33D; --ok:#2E9E5B; --bad:#D9483B; --off:#C9C1B5; --soft:#F6F1E8;
+  --page:#FCF6EC; --card:#FFFFFF; --line:#F0E4D0; --ink:#1F1B16; --muted:#7A7067;
+  --amber:#F5A524; --ok:#2E9E5B; --bad:#D9483B; --off:#C9C1B5; --soft:#FBF1E2;
   --r:14px;
 }
 *{box-sizing:border-box}
@@ -37,7 +37,7 @@ section{padding:28px 0 8px}
 .chip.on{border-color:var(--amber);box-shadow:0 0 0 1px var(--amber) inset}
 .chip .ic{width:38px;height:38px;border-radius:10px;background:var(--soft);display:grid;place-items:center;margin-bottom:10px}
 .chip .ic svg.lucide{width:20px;height:20px}
-.chip.on .ic{background:#FCEFD9;color:#9A6413}
+.chip.on .ic{background:#FDEBD0;color:#B7730E}
 .chip b{display:block;font-weight:500;font-size:16px}
 .chip span{display:block;color:var(--muted);font-size:13.5px;line-height:1.35;margin-top:2px}
 .chip .tag{display:inline-block;margin-top:8px;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
@@ -47,7 +47,7 @@ section{padding:28px 0 8px}
 .grid{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:20px;align-items:start}
 .col-stage{display:flex;flex-direction:column;gap:20px}
 .head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.head .ic{width:44px;height:44px;border-radius:12px;background:#FCEFD9;color:#9A6413;display:grid;place-items:center}
+.head .ic{width:44px;height:44px;border-radius:12px;background:#FDEBD0;color:#B7730E;display:grid;place-items:center}
 .head .ic svg.lucide{width:22px;height:22px}
 .head h2{font-size:22px;letter-spacing:-.01em}
 .head p{margin:0;color:var(--muted)}
@@ -67,8 +67,8 @@ section{padding:28px 0 8px}
 
 .btn{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 14px;cursor:pointer;font-size:14px}
 .btn:hover{border-color:var(--off)}
-.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
-.btn.primary:hover{background:#3a332b}
+.btn.primary{background:var(--amber);color:var(--ink);border-color:var(--amber);font-weight:500}
+.btn.primary:hover{background:#E8961A;border-color:#E8961A}
 .btn.ghost{background:transparent}
 .btn.small{padding:5px 10px;font-size:13px}
 
@@ -114,7 +114,7 @@ section{padding:28px 0 8px}
 .lamps{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin:6px 0 14px}
 .lamp{display:flex;flex-direction:column;align-items:center;gap:6px}
 .lamp i{display:block;width:30px;height:30px;border-radius:50%;background:#EFEAE2;border:1px solid var(--line);transition:background .15s}
-.lamp.on i{background:var(--amber);border-color:#D8902A}
+.lamp.on i{background:var(--amber);border-color:#E8961A}
 .lamp.on.green i{background:var(--ok);border-color:#268250}
 .lamp.on.red i{background:var(--bad);border-color:#B93A2F}
 .lamp.on.yellow i{background:#F2C641;border-color:#D4A92A}
@@ -156,9 +156,9 @@ section{padding:28px 0 8px}
 .sch .lead.on{stroke:var(--amber);stroke-width:2.5}
 .sch .pin.on{fill:var(--amber)}
 .sch .bulb{fill:#EFEAE2;stroke:var(--off);stroke-width:1.2;transition:fill .15s}
-.sch g.hi .bulb{fill:var(--amber);stroke:#D8902A}
+.sch g.hi .bulb{fill:var(--amber);stroke:#E8961A}
 .sch .knob{fill:#fff;stroke:var(--off);stroke-width:1.2}
-.sch g.hi .knob{fill:var(--amber);stroke:#D8902A}
+.sch g.hi .knob{fill:var(--amber);stroke:#E8961A}
 
 /* work log */
 .work{margin-top:20px;padding:16px 22px}
@@ -235,7 +235,7 @@ select{font:inherit;color:inherit}
 .pillbtn span{color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pillbtn svg.lucide{width:16px;height:16px;color:var(--muted)}
 .pillbtn.on{border-color:var(--amber);background:#FFF8EC;box-shadow:0 0 0 1px var(--amber) inset}
-.pillbtn.on svg.lucide{color:#9A6413}
+.pillbtn.on svg.lucide{color:#B7730E}
 
 .midbar{display:flex;align-items:center;gap:16px;margin:4px 0 14px}
 .midbar h1{font-size:22px;font-weight:500;letter-spacing:-.01em;flex:1;min-width:0}
@@ -251,7 +251,7 @@ select{font:inherit;color:inherit}
 .badge:empty{display:none}
 .badge.ok{background:#E6F4EC;color:var(--ok)}
 .badge.bad{background:#FBE9E7;color:var(--bad)}
-.badge.wait{background:#FCEFD9;color:#9A6413}
+.badge.wait{background:#FDEBD0;color:#B7730E}
 .badge.wait svg.lucide{animation:spin 1.4s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .never{margin:0 0 12px;padding:14px 16px;border:1px dashed var(--off);border-radius:12px;color:var(--muted);background:var(--soft)}
@@ -280,11 +280,11 @@ select{font:inherit;color:inherit}
 /* ── agents on the job ── */
 .agents{display:flex;flex-direction:column;gap:6px;margin-top:10px}
 .agent{display:grid;grid-template-columns:30px 1fr auto;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#FFFDF9;font-size:14px}
-.agent .ai{width:30px;height:30px;border-radius:8px;background:var(--soft);display:grid;place-items:center;color:#9A6413}.agent .ai svg.lucide{width:16px;height:16px}
+.agent .ai{width:30px;height:30px;border-radius:8px;background:var(--soft);display:grid;place-items:center;color:#B7730E}.agent .ai svg.lucide{width:16px;height:16px}
 .agent .aw{display:flex;flex-direction:column;min-width:0}.agent .aw small{color:var(--muted);font-size:12.5px}
 .agent .as{font-size:12.5px;padding:2px 9px;border-radius:999px;background:var(--soft);color:var(--muted);white-space:nowrap}
 .agent.stuck .as{background:#FBECEA;color:var(--bad)}.agent.error .as{background:#FBECEA;color:var(--bad)}
-.agent.working .as{background:#FFF3DC;color:#9A6413;animation:blink 1.2s ease-in-out infinite}
+.agent.working .as{background:#FDEFD8;color:#B7730E;animation:blink 1.2s ease-in-out infinite}
 @keyframes blink{50%{opacity:.45}}
 /* ── what this version knew ── */
 .knew{margin-top:10px}
@@ -297,5 +297,5 @@ select{font:inherit;color:inherit}
 .shelf{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:10px;font-size:13px}
 .shelf .sl{color:var(--muted);margin-right:2px}
 .part{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;border:1px solid var(--line);background:#fff}
-.part svg.lucide{width:13px;height:13px;color:#9A6413}.part small{color:#2E7D4A;margin-left:2px}
+.part svg.lucide{width:13px;height:13px;color:#B7730E}.part small{color:#2E7D4A;margin-left:2px}
 .part.used{border-color:#CBE6D2;background:#F0F8F2}

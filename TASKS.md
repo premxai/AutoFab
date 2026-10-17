@@ -4,12 +4,12 @@ Owner A = laptop A (Prem + Claude Max session, the architect/reviewer). Owner B 
 | # | Task | Owner | Branch | Brief | Status |
 |---|------|-------|--------|-------|--------|
 | 1 | Scaffold: plan, contracts, sample run.json, briefs | A | main | — | ✅ done |
-| 2 | `web/index.html` — the stage (three.js) | B | `web/stage` | tasks/stage.md | ⬜ todo |
-| 3 | `server.py` — FastAPI: /run.json, /order, /runs, /snapshots; netlistsvg vendoring | B | `web/api` | tasks/api.md | ⬜ todo |
-| 4 | `engine/orders.py` — order generator, 3 pools, Yosys baseline | A (subagent) | `engine/orders` | tasks/orders.md | ⬜ todo |
-| 5 | `engine/inspector.py` — flatten, exhaustive test, fab rules, scoring | A (subagent) | `engine/inspector` | tasks/inspector.md | ⬜ todo |
-| 6 | `engine/client.py` — Crusoe calls, schema, thinking, caps, metrics, parallel | A (subagent) | `engine/client` | tasks/client.md | ⬜ todo |
-| 7 | `engine/agents.py` + `library.py` — architect, designers, assembler | A | `engine/agents` | — | ⬜ todo |
+| 2 | `web/index.html` — the stage (three.js) | B | `web/stage` | tasks/stage.md | 🟦 assigned (issue open) |
+| 3 | `server.py` — FastAPI: /run.json, /order, /runs, /snapshots; netlistsvg vendoring | B | `web/api` | tasks/api.md | 🟦 assigned (issue open) |
+| 4 | `engine/orders.py` — order generator, 3 pools, Yosys baseline | A (subagent) | `engine/orders` | tasks/orders.md | 🟨 in progress (subagent) |
+| 5 | `engine/inspector.py` — flatten, exhaustive test, fab rules, scoring | A (subagent) | `engine/inspector` | tasks/inspector.md | 🟨 in progress (subagent) |
+| 6 | `engine/client.py` — Crusoe calls, schema, thinking, caps, metrics, parallel | A (subagent) | `engine/client` | tasks/client.md | 🟨 in progress (subagent) |
+| 7 | `engine/agents.py` + `library.py` — architect, designers, assembler | A | `engine/agents` | — | 🟨 in progress (architect) |
 | 8 | `engine/investigator.py` — categories, loop detector, lessons | A | `engine/agents` | — | ⬜ todo |
 | 9 | `engine/gate.py` — one change per shift, validation, keep/rollback, snapshots | A | `engine/gate` | — | ⬜ todo |
 | 10 | `engine/runner.py` — shifts, exam mode, parallel, run.json | A | `engine/runner` | — | ⬜ todo |

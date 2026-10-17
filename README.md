@@ -66,7 +66,7 @@ Reading guide: bare = one cheap model with no schema, no lessons, no library · 
 | 5 | v5 | format 1, spiral 6 | schema_on | **revert** | pass 0.42->0.25 (noise 0.08), cost x1.20 |
 | 6 | v6 | rules 2, spiral 4 | schema_and_route | **revert** | pass 0.25->0.00 (noise 0.08), cost x2.77 |
 | 7 | v7 | rules 1, spiral 5 | schema_on | **revert** | pass 0.33->0.25 (noise 0.08), cost x1.25 |
-| 8 | v8 | format 1, spiral 6 | — | **—** |  |
+| 8 | v8 | format 1, spiral 6 | schema_and_route | **revert** | pass 0.50->0.08 (noise 0.08), cost x3.82 |
 <!-- /REPORT -->
 
 ### What the agents wrote for themselves
@@ -86,7 +86,7 @@ Reading guide: bare = one cheap model with no schema, no lessons, no library · 
 ### Receipts
 
 <!-- REPORT:RECEIPTS — paste the "Receipts" line from `python tools/report.py` -->
-Total spend $2.02 · 109 tok/s · TTFT 2.48s · cache hit 0% · 100 chips/hour · human pings 49
+Total spend $2.10 · 109 tok/s · TTFT 0.78s · cache hit 0% · 98 chips/hour · human pings 49
 <!-- /REPORT -->
 
 ## The team (all NVIDIA Nemotron on Crusoe)

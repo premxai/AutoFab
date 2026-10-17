@@ -4,8 +4,8 @@ Owner A = laptop A (Prem + Claude Max session, the architect/reviewer). Owner B 
 | # | Task | Owner | Branch | Brief | Status |
 |---|------|-------|--------|-------|--------|
 | 1 | Scaffold: plan, contracts, sample run.json, briefs | A | main | — | ✅ done |
-| 2 | `web/index.html` — the stage (three.js) | B | `web/stage` | tasks/stage.md | 🟦 assigned (issue open) |
-| 3 | `server.py` — FastAPI: /run.json, /order, /runs, /snapshots; netlistsvg vendoring | B | `web/api` | tasks/api.md | 🟦 assigned (issue open) |
+| 2 | `web/index.html` — the stage (three.js) | B | `web/stage` | tasks/stage.md | ✅ merged |
+| 3 | `server.py` — FastAPI: /run.json, /order, /runs, /snapshots; netlistsvg vendoring | B | `web/api` | tasks/api.md | ✅ merged |
 | 4 | `engine/orders.py` — order generator, 3 pools, Yosys baseline | A (subagent) | `engine/orders` | tasks/orders.md | ✅ merged |
 | 5 | `engine/inspector.py` — flatten, exhaustive test, fab rules, scoring | A (subagent) | `engine/inspector` | tasks/inspector.md | ✅ merged |
 | 6 | `engine/client.py` — Crusoe calls, schema, thinking, caps, metrics, parallel | A (subagent) | `engine/client` | tasks/client.md | 🟨 in progress (subagent) |
@@ -14,8 +14,8 @@ Owner A = laptop A (Prem + Claude Max session, the architect/reviewer). Owner B 
 | 9 | `engine/gate.py` — one change per shift, validation, keep/rollback, snapshots | A | `engine/gate` | — | ✅ merged |
 | 10 | `engine/runner.py` — shifts, exam mode, parallel, run.json | A | `engine/runner` | — | ✅ merged |
 | 11 | 2-order smoke run end to end | A | main | — | ✅ done (2 orders, v1→v2, $0.09) |
-| 12 | 14:00 long run (8 shifts) + exam v1/v4/v8 | A | — | — | ⬜ todo |
-| 13 | README (ablation table, kept/rejected changes, disclosure) | B | `docs/readme` | — | ⬜ todo |
+| 12 | 14:00 long run (8 shifts) + exam v1/v4/v8 | A | — | — | 🟨 running since ~11:20 |
+| 13 | README (ablation table, kept/rejected changes, disclosure) | B | `docs/readme` | — | 🟦 assigned (tools/report.py fills the numbers) |
 | 14 | 1-min video (record real stage → HyperFrames) | B | — | — | ⬜ todo |
 | 15 | Rehearse ×5, projector test, submit by 16:45 | both | — | — | ⬜ todo |
 

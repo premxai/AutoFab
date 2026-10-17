@@ -1,0 +1,887 @@
+{
+ "run_id": "exam_v5_v5_ord_x4242_019",
+ "version": "v5",
+ "order": {
+  "id": "ord_x4242_019",
+  "pool": "exam",
+  "rung": 1,
+  "title": "Calculator that adds two 2-bit numbers plus a carry-in",
+  "spec": "Adds the 2-bit numbers a and b plus the extra single bit cin; s is the 2-bit answer and cout lights up when the answer is too big to fit in 2 bits.",
+  "inputs": [
+   "a1",
+   "a0",
+   "b1",
+   "b0",
+   "cin"
+  ],
+  "outputs": [
+   "s1",
+   "s0",
+   "cout"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 602204920,
+  "sequence": null
+ },
+ "attempts": 1,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 23.62,
+   "type": "plan",
+   "parts": [
+    "chip"
+   ],
+   "definition_of_done": [
+    "all inputs correct",
+    "every pin wired"
+   ]
+  },
+  {
+   "t": 23.62,
+   "type": "spawn",
+   "agent": "designer:chip",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 87.81,
+   "type": "place",
+   "block": "chip",
+   "kind": "part",
+   "label": "CHIP"
+  },
+  {
+   "t": 87.81,
+   "type": "place",
+   "block": "and0",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 87.81,
+   "type": "place",
+   "block": "and1",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 87.81,
+   "type": "place",
+   "block": "and2",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 87.81,
+   "type": "place",
+   "block": "or0",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 87.81,
+   "type": "place",
+   "block": "or1",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 87.81,
+   "type": "place",
+   "block": "xor0",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 87.81,
+   "type": "place",
+   "block": "xor1",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 87.81,
+   "type": "place",
+   "block": "and3",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 87.81,
+   "type": "place",
+   "block": "xor2",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 87.81,
+   "type": "place",
+   "block": "and4",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 87.81,
+   "type": "place",
+   "block": "or2",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 87.81,
+   "type": "place",
+   "block": "xor3",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "a0",
+   "to": "and0.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "b0",
+   "to": "and0.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "a0",
+   "to": "and1.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "cin",
+   "to": "and1.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "b0",
+   "to": "and2.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "cin",
+   "to": "and2.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "and01",
+   "to": "or0.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "and02",
+   "to": "or0.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "or01",
+   "to": "or1.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "and03",
+   "to": "or1.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "a0",
+   "to": "xor0.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "b0",
+   "to": "xor0.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "xor01",
+   "to": "xor1.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "cin",
+   "to": "xor1.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "a1",
+   "to": "and3.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "b1",
+   "to": "and3.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "a1",
+   "to": "xor2.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "b1",
+   "to": "xor2.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "carry0",
+   "to": "and4.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "xor11",
+   "to": "and4.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "and11",
+   "to": "or2.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "and12",
+   "to": "or2.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "xor11",
+   "to": "xor3.in"
+  },
+  {
+   "t": 87.81,
+   "type": "wire",
+   "from": "carry0",
+   "to": "xor3.in"
+  },
+  {
+   "t": 87.81,
+   "type": "test",
+   "attempt": 1,
+   "inputs": {
+    "a": 3,
+    "b": 3
+   },
+   "expected": 6,
+   "got": 2
+  },
+  {
+   "t": 87.81,
+   "type": "pass",
+   "attempt": 1
+  },
+  {
+   "t": 87.81,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "a1",
+   "a0",
+   "b1",
+   "b0",
+   "cin"
+  ],
+  "outputs": {
+   "s1": "s1",
+   "s0": "s0",
+   "cout": "cout"
+  },
+  "instances": [],
+  "gates": [
+   {
+    "name": "and0",
+    "type": "AND",
+    "inputs": [
+     "a0",
+     "b0"
+    ],
+    "output": "and01"
+   },
+   {
+    "name": "and1",
+    "type": "AND",
+    "inputs": [
+     "a0",
+     "cin"
+    ],
+    "output": "and02"
+   },
+   {
+    "name": "and2",
+    "type": "AND",
+    "inputs": [
+     "b0",
+     "cin"
+    ],
+    "output": "and03"
+   },
+   {
+    "name": "or0",
+    "type": "OR",
+    "inputs": [
+     "and01",
+     "and02"
+    ],
+    "output": "or01"
+   },
+   {
+    "name": "or1",
+    "type": "OR",
+    "inputs": [
+     "or01",
+     "and03"
+    ],
+    "output": "carry0"
+   },
+   {
+    "name": "xor0",
+    "type": "XOR",
+    "inputs": [
+     "a0",
+     "b0"
+    ],
+    "output": "xor01"
+   },
+   {
+    "name": "xor1",
+    "type": "XOR",
+    "inputs": [
+     "xor01",
+     "cin"
+    ],
+    "output": "s0"
+   },
+   {
+    "name": "and3",
+    "type": "AND",
+    "inputs": [
+     "a1",
+     "b1"
+    ],
+    "output": "and11"
+   },
+   {
+    "name": "xor2",
+    "type": "XOR",
+    "inputs": [
+     "a1",
+     "b1"
+    ],
+    "output": "xor11"
+   },
+   {
+    "name": "and4",
+    "type": "AND",
+    "inputs": [
+     "carry0",
+     "xor11"
+    ],
+    "output": "and12"
+   },
+   {
+    "name": "or2",
+    "type": "OR",
+    "inputs": [
+     "and11",
+     "and12"
+    ],
+    "output": "cout"
+   },
+   {
+    "name": "xor3",
+    "type": "XOR",
+    "inputs": [
+     "xor11",
+     "carry0"
+    ],
+    "output": "s1"
+   }
+  ],
+  "flipflops": []
+ },
+ "yosys_json": {
+  "modules": {
+   "chip": {
+    "ports": {
+     "a1": {
+      "direction": "input",
+      "bits": [
+       2
+      ]
+     },
+     "a0": {
+      "direction": "input",
+      "bits": [
+       3
+      ]
+     },
+     "b1": {
+      "direction": "input",
+      "bits": [
+       4
+      ]
+     },
+     "b0": {
+      "direction": "input",
+      "bits": [
+       5
+      ]
+     },
+     "cin": {
+      "direction": "input",
+      "bits": [
+       6
+      ]
+     },
+     "s1": {
+      "direction": "output",
+      "bits": [
+       18
+      ]
+     },
+     "s0": {
+      "direction": "output",
+      "bits": [
+       13
+      ]
+     },
+     "cout": {
+      "direction": "output",
+      "bits": [
+       17
+      ]
+     }
+    },
+    "cells": {
+     "and0": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        7
+       ]
+      }
+     },
+     "and1": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        8
+       ]
+      }
+     },
+     "and2": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        5
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        9
+       ]
+      }
+     },
+     "or0": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        7
+       ],
+       "B": [
+        8
+       ],
+       "Y": [
+        10
+       ]
+      }
+     },
+     "or1": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        10
+       ],
+       "B": [
+        9
+       ],
+       "Y": [
+        11
+       ]
+      }
+     },
+     "xor0": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        12
+       ]
+      }
+     },
+     "xor1": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        12
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        13
+       ]
+      }
+     },
+     "and3": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        4
+       ],
+       "Y": [
+        14
+       ]
+      }
+     },
+     "xor2": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        4
+       ],
+       "Y": [
+        15
+       ]
+      }
+     },
+     "and4": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        11
+       ],
+       "B": [
+        15
+       ],
+       "Y": [
+        16
+       ]
+      }
+     },
+     "or2": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        14
+       ],
+       "B": [
+        16
+       ],
+       "Y": [
+        17
+       ]
+      }
+     },
+     "xor3": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        15
+       ],
+       "B": [
+        11
+       ],
+       "Y": [
+        18
+       ]
+      }
+     }
+    },
+    "netnames": {
+     "a1": {
+      "bits": [
+       2
+      ]
+     },
+     "a0": {
+      "bits": [
+       3
+      ]
+     },
+     "b1": {
+      "bits": [
+       4
+      ]
+     },
+     "b0": {
+      "bits": [
+       5
+      ]
+     },
+     "cin": {
+      "bits": [
+       6
+      ]
+     },
+     "and01": {
+      "bits": [
+       7
+      ]
+     },
+     "and02": {
+      "bits": [
+       8
+      ]
+     },
+     "and03": {
+      "bits": [
+       9
+      ]
+     },
+     "or01": {
+      "bits": [
+       10
+      ]
+     },
+     "carry0": {
+      "bits": [
+       11
+      ]
+     },
+     "xor01": {
+      "bits": [
+       12
+      ]
+     },
+     "s0": {
+      "bits": [
+       13
+      ]
+     },
+     "and11": {
+      "bits": [
+       14
+      ]
+     },
+     "xor11": {
+      "bits": [
+       15
+      ]
+     },
+     "and12": {
+      "bits": [
+       16
+      ]
+     },
+     "cout": {
+      "bits": [
+       17
+      ]
+     },
+     "s1": {
+      "bits": [
+       18
+      ]
+     }
+    }
+   }
+  }
+ },
+ "inspection": {
+  "order_id": "ord_x4242_019",
+  "version": "v5",
+  "attempt": 1,
+  "pass": true,
+  "correct": {
+   "ok": true,
+   "passed": 32,
+   "total": 32
+  },
+  "rules": {
+   "format": "ok",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 12,
+  "best_known_gates": 15,
+  "depth": 5,
+  "failure_category": "none",
+  "note": "all inputs correct and every fab rule satisfied",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 1332,
+   "tokens_out": 7851,
+   "thinking_chars": 23115,
+   "cached_tokens": 0,
+   "cost_usd": 0.00164,
+   "time_s": 87.81,
+   "ttft_s": 0.6467153999983566
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": null,
+   "time_s": 23.618211599998176,
+   "tokens_in": 588,
+   "tokens_out": 0,
+   "thinking_chars": 0,
+   "cached_tokens": null,
+   "cost_usd": 2.9400000000000003e-05,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": "HTTP 429 after 5 tries"
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.6467153999983566,
+   "time_s": 64.18753400001151,
+   "tokens_in": 744,
+   "tokens_out": 7851,
+   "thinking_chars": 23115,
+   "cached_tokens": null,
+   "cost_usd": 0.0016074000000000001,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

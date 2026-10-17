@@ -1,0 +1,2 @@
+resuming at shift 3 on v3 (exams done: ['v1'])
+revert: loop_cutter pass=0.20 cost=0.007 (pass 0.20->0.20 (noise 0.10), cost x1.01)

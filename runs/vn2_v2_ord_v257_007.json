@@ -1,0 +1,2690 @@
+{
+ "run_id": "vn2_v2_ord_v257_007",
+ "version": "v2",
+ "order": {
+  "id": "ord_v257_007",
+  "pool": "validation",
+  "rung": 3,
+  "title": "Lock with a green light for codes 4, 11, 13, 24 and a red light for codes 5, 22, 25, 26",
+  "spec": "A lock with 5 switches a, b, c, d, e (a is the biggest digit of the binary number): the green light turns on only for the numbers 4, 11, 13 or 24, the red light turns on only for the numbers 5, 22, 25 or 26, and for every other number both lights stay off.",
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d",
+   "e"
+  ],
+  "outputs": [
+   "green",
+   "red"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 938360770,
+  "sequence": null
+ },
+ "attempts": 3,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 13.02,
+   "type": "plan",
+   "parts": [
+    "lock_5bit"
+   ],
+   "definition_of_done": [
+    "All gate instances have unique names.",
+    "Each gate type is one of AND, OR, XOR, NOT.",
+    "NOT gates have exactly 1 input; AND, OR, XOR gates have exactly 2 inputs.",
+    "Every gate's inputs and outputs refer to declared signals (chip inputs, outputs, or internal nets).",
+    "The circuit is acyclic (no combinational loops).",
+    "For every possible 5-bit input combination (0\u201331), simulation produces the correct green and red outputs.",
+    "Green output is 1 exactly for input values 4, 11, 13, 24 and 0 otherwise.",
+    "Red output is 1 exactly for input values 5, 22, 25, 26 and 0 otherwise.",
+    "Every internal net is driven by exactly one gate output (no floating or multiply-driven nets).",
+    "All signals are binary (0 or 1)."
+   ]
+  },
+  {
+   "t": 13.02,
+   "type": "spawn",
+   "agent": "designer:lock_5bit",
+   "role": "designer",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "lock_5bit",
+   "kind": "part",
+   "label": "LOCK_5"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "not_a",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "not_b",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "not_c",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "not_d",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "not_e",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_na_nb",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_na_b",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_a_b",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_a_nb",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_t_nc",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_t_nc_nd",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_g1",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_r1",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_na_b_nc",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_na_b_c",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_na_b_nc_d",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_g2",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_na_b_c_nd",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_g3",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_a_b_nc",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_a_b_nc_nd",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_g4",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_r3",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_a_b_nc_d",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_r4",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_a_nb_c",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_a_nb_c_d",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "and_r2",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "or_g1_g2",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "or_g3_g4",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "green_out",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "or_r1_r2",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "or_r3_r4",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 110.68,
+   "type": "place",
+   "block": "red_out",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "a",
+   "to": "not_a.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "b",
+   "to": "not_b.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "c",
+   "to": "not_c.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "d",
+   "to": "not_d.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "e",
+   "to": "not_e.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "na",
+   "to": "and_na_nb.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "nb",
+   "to": "and_na_nb.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "na",
+   "to": "and_na_b.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "b",
+   "to": "and_na_b.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "a",
+   "to": "and_a_b.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "b",
+   "to": "and_a_b.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "a",
+   "to": "and_a_nb.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "nb",
+   "to": "and_a_nb.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "na_nb",
+   "to": "and_t_nc.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "c",
+   "to": "and_t_nc.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "t_nc",
+   "to": "and_t_nc_nd.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "nd",
+   "to": "and_t_nc_nd.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "t_nc_nd",
+   "to": "and_g1.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "ne",
+   "to": "and_g1.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "t_nc_nd",
+   "to": "and_r1.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "e",
+   "to": "and_r1.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "na_b",
+   "to": "and_na_b_nc.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "nc",
+   "to": "and_na_b_nc.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "na_b",
+   "to": "and_na_b_c.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "c",
+   "to": "and_na_b_c.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "t_nc_nb",
+   "to": "and_na_b_nc_d.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "d",
+   "to": "and_na_b_nc_d.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "t_nc_nb_d",
+   "to": "and_g2.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "e",
+   "to": "and_g2.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "t_c_nb",
+   "to": "and_na_b_c_nd.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "nd",
+   "to": "and_na_b_c_nd.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "t_c_nb_nd",
+   "to": "and_g3.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "e",
+   "to": "and_g3.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "a_b",
+   "to": "and_a_b_nc.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "nc",
+   "to": "and_a_b_nc.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "t_nc_ab",
+   "to": "and_a_b_nc_nd.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "nd",
+   "to": "and_a_b_nc_nd.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "t_nc_ab_nd",
+   "to": "and_g4.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "ne",
+   "to": "and_g4.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "t_nc_ab_nd",
+   "to": "and_r3.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "e",
+   "to": "and_r3.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "t_nc_ab",
+   "to": "and_a_b_nc_d.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "d",
+   "to": "and_a_b_nc_d.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "t_nc_ab_d",
+   "to": "and_r4.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "ne",
+   "to": "and_r4.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "a_nb",
+   "to": "and_a_nb_c.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "c",
+   "to": "and_a_nb_c.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "t_c_anb",
+   "to": "and_a_nb_c_d.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "d",
+   "to": "and_a_nb_c_d.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "t_c_anb_d",
+   "to": "and_r2.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "ne",
+   "to": "and_r2.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "g1",
+   "to": "or_g1_g2.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "g2",
+   "to": "or_g1_g2.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "g3",
+   "to": "or_g3_g4.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "g4",
+   "to": "or_g3_g4.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "g_or1",
+   "to": "green_out.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "g_or2",
+   "to": "green_out.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "r1",
+   "to": "or_r1_r2.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "r2",
+   "to": "or_r1_r2.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "r3",
+   "to": "or_r3_r4.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "r4",
+   "to": "or_r3_r4.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "r_or1",
+   "to": "red_out.in"
+  },
+  {
+   "t": 110.68,
+   "type": "wire",
+   "from": "r_or2",
+   "to": "red_out.in"
+  },
+  {
+   "t": 110.68,
+   "type": "test",
+   "attempt": 1,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "0/32 inputs correct"
+  },
+  {
+   "t": 110.68,
+   "type": "fail",
+   "attempt": 1,
+   "category": "format",
+   "note": "output 'green' is mapped to 'green_out', which does not exist",
+   "bad_wires": [
+    [
+     "green_out",
+     "green"
+    ]
+   ],
+   "bad_blocks": []
+  },
+  {
+   "t": 110.68,
+   "type": "retry",
+   "attempt": 2
+  },
+  {
+   "t": 110.68,
+   "type": "spawn",
+   "agent": "designer:lock_5bit",
+   "role": "designer",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "lock_5bit",
+   "kind": "part",
+   "label": "LOCK_5"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "not_a",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "not_b",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "not_c",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "not_d",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "not_e",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_na_nb",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_na_b",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_a_b",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_a_nb",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_t_nc",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_t_nc_nd",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_g1",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_r1",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_na_b_nc",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_na_b_c",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_na_b_nc_d",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_g2",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_na_b_c_nd",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_g3",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_a_b_nc",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_a_b_nc_nd",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_g4",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_r3",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_a_b_nc_d",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_r4",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_a_nb_c",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_a_nb_c_d",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "and_r2",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "or_g1_g2",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "or_g3_g4",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "green_out",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "or_r1_r2",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "or_r3_r4",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 122.07,
+   "type": "place",
+   "block": "red_out",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "a",
+   "to": "not_a.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "b",
+   "to": "not_b.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "c",
+   "to": "not_c.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "d",
+   "to": "not_d.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "e",
+   "to": "not_e.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "na",
+   "to": "and_na_nb.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "nb",
+   "to": "and_na_nb.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "na",
+   "to": "and_na_b.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "b",
+   "to": "and_na_b.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "a",
+   "to": "and_a_b.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "b",
+   "to": "and_a_b.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "a",
+   "to": "and_a_nb.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "nb",
+   "to": "and_a_nb.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "na_nb",
+   "to": "and_t_nc.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "c",
+   "to": "and_t_nc.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "t_nc",
+   "to": "and_t_nc_nd.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "nd",
+   "to": "and_t_nc_nd.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "t_nc_nd",
+   "to": "and_g1.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "ne",
+   "to": "and_g1.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "t_nc_nd",
+   "to": "and_r1.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "e",
+   "to": "and_r1.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "na_b",
+   "to": "and_na_b_nc.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "nc",
+   "to": "and_na_b_nc.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "na_b",
+   "to": "and_na_b_c.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "c",
+   "to": "and_na_b_c.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "t_nc_nb",
+   "to": "and_na_b_nc_d.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "d",
+   "to": "and_na_b_nc_d.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "t_nc_nb_d",
+   "to": "and_g2.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "e",
+   "to": "and_g2.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "t_c_nb",
+   "to": "and_na_b_c_nd.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "nd",
+   "to": "and_na_b_c_nd.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "t_c_nb_nd",
+   "to": "and_g3.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "e",
+   "to": "and_g3.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "a_b",
+   "to": "and_a_b_nc.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "nc",
+   "to": "and_a_b_nc.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "t_nc_ab",
+   "to": "and_a_b_nc_nd.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "nd",
+   "to": "and_a_b_nc_nd.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "t_nc_ab_nd",
+   "to": "and_g4.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "ne",
+   "to": "and_g4.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "t_nc_ab_nd",
+   "to": "and_r3.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "e",
+   "to": "and_r3.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "t_nc_ab",
+   "to": "and_a_b_nc_d.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "d",
+   "to": "and_a_b_nc_d.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "t_nc_ab_d",
+   "to": "and_r4.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "ne",
+   "to": "and_r4.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "a_nb",
+   "to": "and_a_nb_c.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "c",
+   "to": "and_a_nb_c.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "t_c_anb",
+   "to": "and_a_nb_c_d.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "d",
+   "to": "and_a_nb_c_d.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "t_c_anb_d",
+   "to": "and_r2.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "ne",
+   "to": "and_r2.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "g1",
+   "to": "or_g1_g2.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "g2",
+   "to": "or_g1_g2.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "g3",
+   "to": "or_g3_g4.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "g4",
+   "to": "or_g3_g4.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "g_or1",
+   "to": "green_out.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "g_or2",
+   "to": "green_out.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "r1",
+   "to": "or_r1_r2.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "r2",
+   "to": "or_r1_r2.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "r3",
+   "to": "or_r3_r4.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "r4",
+   "to": "or_r3_r4.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "r_or1",
+   "to": "red_out.in"
+  },
+  {
+   "t": 122.07,
+   "type": "wire",
+   "from": "r_or2",
+   "to": "red_out.in"
+  },
+  {
+   "t": 122.07,
+   "type": "test",
+   "attempt": 2,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "32/32 inputs correct"
+  },
+  {
+   "t": 122.07,
+   "type": "fail",
+   "attempt": 2,
+   "category": "rules",
+   "note": "signal 'e' feeds 5 gate inputs (limit 4)",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 122.07,
+   "type": "retry",
+   "attempt": 3
+  },
+  {
+   "t": 122.07,
+   "type": "spawn",
+   "agent": "designer:lock_5bit",
+   "role": "designer",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 228.74,
+   "type": "fail",
+   "attempt": 3,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 228.74,
+   "type": "human_ping",
+   "note": "3 attempts exhausted"
+  },
+  {
+   "t": 228.74,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d",
+   "e"
+  ],
+  "outputs": {
+   "green": "green",
+   "red": "red"
+  },
+  "instances": [],
+  "gates": [
+   {
+    "name": "not_a",
+    "type": "NOT",
+    "inputs": [
+     "a"
+    ],
+    "output": "na"
+   },
+   {
+    "name": "not_b",
+    "type": "NOT",
+    "inputs": [
+     "b"
+    ],
+    "output": "nb"
+   },
+   {
+    "name": "not_c",
+    "type": "NOT",
+    "inputs": [
+     "c"
+    ],
+    "output": "nc"
+   },
+   {
+    "name": "not_d",
+    "type": "NOT",
+    "inputs": [
+     "d"
+    ],
+    "output": "nd"
+   },
+   {
+    "name": "not_e",
+    "type": "NOT",
+    "inputs": [
+     "e"
+    ],
+    "output": "ne"
+   },
+   {
+    "name": "and_na_nb",
+    "type": "AND",
+    "inputs": [
+     "na",
+     "nb"
+    ],
+    "output": "na_nb"
+   },
+   {
+    "name": "and_na_b",
+    "type": "AND",
+    "inputs": [
+     "na",
+     "b"
+    ],
+    "output": "na_b"
+   },
+   {
+    "name": "and_a_b",
+    "type": "AND",
+    "inputs": [
+     "a",
+     "b"
+    ],
+    "output": "a_b"
+   },
+   {
+    "name": "and_a_nb",
+    "type": "AND",
+    "inputs": [
+     "a",
+     "nb"
+    ],
+    "output": "a_nb"
+   },
+   {
+    "name": "and_t_nc",
+    "type": "AND",
+    "inputs": [
+     "na_nb",
+     "c"
+    ],
+    "output": "t_nc"
+   },
+   {
+    "name": "and_t_nc_nd",
+    "type": "AND",
+    "inputs": [
+     "t_nc",
+     "nd"
+    ],
+    "output": "t_nc_nd"
+   },
+   {
+    "name": "and_g1",
+    "type": "AND",
+    "inputs": [
+     "t_nc_nd",
+     "ne"
+    ],
+    "output": "g1"
+   },
+   {
+    "name": "and_r1",
+    "type": "AND",
+    "inputs": [
+     "t_nc_nd",
+     "e"
+    ],
+    "output": "r1"
+   },
+   {
+    "name": "and_na_b_nc",
+    "type": "AND",
+    "inputs": [
+     "na_b",
+     "nc"
+    ],
+    "output": "t_nc_nb"
+   },
+   {
+    "name": "and_na_b_c",
+    "type": "AND",
+    "inputs": [
+     "na_b",
+     "c"
+    ],
+    "output": "t_c_nb"
+   },
+   {
+    "name": "and_na_b_nc_d",
+    "type": "AND",
+    "inputs": [
+     "t_nc_nb",
+     "d"
+    ],
+    "output": "t_nc_nb_d"
+   },
+   {
+    "name": "and_g2",
+    "type": "AND",
+    "inputs": [
+     "t_nc_nb_d",
+     "e"
+    ],
+    "output": "g2"
+   },
+   {
+    "name": "and_na_b_c_nd",
+    "type": "AND",
+    "inputs": [
+     "t_c_nb",
+     "nd"
+    ],
+    "output": "t_c_nb_nd"
+   },
+   {
+    "name": "and_g3",
+    "type": "AND",
+    "inputs": [
+     "t_c_nb_nd",
+     "e"
+    ],
+    "output": "g3"
+   },
+   {
+    "name": "and_a_b_nc",
+    "type": "AND",
+    "inputs": [
+     "a_b",
+     "nc"
+    ],
+    "output": "t_nc_ab"
+   },
+   {
+    "name": "and_a_b_nc_nd",
+    "type": "AND",
+    "inputs": [
+     "t_nc_ab",
+     "nd"
+    ],
+    "output": "t_nc_ab_nd"
+   },
+   {
+    "name": "and_g4",
+    "type": "AND",
+    "inputs": [
+     "t_nc_ab_nd",
+     "ne"
+    ],
+    "output": "g4"
+   },
+   {
+    "name": "and_r3",
+    "type": "AND",
+    "inputs": [
+     "t_nc_ab_nd",
+     "e"
+    ],
+    "output": "r3"
+   },
+   {
+    "name": "and_a_b_nc_d",
+    "type": "AND",
+    "inputs": [
+     "t_nc_ab",
+     "d"
+    ],
+    "output": "t_nc_ab_d"
+   },
+   {
+    "name": "and_r4",
+    "type": "AND",
+    "inputs": [
+     "t_nc_ab_d",
+     "ne"
+    ],
+    "output": "r4"
+   },
+   {
+    "name": "and_a_nb_c",
+    "type": "AND",
+    "inputs": [
+     "a_nb",
+     "c"
+    ],
+    "output": "t_c_anb"
+   },
+   {
+    "name": "and_a_nb_c_d",
+    "type": "AND",
+    "inputs": [
+     "t_c_anb",
+     "d"
+    ],
+    "output": "t_c_anb_d"
+   },
+   {
+    "name": "and_r2",
+    "type": "AND",
+    "inputs": [
+     "t_c_anb_d",
+     "ne"
+    ],
+    "output": "r2"
+   },
+   {
+    "name": "or_g1_g2",
+    "type": "OR",
+    "inputs": [
+     "g1",
+     "g2"
+    ],
+    "output": "g_or1"
+   },
+   {
+    "name": "or_g3_g4",
+    "type": "OR",
+    "inputs": [
+     "g3",
+     "g4"
+    ],
+    "output": "g_or2"
+   },
+   {
+    "name": "green_out",
+    "type": "OR",
+    "inputs": [
+     "g_or1",
+     "g_or2"
+    ],
+    "output": "green"
+   },
+   {
+    "name": "or_r1_r2",
+    "type": "OR",
+    "inputs": [
+     "r1",
+     "r2"
+    ],
+    "output": "r_or1"
+   },
+   {
+    "name": "or_r3_r4",
+    "type": "OR",
+    "inputs": [
+     "r3",
+     "r4"
+    ],
+    "output": "r_or2"
+   },
+   {
+    "name": "red_out",
+    "type": "OR",
+    "inputs": [
+     "r_or1",
+     "r_or2"
+    ],
+    "output": "red"
+   }
+  ],
+  "flipflops": []
+ },
+ "yosys_json": {
+  "modules": {
+   "chip": {
+    "ports": {
+     "a": {
+      "direction": "input",
+      "bits": [
+       2
+      ]
+     },
+     "b": {
+      "direction": "input",
+      "bits": [
+       3
+      ]
+     },
+     "c": {
+      "direction": "input",
+      "bits": [
+       4
+      ]
+     },
+     "d": {
+      "direction": "input",
+      "bits": [
+       5
+      ]
+     },
+     "e": {
+      "direction": "input",
+      "bits": [
+       6
+      ]
+     },
+     "green": {
+      "direction": "output",
+      "bits": [
+       37
+      ]
+     },
+     "red": {
+      "direction": "output",
+      "bits": [
+       40
+      ]
+     }
+    },
+    "cells": {
+     "not_a": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "Y": [
+        7
+       ]
+      }
+     },
+     "not_b": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "Y": [
+        8
+       ]
+      }
+     },
+     "not_c": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        4
+       ],
+       "Y": [
+        9
+       ]
+      }
+     },
+     "not_d": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        5
+       ],
+       "Y": [
+        10
+       ]
+      }
+     },
+     "not_e": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        6
+       ],
+       "Y": [
+        11
+       ]
+      }
+     },
+     "and_na_nb": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        7
+       ],
+       "B": [
+        8
+       ],
+       "Y": [
+        12
+       ]
+      }
+     },
+     "and_na_b": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        7
+       ],
+       "B": [
+        3
+       ],
+       "Y": [
+        13
+       ]
+      }
+     },
+     "and_a_b": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        3
+       ],
+       "Y": [
+        14
+       ]
+      }
+     },
+     "and_a_nb": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        8
+       ],
+       "Y": [
+        15
+       ]
+      }
+     },
+     "and_t_nc": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        12
+       ],
+       "B": [
+        4
+       ],
+       "Y": [
+        16
+       ]
+      }
+     },
+     "and_t_nc_nd": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        16
+       ],
+       "B": [
+        10
+       ],
+       "Y": [
+        17
+       ]
+      }
+     },
+     "and_g1": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        17
+       ],
+       "B": [
+        11
+       ],
+       "Y": [
+        18
+       ]
+      }
+     },
+     "and_r1": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        17
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        19
+       ]
+      }
+     },
+     "and_na_b_nc": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        13
+       ],
+       "B": [
+        9
+       ],
+       "Y": [
+        20
+       ]
+      }
+     },
+     "and_na_b_c": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        13
+       ],
+       "B": [
+        4
+       ],
+       "Y": [
+        21
+       ]
+      }
+     },
+     "and_na_b_nc_d": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        20
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        22
+       ]
+      }
+     },
+     "and_g2": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        22
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        23
+       ]
+      }
+     },
+     "and_na_b_c_nd": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        21
+       ],
+       "B": [
+        10
+       ],
+       "Y": [
+        24
+       ]
+      }
+     },
+     "and_g3": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        24
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        25
+       ]
+      }
+     },
+     "and_a_b_nc": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        14
+       ],
+       "B": [
+        9
+       ],
+       "Y": [
+        26
+       ]
+      }
+     },
+     "and_a_b_nc_nd": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        26
+       ],
+       "B": [
+        10
+       ],
+       "Y": [
+        27
+       ]
+      }
+     },
+     "and_g4": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        27
+       ],
+       "B": [
+        11
+       ],
+       "Y": [
+        28
+       ]
+      }
+     },
+     "and_r3": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        27
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        29
+       ]
+      }
+     },
+     "and_a_b_nc_d": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        26
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        30
+       ]
+      }
+     },
+     "and_r4": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        30
+       ],
+       "B": [
+        11
+       ],
+       "Y": [
+        31
+       ]
+      }
+     },
+     "and_a_nb_c": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        15
+       ],
+       "B": [
+        4
+       ],
+       "Y": [
+        32
+       ]
+      }
+     },
+     "and_a_nb_c_d": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        32
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        33
+       ]
+      }
+     },
+     "and_r2": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        33
+       ],
+       "B": [
+        11
+       ],
+       "Y": [
+        34
+       ]
+      }
+     },
+     "or_g1_g2": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        18
+       ],
+       "B": [
+        23
+       ],
+       "Y": [
+        35
+       ]
+      }
+     },
+     "or_g3_g4": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        25
+       ],
+       "B": [
+        28
+       ],
+       "Y": [
+        36
+       ]
+      }
+     },
+     "green_out": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        35
+       ],
+       "B": [
+        36
+       ],
+       "Y": [
+        37
+       ]
+      }
+     },
+     "or_r1_r2": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        19
+       ],
+       "B": [
+        34
+       ],
+       "Y": [
+        38
+       ]
+      }
+     },
+     "or_r3_r4": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        29
+       ],
+       "B": [
+        31
+       ],
+       "Y": [
+        39
+       ]
+      }
+     },
+     "red_out": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        38
+       ],
+       "B": [
+        39
+       ],
+       "Y": [
+        40
+       ]
+      }
+     }
+    },
+    "netnames": {
+     "a": {
+      "bits": [
+       2
+      ]
+     },
+     "b": {
+      "bits": [
+       3
+      ]
+     },
+     "c": {
+      "bits": [
+       4
+      ]
+     },
+     "d": {
+      "bits": [
+       5
+      ]
+     },
+     "e": {
+      "bits": [
+       6
+      ]
+     },
+     "na": {
+      "bits": [
+       7
+      ]
+     },
+     "nb": {
+      "bits": [
+       8
+      ]
+     },
+     "nc": {
+      "bits": [
+       9
+      ]
+     },
+     "nd": {
+      "bits": [
+       10
+      ]
+     },
+     "ne": {
+      "bits": [
+       11
+      ]
+     },
+     "na_nb": {
+      "bits": [
+       12
+      ]
+     },
+     "na_b": {
+      "bits": [
+       13
+      ]
+     },
+     "a_b": {
+      "bits": [
+       14
+      ]
+     },
+     "a_nb": {
+      "bits": [
+       15
+      ]
+     },
+     "t_nc": {
+      "bits": [
+       16
+      ]
+     },
+     "t_nc_nd": {
+      "bits": [
+       17
+      ]
+     },
+     "g1": {
+      "bits": [
+       18
+      ]
+     },
+     "r1": {
+      "bits": [
+       19
+      ]
+     },
+     "t_nc_nb": {
+      "bits": [
+       20
+      ]
+     },
+     "t_c_nb": {
+      "bits": [
+       21
+      ]
+     },
+     "t_nc_nb_d": {
+      "bits": [
+       22
+      ]
+     },
+     "g2": {
+      "bits": [
+       23
+      ]
+     },
+     "t_c_nb_nd": {
+      "bits": [
+       24
+      ]
+     },
+     "g3": {
+      "bits": [
+       25
+      ]
+     },
+     "t_nc_ab": {
+      "bits": [
+       26
+      ]
+     },
+     "t_nc_ab_nd": {
+      "bits": [
+       27
+      ]
+     },
+     "g4": {
+      "bits": [
+       28
+      ]
+     },
+     "r3": {
+      "bits": [
+       29
+      ]
+     },
+     "t_nc_ab_d": {
+      "bits": [
+       30
+      ]
+     },
+     "r4": {
+      "bits": [
+       31
+      ]
+     },
+     "t_c_anb": {
+      "bits": [
+       32
+      ]
+     },
+     "t_c_anb_d": {
+      "bits": [
+       33
+      ]
+     },
+     "r2": {
+      "bits": [
+       34
+      ]
+     },
+     "g_or1": {
+      "bits": [
+       35
+      ]
+     },
+     "g_or2": {
+      "bits": [
+       36
+      ]
+     },
+     "green": {
+      "bits": [
+       37
+      ]
+     },
+     "r_or1": {
+      "bits": [
+       38
+      ]
+     },
+     "r_or2": {
+      "bits": [
+       39
+      ]
+     },
+     "red": {
+      "bits": [
+       40
+      ]
+     }
+    }
+   }
+  }
+ },
+ "inspection": {
+  "order_id": "ord_v257_007",
+  "version": "v2",
+  "attempt": 3,
+  "pass": false,
+  "correct": {
+   "ok": false,
+   "passed": 0,
+   "total": 32
+  },
+  "rules": {
+   "format": "fail",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 0,
+  "best_known_gates": 21,
+  "depth": 0,
+  "failure_category": "spiral",
+  "note": "no answer within the thinking budget",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "tokens_in": 5108,
+   "tokens_out": 27750,
+   "thinking_chars": 68127,
+   "cached_tokens": 0,
+   "cost_usd": 0.06813,
+   "time_s": 228.73,
+   "ttft_s": 0.6389780000026803
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.6389780000026803,
+   "time_s": 13.016722600004869,
+   "tokens_in": 613,
+   "tokens_out": 1197,
+   "thinking_chars": 3328,
+   "cached_tokens": 0,
+   "cost_usd": 0.0030567,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.34187479999673087,
+   "time_s": 97.65614300000016,
+   "tokens_in": 669,
+   "tokens_out": 11250,
+   "thinking_chars": 25529,
+   "cached_tokens": 0,
+   "cost_usd": 0.0272007,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.4513116000016453,
+   "time_s": 11.388914800001658,
+   "tokens_in": 1915,
+   "tokens_out": 1510,
+   "thinking_chars": 1053,
+   "cached_tokens": 0,
+   "cost_usd": 0.0041985,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.5910129000112647,
+   "time_s": 106.66887419999694,
+   "tokens_in": 1911,
+   "tokens_out": 13793,
+   "thinking_chars": 38217,
+   "cached_tokens": 0,
+   "cost_usd": 0.0336765,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

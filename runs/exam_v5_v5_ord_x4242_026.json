@@ -1,0 +1,239 @@
+{
+ "run_id": "exam_v5_v5_ord_x4242_026",
+ "version": "v5",
+ "order": {
+  "id": "ord_x4242_026",
+  "pool": "exam",
+  "rung": 4,
+  "title": "Lock with a green light for codes 6, 11 and a red light for codes 5, 7, 8, 12, 14, built from only NAND chips, at most 20",
+  "spec": "A lock with 4 switches a, b, c, d (a is the biggest digit of the binary number): the green light turns on only for the numbers 6 or 11, the red light turns on only for the numbers 5, 7, 8, 12 or 14, and for every other number both lights stay off. Build it using only NAND chips (a NOT is a NAND with both inputs tied together) and at most 20 chips in total.",
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": [
+   "green",
+   "red"
+  ],
+  "allowed_gates": [
+   "NAND"
+  ],
+  "gate_budget": 20,
+  "flipflops_allowed": false,
+  "seed": 223513259,
+  "sequence": null
+ },
+ "attempts": 3,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 21.95,
+   "type": "plan",
+   "parts": [
+    "chip"
+   ],
+   "definition_of_done": [
+    "all inputs correct",
+    "every pin wired"
+   ]
+  },
+  {
+   "t": 21.95,
+   "type": "spawn",
+   "agent": "designer:chip",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 95.37,
+   "type": "spiral",
+   "agent": "designer:chip",
+   "thinking_chars": 34973,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 95.37,
+   "type": "fail",
+   "attempt": 1,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 95.37,
+   "type": "retry",
+   "attempt": 2
+  },
+  {
+   "t": 95.37,
+   "type": "spawn",
+   "agent": "designer:chip",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 170.18,
+   "type": "spiral",
+   "agent": "designer:chip",
+   "thinking_chars": 32563,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 170.18,
+   "type": "fail",
+   "attempt": 2,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 170.18,
+   "type": "retry",
+   "attempt": 3
+  },
+  {
+   "t": 170.18,
+   "type": "spawn",
+   "agent": "designer:chip",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 270.86,
+   "type": "spiral",
+   "agent": "designer:chip",
+   "thinking_chars": 28790,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 270.86,
+   "type": "fail",
+   "attempt": 3,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 270.86,
+   "type": "human_ping",
+   "note": "3 attempts exhausted"
+  },
+  {
+   "t": 270.86,
+   "type": "done"
+  }
+ ],
+ "blueprint": null,
+ "yosys_json": null,
+ "inspection": {
+  "order_id": "ord_x4242_026",
+  "version": "v5",
+  "attempt": 3,
+  "pass": false,
+  "correct": {
+   "ok": false,
+   "passed": 0,
+   "total": 16
+  },
+  "rules": {
+   "format": "fail",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 0,
+  "best_known_gates": 18,
+  "depth": 0,
+  "failure_category": "spiral",
+  "note": "no answer within the thinking budget",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 3348,
+   "tokens_out": 36000,
+   "thinking_chars": 96326,
+   "cached_tokens": 0,
+   "cost_usd": 0.00737,
+   "time_s": 270.85,
+   "ttft_s": 0.4006111000053352
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": null,
+   "time_s": 21.9508050000004,
+   "tokens_in": 660,
+   "tokens_out": 0,
+   "thinking_chars": 0,
+   "cached_tokens": null,
+   "cost_usd": 3.3e-05,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": "HTTP 503 after 5 tries"
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 0.4006111000053352,
+   "time_s": 73.41421649999393,
+   "tokens_in": 896,
+   "tokens_out": 12000,
+   "thinking_chars": 34973,
+   "cached_tokens": null,
+   "cost_usd": 0.0024448,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 0.4951156000024639,
+   "time_s": 74.8063179999881,
+   "tokens_in": 896,
+   "tokens_out": 12000,
+   "thinking_chars": 32563,
+   "cached_tokens": null,
+   "cost_usd": 0.0024448,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 0.33357829999295063,
+   "time_s": 100.67739569999685,
+   "tokens_in": 896,
+   "tokens_out": 12000,
+   "thinking_chars": 28790,
+   "cached_tokens": null,
+   "cost_usd": 0.0024448,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

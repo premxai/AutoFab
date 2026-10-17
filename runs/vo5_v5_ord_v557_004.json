@@ -1,0 +1,499 @@
+{
+ "run_id": "vo5_v5_ord_v557_004",
+ "version": "v5",
+ "order": {
+  "id": "ord_v557_004",
+  "pool": "validation",
+  "rung": 6,
+  "title": "Even-parity detector for 5 bits",
+  "spec": "Looks at 5 bits; the output y is 1 when the number of bits that are 1 is an even number (counting zero as even), otherwise 0.",
+  "inputs": [
+   "b4",
+   "b3",
+   "b2",
+   "b1",
+   "b0"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 371244702,
+  "sequence": null
+ },
+ "attempts": 1,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 33.27,
+   "type": "plan",
+   "parts": [
+    "even_parity_5bit"
+   ],
+   "definition_of_done": [
+    "Every gate instance has a unique name; no name is shared between a gate, a primary input, or a primary output (prevents L001 duplicate-name errors).",
+    "Each gate has a valid type from {AND, OR, XOR, NOT}, with NOT having exactly 1 input and all others exactly 2 inputs, and all inputs are connected to valid signals or primary inputs (prevents L003 inverter_in / type errors).",
+    "Every gate output drives exactly one consumer (another gate input or primary output); no output is left unconnected, floats, or feeds back to its own input.",
+    "Primary inputs are exactly b4, b3, b2, b1, b0 and the sole primary output is exactly y; no extra or missing ports exist.",
+    "The circuit functionally implements even-parity: for all 2^5 = 32 input combinations, y = 1 when the Hamming weight of (b4,b3,b2,b1,b0) is even (0,2,4 ones), and y = 0 otherwise.",
+    "Only allowed gate types (AND, OR, XOR, NOT) are used; no other gate subtypes or illegal fan-out/fan-in patterns.",
+    "If any library part is instantiated, its port names match its defined interface exactly (per L004 port-matching rule); since reuse is \"\", this is a structural guard for future extensions."
+   ]
+  },
+  {
+   "t": 33.27,
+   "type": "spawn",
+   "agent": "designer:even_parity_5bit",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 59.32,
+   "type": "place",
+   "block": "even_parity_5bit",
+   "kind": "part",
+   "label": "EVEN_P"
+  },
+  {
+   "t": 59.32,
+   "type": "place",
+   "block": "g1",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 59.32,
+   "type": "place",
+   "block": "g2",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 59.32,
+   "type": "place",
+   "block": "g3",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 59.32,
+   "type": "place",
+   "block": "g4",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 59.32,
+   "type": "place",
+   "block": "g5",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 59.32,
+   "type": "wire",
+   "from": "b4",
+   "to": "g1.in"
+  },
+  {
+   "t": 59.32,
+   "type": "wire",
+   "from": "b3",
+   "to": "g1.in"
+  },
+  {
+   "t": 59.32,
+   "type": "wire",
+   "from": "t1",
+   "to": "g2.in"
+  },
+  {
+   "t": 59.32,
+   "type": "wire",
+   "from": "b2",
+   "to": "g2.in"
+  },
+  {
+   "t": 59.32,
+   "type": "wire",
+   "from": "t2",
+   "to": "g3.in"
+  },
+  {
+   "t": 59.32,
+   "type": "wire",
+   "from": "b1",
+   "to": "g3.in"
+  },
+  {
+   "t": 59.32,
+   "type": "wire",
+   "from": "t3",
+   "to": "g4.in"
+  },
+  {
+   "t": 59.32,
+   "type": "wire",
+   "from": "b0",
+   "to": "g4.in"
+  },
+  {
+   "t": 59.32,
+   "type": "wire",
+   "from": "t4",
+   "to": "g5.in"
+  },
+  {
+   "t": 59.32,
+   "type": "test",
+   "attempt": 1,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "32/32 inputs correct"
+  },
+  {
+   "t": 59.32,
+   "type": "pass",
+   "attempt": 1
+  },
+  {
+   "t": 59.32,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "b4",
+   "b3",
+   "b2",
+   "b1",
+   "b0"
+  ],
+  "outputs": {
+   "y": "y"
+  },
+  "instances": [],
+  "gates": [
+   {
+    "name": "g1",
+    "type": "XOR",
+    "inputs": [
+     "b4",
+     "b3"
+    ],
+    "output": "t1"
+   },
+   {
+    "name": "g2",
+    "type": "XOR",
+    "inputs": [
+     "t1",
+     "b2"
+    ],
+    "output": "t2"
+   },
+   {
+    "name": "g3",
+    "type": "XOR",
+    "inputs": [
+     "t2",
+     "b1"
+    ],
+    "output": "t3"
+   },
+   {
+    "name": "g4",
+    "type": "XOR",
+    "inputs": [
+     "t3",
+     "b0"
+    ],
+    "output": "t4"
+   },
+   {
+    "name": "g5",
+    "type": "NOT",
+    "inputs": [
+     "t4"
+    ],
+    "output": "y"
+   }
+  ],
+  "flipflops": []
+ },
+ "yosys_json": {
+  "modules": {
+   "chip": {
+    "ports": {
+     "b4": {
+      "direction": "input",
+      "bits": [
+       2
+      ]
+     },
+     "b3": {
+      "direction": "input",
+      "bits": [
+       3
+      ]
+     },
+     "b2": {
+      "direction": "input",
+      "bits": [
+       4
+      ]
+     },
+     "b1": {
+      "direction": "input",
+      "bits": [
+       5
+      ]
+     },
+     "b0": {
+      "direction": "input",
+      "bits": [
+       6
+      ]
+     },
+     "y": {
+      "direction": "output",
+      "bits": [
+       11
+      ]
+     }
+    },
+    "cells": {
+     "g1": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        3
+       ],
+       "Y": [
+        7
+       ]
+      }
+     },
+     "g2": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        7
+       ],
+       "B": [
+        4
+       ],
+       "Y": [
+        8
+       ]
+      }
+     },
+     "g3": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        8
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        9
+       ]
+      }
+     },
+     "g4": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        9
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        10
+       ]
+      }
+     },
+     "g5": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        10
+       ],
+       "Y": [
+        11
+       ]
+      }
+     }
+    },
+    "netnames": {
+     "b4": {
+      "bits": [
+       2
+      ]
+     },
+     "b3": {
+      "bits": [
+       3
+      ]
+     },
+     "b2": {
+      "bits": [
+       4
+      ]
+     },
+     "b1": {
+      "bits": [
+       5
+      ]
+     },
+     "b0": {
+      "bits": [
+       6
+      ]
+     },
+     "t1": {
+      "bits": [
+       7
+      ]
+     },
+     "t2": {
+      "bits": [
+       8
+      ]
+     },
+     "t3": {
+      "bits": [
+       9
+      ]
+     },
+     "t4": {
+      "bits": [
+       10
+      ]
+     },
+     "y": {
+      "bits": [
+       11
+      ]
+     }
+    }
+   }
+  }
+ },
+ "inspection": {
+  "order_id": "ord_v557_004",
+  "version": "v5",
+  "attempt": 1,
+  "pass": true,
+  "correct": {
+   "ok": true,
+   "passed": 32,
+   "total": 32
+  },
+  "rules": {
+   "format": "ok",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 5,
+  "best_known_gates": 4,
+  "depth": 5,
+  "failure_category": "none",
+  "note": "all inputs correct and every fab rule satisfied",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 1389,
+   "tokens_out": 4999,
+   "thinking_chars": 14494,
+   "cached_tokens": 0,
+   "cost_usd": 0.00107,
+   "time_s": 59.32,
+   "ttft_s": 0.3122097000014037
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.3122097000014037,
+   "time_s": 33.26546640000015,
+   "tokens_in": 674,
+   "tokens_out": 2368,
+   "thinking_chars": 7379,
+   "cached_tokens": null,
+   "cost_usd": 0.0005073,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.8136904999992112,
+   "time_s": 26.050927600008436,
+   "tokens_in": 715,
+   "tokens_out": 2631,
+   "thinking_chars": 7115,
+   "cached_tokens": null,
+   "cost_usd": 0.0005619500000000001,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

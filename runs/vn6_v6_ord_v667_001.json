@@ -1,0 +1,1088 @@
+{
+ "run_id": "vn6_v6_ord_v667_001",
+ "version": "v6",
+ "order": {
+  "id": "ord_v667_001",
+  "pool": "validation",
+  "rung": 3,
+  "title": "Lock with a green light for codes 3, 6, 10, 13 and a red light for codes 0, 1",
+  "spec": "A lock with 4 switches a, b, c, d (a is the biggest digit of the binary number): the green light turns on only for the numbers 3, 6, 10 or 13, the red light turns on only for the numbers 0 or 1, and for every other number both lights stay off.",
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": [
+   "green",
+   "red"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 668071655,
+  "sequence": null
+ },
+ "attempts": 3,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 57.56,
+   "type": "plan",
+   "parts": [
+    "eq0",
+    "eq1",
+    "eq3",
+    "eq6",
+    "eq10",
+    "eq13",
+    "or_green",
+    "or_red"
+   ],
+   "definition_of_done": [
+    "Every gate in the netlist has a unique name.",
+    "Each gate instance uses a valid primitive type (AND, OR, XOR, NOT) with the correct arity (NOT: 1 input, others: 2 inputs).",
+    "Every gate's output is connected to either another gate's input, a top\u2011level output port, or is left unconnected only if it is a top\u2011level output.",
+    "No gate's output is left unconnected (dangling) unless it corresponds to a chip output (green or red).",
+    "The fan\u2011out (number of gate inputs driven) of any signal does not exceed 4.",
+    "The netlist is acyclic \u2013 there are no combinational feedback loops.",
+    "All library parts referenced in the `reuse` field exist in the verified parts library and their pin names match the part's declared inputs/outputs.",
+    "Each part\u2019s internal implementation satisfies its one\u2011sentence spec (verified by exhaustive simulation of its inputs).",
+    "The top\u2011level chip produces the correct green and red outputs for every possible 4\u2011bit input (0\u202615) according to the spec: green = 1 for codes 3,6,10,13; red = 1 for codes 0,1; otherwise both outputs are 0.",
+    "All top\u2011level inputs (a,b,c,d) are used in the logic; no input is left unconnected.",
+    "No unused library parts are instantiated (every instantiated part contributes to at least one output).",
+    "All naming conventions satisfy the fab\u2019s constraints (no duplicate names, no illegal characters)."
+   ]
+  },
+  {
+   "t": 57.56,
+   "type": "spawn",
+   "agent": "designer:eq0",
+   "role": "designer",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 57.56,
+   "type": "spawn",
+   "agent": "designer:eq1",
+   "role": "designer",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 57.56,
+   "type": "spawn",
+   "agent": "designer:eq3",
+   "role": "designer",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 57.56,
+   "type": "spawn",
+   "agent": "designer:eq6",
+   "role": "designer",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 57.56,
+   "type": "spawn",
+   "agent": "designer:eq10",
+   "role": "designer",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 57.56,
+   "type": "spawn",
+   "agent": "designer:eq13",
+   "role": "designer",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 57.56,
+   "type": "spawn",
+   "agent": "designer:or_green",
+   "role": "designer",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 57.56,
+   "type": "spawn",
+   "agent": "designer:or_red",
+   "role": "designer",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 177.67,
+   "type": "spiral",
+   "agent": "designer:eq13",
+   "thinking_chars": 1750,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 177.67,
+   "type": "spiral",
+   "agent": "designer:eq10",
+   "thinking_chars": 1911,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 177.67,
+   "type": "place",
+   "block": "eq0",
+   "kind": "part",
+   "label": "EQ0"
+  },
+  {
+   "t": 177.67,
+   "type": "place",
+   "block": "eq1",
+   "kind": "part",
+   "label": "EQ1"
+  },
+  {
+   "t": 177.67,
+   "type": "place",
+   "block": "eq3",
+   "kind": "part",
+   "label": "EQ3"
+  },
+  {
+   "t": 177.67,
+   "type": "place",
+   "block": "eq6",
+   "kind": "part",
+   "label": "EQ6"
+  },
+  {
+   "t": 177.67,
+   "type": "place",
+   "block": "or_green",
+   "kind": "part",
+   "label": "OR_GRE"
+  },
+  {
+   "t": 177.67,
+   "type": "place",
+   "block": "or_red",
+   "kind": "part",
+   "label": "OR_RED"
+  },
+  {
+   "t": 177.67,
+   "type": "fail",
+   "attempt": 1,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 177.67,
+   "type": "retry",
+   "attempt": 2
+  },
+  {
+   "t": 177.67,
+   "type": "spawn",
+   "agent": "designer:eq10",
+   "role": "designer",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 177.67,
+   "type": "spawn",
+   "agent": "designer:eq13",
+   "role": "designer",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 297.77,
+   "type": "spiral",
+   "agent": "designer:eq10",
+   "thinking_chars": 2444,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 297.77,
+   "type": "place",
+   "block": "eq13",
+   "kind": "part",
+   "label": "EQ13"
+  },
+  {
+   "t": 297.77,
+   "type": "fail",
+   "attempt": 2,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 297.77,
+   "type": "retry",
+   "attempt": 3
+  },
+  {
+   "t": 297.77,
+   "type": "spawn",
+   "agent": "designer:eq10",
+   "role": "designer",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 322.08,
+   "type": "place",
+   "block": "eq10",
+   "kind": "part",
+   "label": "EQ10"
+  },
+  {
+   "t": 322.08,
+   "type": "spawn",
+   "agent": "assembler",
+   "role": "assembler",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 403.08,
+   "type": "spiral",
+   "agent": "assembler",
+   "thinking_chars": 44045,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 403.08,
+   "type": "fail",
+   "attempt": 3,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 403.08,
+   "type": "human_ping",
+   "note": "3 attempts exhausted"
+  },
+  {
+   "t": 403.08,
+   "type": "done"
+  }
+ ],
+ "blueprint": null,
+ "yosys_json": null,
+ "inspection": {
+  "order_id": "ord_v667_001",
+  "version": "v6",
+  "attempt": 3,
+  "pass": false,
+  "correct": {
+   "ok": false,
+   "passed": 0,
+   "total": 16
+  },
+  "rules": {
+   "format": "fail",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 0,
+  "best_known_gates": 10,
+  "depth": 0,
+  "failure_category": "spiral",
+  "note": "no answer within the thinking budget",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 10185,
+   "tokens_out": 26575,
+   "thinking_chars": 70940,
+   "cached_tokens": 0,
+   "cost_usd": 0.04018,
+   "time_s": 794.5,
+   "ttft_s": 0.3999524999962887
+  }
+ },
+ "calls": [
+  {
+   "parsed": {
+    "definition_of_done": [
+     "Every gate in the netlist has a unique name.",
+     "Each gate instance uses a valid primitive type (AND, OR, XOR, NOT) with the correct arity (NOT: 1 input, others: 2 inputs).",
+     "Every gate's output is connected to either another gate's input, a top\u2011level output port, or is left unconnected only if it is a top\u2011level output.",
+     "No gate's output is left unconnected (dangling) unless it corresponds to a chip output (green or red).",
+     "The fan\u2011out (number of gate inputs driven) of any signal does not exceed 4.",
+     "The netlist is acyclic \u2013 there are no combinational feedback loops.",
+     "All library parts referenced in the `reuse` field exist in the verified parts library and their pin names match the part's declared inputs/outputs.",
+     "Each part\u2019s internal implementation satisfies its one\u2011sentence spec (verified by exhaustive simulation of its inputs).",
+     "The top\u2011level chip produces the correct green and red outputs for every possible 4\u2011bit input (0\u202615) according to the spec: green = 1 for codes 3,6,10,13; red = 1 for codes 0,1; otherwise both outputs are 0.",
+     "All top\u2011level inputs (a,b,c,d) are used in the logic; no input is left unconnected.",
+     "No unused library parts are instantiated (every instantiated part contributes to at least one output).",
+     "All naming conventions satisfy the fab\u2019s constraints (no duplicate names, no illegal characters)."
+    ],
+    "parts": [
+     {
+      "name": "eq0",
+      "spec": "Outputs 1 iff the 4\u2011bit input equals binary 0000.",
+      "inputs": [
+       "a",
+       "b",
+       "c",
+       "d"
+      ],
+      "outputs": [
+       "eq0"
+      ],
+      "reuse": ""
+     },
+     {
+      "name": "eq1",
+      "spec": "Outputs 1 iff the 4\u2011bit input equals binary 0001.",
+      "inputs": [
+       "a",
+       "b",
+       "c",
+       "d"
+      ],
+      "outputs": [
+       "eq1"
+      ],
+      "reuse": ""
+     },
+     {
+      "name": "eq3",
+      "spec": "Outputs 1 iff the 4\u2011bit input equals binary 0011.",
+      "inputs": [
+       "a",
+       "b",
+       "c",
+       "d"
+      ],
+      "outputs": [
+       "eq3"
+      ],
+      "reuse": ""
+     },
+     {
+      "name": "eq6",
+      "spec": "Outputs 1 iff the 4\u2011bit input equals binary 0110.",
+      "inputs": [
+       "a",
+       "b",
+       "c",
+       "d"
+      ],
+      "outputs": [
+       "eq6"
+      ],
+      "reuse": ""
+     },
+     {
+      "name": "eq10",
+      "spec": "Outputs 1 iff the 4\u2011bit input equals binary 1010.",
+      "inputs": [
+       "a",
+       "b",
+       "c",
+       "d"
+      ],
+      "outputs": [
+       "eq10"
+      ],
+      "reuse": ""
+     },
+     {
+      "name": "eq13",
+      "spec": "Outputs 1 iff the 4\u2011bit input equals binary 1101.",
+      "inputs": [
+       "a",
+       "b",
+       "c",
+       "d"
+      ],
+      "outputs": [
+       "eq13"
+      ],
+      "reuse": ""
+     },
+     {
+      "name": "or_green",
+      "spec": "Outputs 1 if any of eq3, eq6, eq10, eq13 is 1 (green light condition).",
+      "inputs": [
+       "eq3",
+       "eq6",
+       "eq10",
+       "eq13"
+      ],
+      "outputs": [
+       "green"
+      ],
+      "reuse": ""
+     },
+     {
+      "name": "or_red",
+      "spec": "Outputs 1 if either eq0 or eq1 is 1 (red light condition).",
+      "inputs": [
+       "eq0",
+       "eq1"
+      ],
+      "outputs": [
+       "red"
+      ],
+      "reuse": ""
+     }
+    ]
+   },
+   "spiral": false,
+   "ttft_s": 0.3999524999962887,
+   "time_s": 57.55679869999585,
+   "tokens_in": 780,
+   "tokens_out": 2234,
+   "thinking_chars": 4833,
+   "cached_tokens": 0,
+   "cost_usd": 0.005595599999999999,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "a",
+     "b",
+     "c",
+     "d"
+    ],
+    "outputs": {
+     "eq0": "eq0_signal"
+    },
+    "instances": [],
+    "gates": [
+     {
+      "name": "or_ab",
+      "type": "OR",
+      "inputs": [
+       "a",
+       "b"
+      ],
+      "output": "o_ab"
+     },
+     {
+      "name": "or_cd",
+      "type": "OR",
+      "inputs": [
+       "c",
+       "d"
+      ],
+      "output": "o_cd"
+     },
+     {
+      "name": "or_total",
+      "type": "OR",
+      "inputs": [
+       "o_ab",
+       "o_cd"
+      ],
+      "output": "o_all"
+     },
+     {
+      "name": "not_eq0",
+      "type": "NOT",
+      "inputs": [
+       "o_all"
+      ],
+      "output": "eq0_signal"
+     }
+    ],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 4.379040300002089,
+   "time_s": 28.693823900001007,
+   "tokens_in": 797,
+   "tokens_out": 844,
+   "thinking_chars": 2176,
+   "cached_tokens": 0,
+   "cost_usd": 0.0022646999999999997,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "a",
+     "b",
+     "c",
+     "d"
+    ],
+    "outputs": {
+     "eq3": "eq3"
+    },
+    "instances": [
+     {
+      "name": "not_a",
+      "part": "NOT",
+      "wire": {
+       "input": "a",
+       "output": "na"
+      }
+     },
+     {
+      "name": "not_b",
+      "part": "NOT",
+      "wire": {
+       "input": "b",
+       "output": "nb"
+      }
+     },
+     {
+      "name": "and_na_nb",
+      "part": "AND",
+      "wire": {
+       "input1": "na",
+       "input2": "nb",
+       "output": "t1"
+      }
+     },
+     {
+      "name": "and_c_d",
+      "part": "AND",
+      "wire": {
+       "input1": "c",
+       "input2": "d",
+       "output": "t2"
+      }
+     },
+     {
+      "name": "and_t1_t2",
+      "part": "AND",
+      "wire": {
+       "input1": "t1",
+       "input2": "t2",
+       "output": "eq3"
+      }
+     }
+    ],
+    "gates": [],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 1.8514876999979606,
+   "time_s": 35.06571760000952,
+   "tokens_in": 797,
+   "tokens_out": 995,
+   "thinking_chars": 2228,
+   "cached_tokens": 0,
+   "cost_usd": 0.0026271,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "a",
+     "b",
+     "c",
+     "d"
+    ],
+    "outputs": {
+     "eq6": "eq6_out"
+    },
+    "instances": [
+     {
+      "name": "not_a",
+      "part": "NOT",
+      "wire": {
+       "in": "a",
+       "out": "na"
+      }
+     },
+     {
+      "name": "not_d",
+      "part": "NOT",
+      "wire": {
+       "in": "d",
+       "out": "nd"
+      }
+     },
+     {
+      "name": "and1",
+      "part": "AND",
+      "wire": {
+       "in0": "na",
+       "in1": "b",
+       "out": "t1"
+      }
+     },
+     {
+      "name": "and2",
+      "part": "AND",
+      "wire": {
+       "in0": "t1",
+       "in1": "c",
+       "out": "t2"
+      }
+     },
+     {
+      "name": "eq6_gate",
+      "part": "AND",
+      "wire": {
+       "in0": "t2",
+       "in1": "nd",
+       "out": "eq6_out"
+      }
+     }
+    ],
+    "gates": [
+     {
+      "name": "not_a",
+      "type": "NOT",
+      "inputs": [
+       "a"
+      ],
+      "output": "na"
+     },
+     {
+      "name": "not_d",
+      "type": "NOT",
+      "inputs": [
+       "d"
+      ],
+      "output": "nd"
+     },
+     {
+      "name": "and1",
+      "type": "AND",
+      "inputs": [
+       "na",
+       "b"
+      ],
+      "output": "t1"
+     },
+     {
+      "name": "and2",
+      "type": "AND",
+      "inputs": [
+       "t1",
+       "c"
+      ],
+      "output": "t2"
+     },
+     {
+      "name": "eq6_gate",
+      "type": "AND",
+      "inputs": [
+       "t2",
+       "nd"
+      ],
+      "output": "eq6_out"
+     }
+    ],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 1.5604249000025447,
+   "time_s": 37.68756759999087,
+   "tokens_in": 797,
+   "tokens_out": 1035,
+   "thinking_chars": 1914,
+   "cached_tokens": 0,
+   "cost_usd": 0.0027231,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "a",
+     "b",
+     "c",
+     "d"
+    ],
+    "outputs": {
+     "eq1": "eq1"
+    },
+    "instances": [
+     {
+      "name": "not_a_inv",
+      "part": "NOT",
+      "wire": {
+       "in": "a",
+       "out": "not_a"
+      }
+     },
+     {
+      "name": "not_b_inv",
+      "part": "NOT",
+      "wire": {
+       "in": "b",
+       "out": "not_b"
+      }
+     },
+     {
+      "name": "not_c_inv",
+      "part": "NOT",
+      "wire": {
+       "in": "c",
+       "out": "not_c"
+      }
+     },
+     {
+      "name": "and_ab",
+      "part": "AND",
+      "wire": {
+       "in1": "not_a",
+       "in2": "not_b",
+       "out": "tmp_ab"
+      }
+     },
+     {
+      "name": "and_abc",
+      "part": "AND",
+      "wire": {
+       "in1": "tmp_ab",
+       "in2": "not_c",
+       "out": "tmp_abc"
+      }
+     },
+     {
+      "name": "and_abcd",
+      "part": "AND",
+      "wire": {
+       "in1": "tmp_abc",
+       "in2": "d",
+       "out": "eq1"
+      }
+     }
+    ],
+    "gates": [],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 2.4243633000005502,
+   "time_s": 39.56230859999778,
+   "tokens_in": 797,
+   "tokens_out": 1351,
+   "thinking_chars": 3064,
+   "cached_tokens": 0,
+   "cost_usd": 0.0034815,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "eq0",
+     "eq1"
+    ],
+    "outputs": {
+     "red": "red"
+    },
+    "instances": [
+     {
+      "name": "or0",
+      "part": "OR",
+      "wire": {
+       "in0": "eq0",
+       "in1": "eq1",
+       "out": "red"
+      }
+     }
+    ],
+    "gates": [
+     {
+      "name": "or0",
+      "type": "OR",
+      "inputs": [
+       "eq0",
+       "eq1"
+      ],
+      "output": "red"
+     }
+    ],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 1.2046145999920554,
+   "time_s": 48.02204939999501,
+   "tokens_in": 794,
+   "tokens_out": 445,
+   "thinking_chars": 1064,
+   "cached_tokens": 0,
+   "cost_usd": 0.0013062,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "eq3",
+     "eq6",
+     "eq10",
+     "eq13"
+    ],
+    "outputs": {
+     "green": "green"
+    },
+    "instances": [],
+    "gates": [
+     {
+      "name": "or1",
+      "type": "OR",
+      "inputs": [
+       "eq3",
+       "eq6"
+      ],
+      "output": "t1"
+     },
+     {
+      "name": "or2",
+      "type": "OR",
+      "inputs": [
+       "eq10",
+       "eq13"
+      ],
+      "output": "t2"
+     },
+     {
+      "name": "or3",
+      "type": "OR",
+      "inputs": [
+       "t1",
+       "t2"
+      ],
+      "output": "green"
+     }
+    ],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 0.9173662999965018,
+   "time_s": 48.30793549999362,
+   "tokens_in": 812,
+   "tokens_out": 594,
+   "thinking_chars": 1287,
+   "cached_tokens": 0,
+   "cost_usd": 0.0016691999999999998,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 1.2488279000099283,
+   "time_s": 120.10875330001,
+   "tokens_in": 666,
+   "tokens_out": 1366,
+   "thinking_chars": 1750,
+   "cached_tokens": null,
+   "cost_usd": 0.0034782000000000003,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 1.090382700000191,
+   "time_s": 120.1101187000022,
+   "tokens_in": 666,
+   "tokens_out": 2411,
+   "thinking_chars": 1911,
+   "cached_tokens": null,
+   "cost_usd": 0.0059862,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "a",
+     "b",
+     "c",
+     "d"
+    ],
+    "outputs": {
+     "eq13": "eq13"
+    },
+    "instances": [],
+    "gates": [
+     {
+      "name": "g_not_c",
+      "type": "NOT",
+      "inputs": [
+       "c"
+      ],
+      "output": "not_c"
+     },
+     {
+      "name": "g_and_ab",
+      "type": "AND",
+      "inputs": [
+       "a",
+       "b"
+      ],
+      "output": "ab"
+     },
+     {
+      "name": "g_and_notc_d",
+      "type": "AND",
+      "inputs": [
+       "not_c",
+       "d"
+      ],
+      "output": "notc_and_d"
+     },
+     {
+      "name": "g_and_final",
+      "type": "AND",
+      "inputs": [
+       "ab",
+       "notc_and_d"
+      ],
+      "output": "eq13"
+     }
+    ],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 0.5560721999936504,
+   "time_s": 33.9816140000039,
+   "tokens_in": 799,
+   "tokens_out": 878,
+   "thinking_chars": 2228,
+   "cached_tokens": 0,
+   "cost_usd": 0.0023468999999999994,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 0.5558389999932842,
+   "time_s": 120.09531760000391,
+   "tokens_in": 666,
+   "tokens_out": 1594,
+   "thinking_chars": 2444,
+   "cached_tokens": null,
+   "cost_usd": 0.0040254,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "a",
+     "b",
+     "c",
+     "d"
+    ],
+    "outputs": {
+     "eq10": "eq10"
+    },
+    "instances": [],
+    "gates": [
+     {
+      "name": "not_b0",
+      "type": "NOT",
+      "inputs": [
+       "b"
+      ],
+      "output": "nb"
+     },
+     {
+      "name": "not_d0",
+      "type": "NOT",
+      "inputs": [
+       "d"
+      ],
+      "output": "nd"
+     },
+     {
+      "name": "and_ab",
+      "type": "AND",
+      "inputs": [
+       "a",
+       "nb"
+      ],
+      "output": "t1"
+     },
+     {
+      "name": "and_cd",
+      "type": "AND",
+      "inputs": [
+       "c",
+       "nd"
+      ],
+      "output": "t2"
+     },
+     {
+      "name": "eq10_gate",
+      "type": "AND",
+      "inputs": [
+       "t1",
+       "t2"
+      ],
+      "output": "eq10"
+     }
+    ],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 1.026031499990495,
+   "time_s": 24.313349200005177,
+   "tokens_in": 799,
+   "tokens_out": 828,
+   "thinking_chars": 1996,
+   "cached_tokens": 0,
+   "cost_usd": 0.0022268999999999995,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 0.626942600007169,
+   "time_s": 80.99383009999292,
+   "tokens_in": 1015,
+   "tokens_out": 12000,
+   "thinking_chars": 44045,
+   "cached_tokens": null,
+   "cost_usd": 0.00245075,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

@@ -1,0 +1,1237 @@
+{
+ "run_id": "vn1_v1_ord_v157_007",
+ "version": "v1",
+ "order": {
+  "id": "ord_v157_007",
+  "pool": "validation",
+  "rung": 2,
+  "title": "Door lock that opens only for codes 4, 7, 11, 15",
+  "spec": "A door lock with 4 switches a, b, c, d (a is the biggest digit of the binary number): the light y turns on only when the switches show the numbers 4, 7, 11 or 15, and stays off for every other number.",
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 200806518,
+  "sequence": null
+ },
+ "attempts": 3,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 56.53,
+   "type": "plan",
+   "parts": [
+    "check_4",
+    "check_7",
+    "check_11",
+    "check_15",
+    "door_lock_y"
+   ],
+   "definition_of_done": [
+    "Truth\u2011table correctness: output y must be 1 for exactly four input combinations (a=MSB, b, c, d assumed): (0,1,0,0)=4, (0,1,1,1)=7, (1,0,1,1)=11, (1,1,1,1)=15; y=0 for all other 12 combinations.",
+    "Gate\u2011level format (L001): every gate has a unique name, a valid type (AND, OR, XOR, NOT), exactly 1 input for NOT and exactly 2 inputs for AND/OR/XOR, and exactly 1 output. Every output signal must map to a real gate output or the final output y; no floating or unconnected outputs.",
+    "Allowed gates only: AND, OR, XOR, NOT. No other gate types may appear.",
+    "Combinational integrity: no cycles or feedback paths; the circuit is purely combinational from inputs a,b,c,d to output y.",
+    "Output y is driven by exactly one gate (the final OR\u2011tree output). All intermediate signals are driven by exactly one gate.",
+    "Verification: simulate all 16 input patterns and confirm y matches the specified codes; gate count and naming must be extractable from the blueprint without name collisions."
+   ]
+  },
+  {
+   "t": 56.53,
+   "type": "spawn",
+   "agent": "designer:check_4",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 56.53,
+   "type": "spawn",
+   "agent": "designer:check_7",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 56.53,
+   "type": "spawn",
+   "agent": "designer:check_11",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 56.53,
+   "type": "spawn",
+   "agent": "designer:check_15",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 56.53,
+   "type": "spawn",
+   "agent": "designer:door_lock_y",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 64.34,
+   "type": "place",
+   "block": "check_4",
+   "kind": "part",
+   "label": "CHECK_"
+  },
+  {
+   "t": 64.34,
+   "type": "place",
+   "block": "check_7",
+   "kind": "part",
+   "label": "CHECK_"
+  },
+  {
+   "t": 64.34,
+   "type": "place",
+   "block": "check_11",
+   "kind": "part",
+   "label": "CHECK_"
+  },
+  {
+   "t": 64.34,
+   "type": "place",
+   "block": "check_15",
+   "kind": "part",
+   "label": "CHECK_"
+  },
+  {
+   "t": 64.34,
+   "type": "place",
+   "block": "door_lock_y",
+   "kind": "part",
+   "label": "DOOR_L"
+  },
+  {
+   "t": 64.34,
+   "type": "spawn",
+   "agent": "assembler",
+   "role": "assembler",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "a",
+   "to": "check_4.a"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "b",
+   "to": "check_4.b"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "c",
+   "to": "check_4.c"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "d",
+   "to": "check_4.d"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "eq4",
+   "to": "check_4.output"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "a",
+   "to": "check_7.a"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "b",
+   "to": "check_7.b"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "c",
+   "to": "check_7.c"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "d",
+   "to": "check_7.d"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "eq7",
+   "to": "check_7.output"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "a",
+   "to": "check_11.a"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "b",
+   "to": "check_11.b"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "c",
+   "to": "check_11.c"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "d",
+   "to": "check_11.d"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "eq11",
+   "to": "check_11.output"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "a",
+   "to": "check_15.a"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "b",
+   "to": "check_15.b"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "c",
+   "to": "check_15.c"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "d",
+   "to": "check_15.d"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "eq15",
+   "to": "check_15.output"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "eq4",
+   "to": "door_lock_y.eq4"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "eq7",
+   "to": "door_lock_y.eq7"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "eq11",
+   "to": "door_lock_y.eq11"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "eq15",
+   "to": "door_lock_y.eq15"
+  },
+  {
+   "t": 108.88,
+   "type": "wire",
+   "from": "y",
+   "to": "door_lock_y.output"
+  },
+  {
+   "t": 108.88,
+   "type": "test",
+   "attempt": 1,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "0/16 inputs correct"
+  },
+  {
+   "t": 108.88,
+   "type": "fail",
+   "attempt": 1,
+   "category": "format",
+   "note": "check_4 (check_4): port(s) ['eq4'] not wired",
+   "bad_wires": [],
+   "bad_blocks": [
+    "check_4"
+   ]
+  },
+  {
+   "t": 108.88,
+   "type": "retry",
+   "attempt": 2
+  },
+  {
+   "t": 108.88,
+   "type": "spawn",
+   "agent": "designer:check_4",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 108.88,
+   "type": "place",
+   "block": "check_4",
+   "kind": "part",
+   "label": "CHECK_"
+  },
+  {
+   "t": 108.88,
+   "type": "spawn",
+   "agent": "assembler",
+   "role": "assembler",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.a",
+   "to": "part_check_4.a"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.b",
+   "to": "part_check_4.b"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.c",
+   "to": "part_check_4.c"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.d",
+   "to": "part_check_4.d"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "part_check_4.output.eq4",
+   "to": "part_check_4.eq4"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.a",
+   "to": "part_check_7.a"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.b",
+   "to": "part_check_7.b"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.c",
+   "to": "part_check_7.c"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.d",
+   "to": "part_check_7.d"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "part_check_7.output.eq7",
+   "to": "part_check_7.eq7"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.a",
+   "to": "part_check_11.a"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.b",
+   "to": "part_check_11.b"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.c",
+   "to": "part_check_11.c"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.d",
+   "to": "part_check_11.d"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "part_check_11.output.eq11",
+   "to": "part_check_11.eq11"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.a",
+   "to": "part_check_15.a"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.b",
+   "to": "part_check_15.b"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.c",
+   "to": "part_check_15.c"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.d",
+   "to": "part_check_15.d"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "part_check_15.output.eq15",
+   "to": "part_check_15.eq15"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "part_check_4.output.eq4",
+   "to": "part_door_lock_y.eq4"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "part_check_7.output.eq7",
+   "to": "part_door_lock_y.eq7"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "part_check_11.output.eq11",
+   "to": "part_door_lock_y.eq11"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "part_check_15.output.eq15",
+   "to": "part_door_lock_y.eq15"
+  },
+  {
+   "t": 121.38,
+   "type": "wire",
+   "from": "chip.y",
+   "to": "part_door_lock_y.y"
+  },
+  {
+   "t": 121.38,
+   "type": "test",
+   "attempt": 2,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "0/16 inputs correct"
+  },
+  {
+   "t": 121.38,
+   "type": "fail",
+   "attempt": 2,
+   "category": "format",
+   "note": "library part 'check_4': blueprint inputs ['a', 'b'] do not match its ports ['a', 'b', 'c', 'd']",
+   "bad_wires": [],
+   "bad_blocks": [
+    "part_check_4"
+   ]
+  },
+  {
+   "t": 121.38,
+   "type": "retry",
+   "attempt": 3
+  },
+  {
+   "t": 121.38,
+   "type": "spawn",
+   "agent": "assembler",
+   "role": "assembler",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.a",
+   "to": "part_check_4.a"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.b",
+   "to": "part_check_4.b"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.c",
+   "to": "part_check_4.c"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.d",
+   "to": "part_check_4.d"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "part_check_4.output.eq4",
+   "to": "part_check_4.eq4"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.a",
+   "to": "part_check_7.a"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.b",
+   "to": "part_check_7.b"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.c",
+   "to": "part_check_7.c"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.d",
+   "to": "part_check_7.d"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "part_check_7.output.eq7",
+   "to": "part_check_7.eq7"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.a",
+   "to": "part_check_11.a"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.b",
+   "to": "part_check_11.b"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.c",
+   "to": "part_check_11.c"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.d",
+   "to": "part_check_11.d"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "part_check_11.output.eq11",
+   "to": "part_check_11.eq11"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.a",
+   "to": "part_check_15.a"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.b",
+   "to": "part_check_15.b"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.c",
+   "to": "part_check_15.c"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.d",
+   "to": "part_check_15.d"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "part_check_15.output.eq15",
+   "to": "part_check_15.eq15"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "part_check_4.output.eq4",
+   "to": "part_door_lock_y.eq4"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "part_check_7.output.eq7",
+   "to": "part_door_lock_y.eq7"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "part_check_11.output.eq11",
+   "to": "part_door_lock_y.eq11"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "part_check_15.output.eq15",
+   "to": "part_door_lock_y.eq15"
+  },
+  {
+   "t": 170.17,
+   "type": "wire",
+   "from": "chip.y",
+   "to": "part_door_lock_y.y"
+  },
+  {
+   "t": 170.17,
+   "type": "test",
+   "attempt": 3,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "0/16 inputs correct"
+  },
+  {
+   "t": 170.17,
+   "type": "fail",
+   "attempt": 3,
+   "category": "format",
+   "note": "library part 'check_4': blueprint inputs ['a', 'b'] do not match its ports ['a', 'b', 'c', 'd']",
+   "bad_wires": [],
+   "bad_blocks": [
+    "part_check_4"
+   ]
+  },
+  {
+   "t": 170.17,
+   "type": "human_ping",
+   "note": "3 attempts exhausted"
+  },
+  {
+   "t": 170.17,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": {
+   "y": "chip.y"
+  },
+  "instances": [
+   {
+    "name": "part_check_4",
+    "part": "check_4",
+    "wire": {
+     "a": "chip.a",
+     "b": "chip.b",
+     "c": "chip.c",
+     "d": "chip.d",
+     "eq4": "part_check_4.output.eq4"
+    }
+   },
+   {
+    "name": "part_check_7",
+    "part": "check_7",
+    "wire": {
+     "a": "chip.a",
+     "b": "chip.b",
+     "c": "chip.c",
+     "d": "chip.d",
+     "eq7": "part_check_7.output.eq7"
+    }
+   },
+   {
+    "name": "part_check_11",
+    "part": "check_11",
+    "wire": {
+     "a": "chip.a",
+     "b": "chip.b",
+     "c": "chip.c",
+     "d": "chip.d",
+     "eq11": "part_check_11.output.eq11"
+    }
+   },
+   {
+    "name": "part_check_15",
+    "part": "check_15",
+    "wire": {
+     "a": "chip.a",
+     "b": "chip.b",
+     "c": "chip.c",
+     "d": "chip.d",
+     "eq15": "part_check_15.output.eq15"
+    }
+   },
+   {
+    "name": "part_door_lock_y",
+    "part": "door_lock_y",
+    "wire": {
+     "eq4": "part_check_4.output.eq4",
+     "eq7": "part_check_7.output.eq7",
+     "eq11": "part_check_11.output.eq11",
+     "eq15": "part_check_15.output.eq15",
+     "y": "chip.y"
+    }
+   }
+  ],
+  "gates": [],
+  "flipflops": []
+ },
+ "yosys_json": null,
+ "inspection": {
+  "order_id": "ord_v157_007",
+  "version": "v1",
+  "attempt": 3,
+  "pass": false,
+  "correct": {
+   "ok": false,
+   "passed": 0,
+   "total": 16
+  },
+  "rules": {
+   "format": "fail",
+   "allowed_gates": "n/a",
+   "pins": "n/a",
+   "fanout": "n/a",
+   "depth": "n/a",
+   "unused": "n/a",
+   "budget": "n/a"
+  },
+  "gates": 0,
+  "best_known_gates": 7,
+  "depth": 0,
+  "failure_category": "format",
+  "note": "library part 'check_4': blueprint inputs ['a', 'b'] do not match its ports ['a', 'b', 'c', 'd']",
+  "bad_wires": [],
+  "bad_blocks": [
+   "part_check_4"
+  ],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 3260,
+   "tokens_out": 28081,
+   "thinking_chars": 87907,
+   "cached_tokens": 0,
+   "cost_usd": 0.00578,
+   "time_s": 170.17,
+   "ttft_s": 0.18570469999394845
+  }
+ },
+ "calls": [
+  {
+   "parsed": {
+    "definition_of_done": [
+     "Truth\u2011table correctness: output y must be 1 for exactly four input combinations (a=MSB, b, c, d assumed): (0,1,0,0)=4, (0,1,1,1)=7, (1,0,1,1)=11, (1,1,1,1)=15; y=0 for all other 12 combinations.",
+     "Gate\u2011level format (L001): every gate has a unique name, a valid type (AND, OR, XOR, NOT), exactly 1 input for NOT and exactly 2 inputs for AND/OR/XOR, and exactly 1 output. Every output signal must map to a real gate output or the final output y; no floating or unconnected outputs.",
+     "Allowed gates only: AND, OR, XOR, NOT. No other gate types may appear.",
+     "Combinational integrity: no cycles or feedback paths; the circuit is purely combinational from inputs a,b,c,d to output y.",
+     "Output y is driven by exactly one gate (the final OR\u2011tree output). All intermediate signals are driven by exactly one gate.",
+     "Verification: simulate all 16 input patterns and confirm y matches the specified codes; gate count and naming must be extractable from the blueprint without name collisions."
+    ],
+    "parts": [
+     {
+      "name": "check_4",
+      "spec": "Outputs 1 when the 4\u2011bit input encodes decimal 4 (a=0,b=1,c=0,d=0), otherwise 0.",
+      "inputs": [
+       "a",
+       "b",
+       "c",
+       "d"
+      ],
+      "outputs": [
+       "eq4"
+      ],
+      "reuse": "bit_eq"
+     },
+     {
+      "name": "check_7",
+      "spec": "Outputs 1 when the 4\u2011bit input encodes decimal 7 (a=0,b=1,c=1,d=1), otherwise 0.",
+      "inputs": [
+       "a",
+       "b",
+       "c",
+       "d"
+      ],
+      "outputs": [
+       "eq7"
+      ],
+      "reuse": "bit_eq"
+     },
+     {
+      "name": "check_11",
+      "spec": "Outputs 1 when the 4\u2011bit input encodes decimal 11 (a=1,b=0,c=1,d=1), otherwise 0.",
+      "inputs": [
+       "a",
+       "b",
+       "c",
+       "d"
+      ],
+      "outputs": [
+       "eq11"
+      ],
+      "reuse": "bit_eq"
+     },
+     {
+      "name": "check_15",
+      "spec": "Outputs 1 when the 4\u2011bit input encodes decimal 15 (a=1,b=1,c=1,d=1), otherwise 0.",
+      "inputs": [
+       "a",
+       "b",
+       "c",
+       "d"
+      ],
+      "outputs": [
+       "eq15"
+      ],
+      "reuse": "bit_eq"
+     },
+     {
+      "name": "door_lock_y",
+      "spec": "Outputs y=1 iff any of check_4, check_7, check_11, check_15 is 1; otherwise y=0.",
+      "inputs": [
+       "eq4",
+       "eq7",
+       "eq11",
+       "eq15"
+      ],
+      "outputs": [
+       "y"
+      ],
+      "reuse": ""
+     }
+    ]
+   },
+   "spiral": false,
+   "ttft_s": 0.18570469999394845,
+   "time_s": 56.5254261999944,
+   "tokens_in": 460,
+   "tokens_out": 8632,
+   "thinking_chars": 28070,
+   "cached_tokens": null,
+   "cost_usd": 0.0017494000000000001,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "eq4",
+     "eq7",
+     "eq11",
+     "eq15"
+    ],
+    "outputs": {
+     "y": "temp2"
+    },
+    "instances": [
+     {
+      "name": "or_gate_1",
+      "part": "OR",
+      "wire": {
+       "input_a": "eq4",
+       "input_b": "eq7",
+       "output": "temp1"
+      }
+     },
+     {
+      "name": "or_gate_2",
+      "part": "OR",
+      "wire": {
+       "input_a": "temp1",
+       "input_b": "eq11",
+       "output": "temp2"
+      }
+     },
+     {
+      "name": "or_gate_3",
+      "part": "OR",
+      "wire": {
+       "input_a": "temp2",
+       "input_b": "eq15",
+       "output": "y"
+      }
+     }
+    ],
+    "gates": [
+     {
+      "name": "or_gate_1",
+      "type": "OR",
+      "inputs": [
+       "eq4",
+       "eq7"
+      ],
+      "output": "temp1"
+     },
+     {
+      "name": "or_gate_2",
+      "type": "OR",
+      "inputs": [
+       "temp1",
+       "eq11"
+      ],
+      "output": "temp2"
+     },
+     {
+      "name": "or_gate_3",
+      "type": "OR",
+      "inputs": [
+       "temp2",
+       "eq15"
+      ],
+      "output": "y"
+     }
+    ],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 0.1846227999922121,
+   "time_s": 7.807415899995249,
+   "tokens_in": 498,
+   "tokens_out": 1708,
+   "thinking_chars": 4637,
+   "cached_tokens": null,
+   "cost_usd": 0.0003665,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "a",
+     "b",
+     "c",
+     "d"
+    ],
+    "outputs": {
+     "y": "door_lock_y.out"
+    },
+    "instances": [
+     {
+      "name": "check_4",
+      "part": "check_4",
+      "wire": {
+       "a": "a",
+       "b": "b",
+       "c": "c",
+       "d": "d",
+       "output": "eq4"
+      }
+     },
+     {
+      "name": "check_7",
+      "part": "check_7",
+      "wire": {
+       "a": "a",
+       "b": "b",
+       "c": "c",
+       "d": "d",
+       "output": "eq7"
+      }
+     },
+     {
+      "name": "check_11",
+      "part": "check_11",
+      "wire": {
+       "a": "a",
+       "b": "b",
+       "c": "c",
+       "d": "d",
+       "output": "eq11"
+      }
+     },
+     {
+      "name": "check_15",
+      "part": "check_15",
+      "wire": {
+       "a": "a",
+       "b": "b",
+       "c": "c",
+       "d": "d",
+       "output": "eq15"
+      }
+     },
+     {
+      "name": "door_lock_y",
+      "part": "door_lock_y",
+      "wire": {
+       "eq4": "eq4",
+       "eq7": "eq7",
+       "eq11": "eq11",
+       "eq15": "eq15",
+       "output": "y"
+      }
+     }
+    ],
+    "gates": [],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 0.3452384999982314,
+   "time_s": 44.544720500009134,
+   "tokens_in": 620,
+   "tokens_out": 4071,
+   "thinking_chars": 12349,
+   "cached_tokens": null,
+   "cost_usd": 0.0008452,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "a",
+     "b",
+     "c",
+     "d"
+    ],
+    "outputs": {
+     "y": "part_door_lock_y.output.y"
+    },
+    "instances": [
+     {
+      "name": "part_check_4",
+      "part": "check_4",
+      "wire": {
+       "a": "chip.a",
+       "b": "chip.b",
+       "c": "chip.c",
+       "d": "chip.d",
+       "eq4": "part_check_4.output.eq4"
+      }
+     },
+     {
+      "name": "part_check_7",
+      "part": "check_7",
+      "wire": {
+       "a": "chip.a",
+       "b": "chip.b",
+       "c": "chip.c",
+       "d": "chip.d",
+       "eq7": "part_check_7.output.eq7"
+      }
+     },
+     {
+      "name": "part_check_11",
+      "part": "check_11",
+      "wire": {
+       "a": "chip.a",
+       "b": "chip.b",
+       "c": "chip.c",
+       "d": "chip.d",
+       "eq11": "part_check_11.output.eq11"
+      }
+     },
+     {
+      "name": "part_check_15",
+      "part": "check_15",
+      "wire": {
+       "a": "chip.a",
+       "b": "chip.b",
+       "c": "chip.c",
+       "d": "chip.d",
+       "eq15": "part_check_15.output.eq15"
+      }
+     },
+     {
+      "name": "part_door_lock_y",
+      "part": "door_lock_y",
+      "wire": {
+       "eq4": "part_check_4.output.eq4",
+       "eq7": "part_check_7.output.eq7",
+       "eq11": "part_check_11.output.eq11",
+       "eq15": "part_check_15.output.eq15",
+       "y": "chip.y"
+      }
+     }
+    ],
+    "gates": [],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 0.2818613999988884,
+   "time_s": 12.498976799994125,
+   "tokens_in": 620,
+   "tokens_out": 2434,
+   "thinking_chars": 6522,
+   "cached_tokens": null,
+   "cost_usd": 0.0005177999999999999,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "a",
+     "b",
+     "c",
+     "d"
+    ],
+    "outputs": {
+     "y": "chip.y"
+    },
+    "instances": [
+     {
+      "name": "part_check_4",
+      "part": "check_4",
+      "wire": {
+       "a": "chip.a",
+       "b": "chip.b",
+       "c": "chip.c",
+       "d": "chip.d",
+       "eq4": "part_check_4.output.eq4"
+      }
+     },
+     {
+      "name": "part_check_7",
+      "part": "check_7",
+      "wire": {
+       "a": "chip.a",
+       "b": "chip.b",
+       "c": "chip.c",
+       "d": "chip.d",
+       "eq7": "part_check_7.output.eq7"
+      }
+     },
+     {
+      "name": "part_check_11",
+      "part": "check_11",
+      "wire": {
+       "a": "chip.a",
+       "b": "chip.b",
+       "c": "chip.c",
+       "d": "chip.d",
+       "eq11": "part_check_11.output.eq11"
+      }
+     },
+     {
+      "name": "part_check_15",
+      "part": "check_15",
+      "wire": {
+       "a": "chip.a",
+       "b": "chip.b",
+       "c": "chip.c",
+       "d": "chip.d",
+       "eq15": "part_check_15.output.eq15"
+      }
+     },
+     {
+      "name": "part_door_lock_y",
+      "part": "door_lock_y",
+      "wire": {
+       "eq4": "part_check_4.output.eq4",
+       "eq7": "part_check_7.output.eq7",
+       "eq11": "part_check_11.output.eq11",
+       "eq15": "part_check_15.output.eq15",
+       "y": "chip.y"
+      }
+     }
+    ],
+    "gates": [],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 0.2925928000040585,
+   "time_s": 48.79244679999829,
+   "tokens_in": 1062,
+   "tokens_out": 11236,
+   "thinking_chars": 36329,
+   "cached_tokens": null,
+   "cost_usd": 0.0023003000000000003,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

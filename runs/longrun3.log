@@ -1,0 +1,2 @@
+resuming at shift 2 on v2 (exams done: ['v1'])
+revert: route_novel_to_super pass=0.20 cost=0.019 (rung regression (old {'6': 1.0, '1': 0.67, '4': 0.0, '3': 0.0, '5': 0.0} -> new {'6': 1.0, '1': 0.0, '4': 0.0, '3': 0.0, '5': 1.0}))

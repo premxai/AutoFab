@@ -1,0 +1,860 @@
+{
+ "run_id": "vo8_v8_ord_v867_004",
+ "version": "v8",
+ "order": {
+  "id": "ord_v867_004",
+  "pool": "validation",
+  "rung": 2,
+  "title": "Door lock that opens only for codes 0, 1, 4, 8, 9, 11",
+  "spec": "A door lock with 4 switches a, b, c, d (a is the biggest digit of the binary number): the light y turns on only when the switches show the numbers 0, 1, 4, 8, 9 or 11, and stays off for every other number.",
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 763983347,
+  "sequence": null
+ },
+ "attempts": 2,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 40.96,
+   "type": "plan",
+   "parts": [
+    "lock_combinational"
+   ],
+   "definition_of_done": [
+    "Truth table matches: y=1 for inputs (a,b,c,d) representing decimal 0,1,4,8,9,11 (a=MSB); y=0 for all other 10 combinations.",
+    "Uses only allowed gates: NOT (1 input), AND/OR/XOR (exactly 2 inputs).",
+    "Every gate has a unique name, a valid gate type, 1 or 2 inputs, and 1 output.",
+    "Every output signal (including primary outputs) is driven by exactly one gate output or a primary input.",
+    "All 16 possible input combinations are simulated and produce the correct y value.",
+    "No signal feeds more than 4 gate inputs (fan-out limit respected).",
+    "No gate output is left completely unconnected (unused); every gate contributes to the final output y or internal logic.",
+    "Complies with AutoFab blueprint format rules: unique gate names, valid port mappings, no duplicate instance names, and correct gate/input/output counts."
+   ]
+  },
+  {
+   "t": 40.96,
+   "type": "spawn",
+   "agent": "designer:lock_combinational",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 126.57,
+   "type": "spiral",
+   "agent": "designer:lock_combinational",
+   "thinking_chars": 25168,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 126.57,
+   "type": "fail",
+   "attempt": 1,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 126.57,
+   "type": "retry",
+   "attempt": 2
+  },
+  {
+   "t": 126.57,
+   "type": "spawn",
+   "agent": "designer:lock_combinational",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 169.56,
+   "type": "place",
+   "block": "lock_combinational",
+   "kind": "part",
+   "label": "LOCK_C"
+  },
+  {
+   "t": 169.56,
+   "type": "place",
+   "block": "g1",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 169.56,
+   "type": "place",
+   "block": "g2",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 169.56,
+   "type": "place",
+   "block": "g3",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 169.56,
+   "type": "place",
+   "block": "g4",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 169.56,
+   "type": "place",
+   "block": "g5",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 169.56,
+   "type": "place",
+   "block": "g6",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 169.56,
+   "type": "place",
+   "block": "g7",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 169.56,
+   "type": "place",
+   "block": "g8",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 169.56,
+   "type": "place",
+   "block": "g9",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 169.56,
+   "type": "place",
+   "block": "g10",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 169.56,
+   "type": "place",
+   "block": "g11",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 169.56,
+   "type": "place",
+   "block": "g12",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "b",
+   "to": "g1.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "c",
+   "to": "g2.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "d",
+   "to": "g3.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "a",
+   "to": "g4.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "nb",
+   "to": "g5.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "nc",
+   "to": "g5.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "a",
+   "to": "g6.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "nb",
+   "to": "g6.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "t2",
+   "to": "g7.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "d",
+   "to": "g7.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "na",
+   "to": "g8.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "b",
+   "to": "g8.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "t4",
+   "to": "g9.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "nc",
+   "to": "g9.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "t5",
+   "to": "g10.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "nd",
+   "to": "g10.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "t1",
+   "to": "g11.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "t3",
+   "to": "g11.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "o1",
+   "to": "g12.in"
+  },
+  {
+   "t": 169.56,
+   "type": "wire",
+   "from": "t6",
+   "to": "g12.in"
+  },
+  {
+   "t": 169.56,
+   "type": "test",
+   "attempt": 2,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "16/16 inputs correct"
+  },
+  {
+   "t": 169.56,
+   "type": "pass",
+   "attempt": 2
+  },
+  {
+   "t": 169.56,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": {
+   "y": "y"
+  },
+  "instances": [],
+  "gates": [
+   {
+    "name": "g1",
+    "type": "NOT",
+    "inputs": [
+     "b"
+    ],
+    "output": "nb"
+   },
+   {
+    "name": "g2",
+    "type": "NOT",
+    "inputs": [
+     "c"
+    ],
+    "output": "nc"
+   },
+   {
+    "name": "g3",
+    "type": "NOT",
+    "inputs": [
+     "d"
+    ],
+    "output": "nd"
+   },
+   {
+    "name": "g4",
+    "type": "NOT",
+    "inputs": [
+     "a"
+    ],
+    "output": "na"
+   },
+   {
+    "name": "g5",
+    "type": "AND",
+    "inputs": [
+     "nb",
+     "nc"
+    ],
+    "output": "t1"
+   },
+   {
+    "name": "g6",
+    "type": "AND",
+    "inputs": [
+     "a",
+     "nb"
+    ],
+    "output": "t2"
+   },
+   {
+    "name": "g7",
+    "type": "AND",
+    "inputs": [
+     "t2",
+     "d"
+    ],
+    "output": "t3"
+   },
+   {
+    "name": "g8",
+    "type": "AND",
+    "inputs": [
+     "na",
+     "b"
+    ],
+    "output": "t4"
+   },
+   {
+    "name": "g9",
+    "type": "AND",
+    "inputs": [
+     "t4",
+     "nc"
+    ],
+    "output": "t5"
+   },
+   {
+    "name": "g10",
+    "type": "AND",
+    "inputs": [
+     "t5",
+     "nd"
+    ],
+    "output": "t6"
+   },
+   {
+    "name": "g11",
+    "type": "OR",
+    "inputs": [
+     "t1",
+     "t3"
+    ],
+    "output": "o1"
+   },
+   {
+    "name": "g12",
+    "type": "OR",
+    "inputs": [
+     "o1",
+     "t6"
+    ],
+    "output": "y"
+   }
+  ],
+  "flipflops": []
+ },
+ "yosys_json": {
+  "modules": {
+   "chip": {
+    "ports": {
+     "a": {
+      "direction": "input",
+      "bits": [
+       2
+      ]
+     },
+     "b": {
+      "direction": "input",
+      "bits": [
+       3
+      ]
+     },
+     "c": {
+      "direction": "input",
+      "bits": [
+       4
+      ]
+     },
+     "d": {
+      "direction": "input",
+      "bits": [
+       5
+      ]
+     },
+     "y": {
+      "direction": "output",
+      "bits": [
+       17
+      ]
+     }
+    },
+    "cells": {
+     "g1": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "Y": [
+        6
+       ]
+      }
+     },
+     "g2": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        4
+       ],
+       "Y": [
+        7
+       ]
+      }
+     },
+     "g3": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        5
+       ],
+       "Y": [
+        8
+       ]
+      }
+     },
+     "g4": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "Y": [
+        9
+       ]
+      }
+     },
+     "g5": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        6
+       ],
+       "B": [
+        7
+       ],
+       "Y": [
+        10
+       ]
+      }
+     },
+     "g6": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        11
+       ]
+      }
+     },
+     "g7": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        11
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        12
+       ]
+      }
+     },
+     "g8": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        9
+       ],
+       "B": [
+        3
+       ],
+       "Y": [
+        13
+       ]
+      }
+     },
+     "g9": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        13
+       ],
+       "B": [
+        7
+       ],
+       "Y": [
+        14
+       ]
+      }
+     },
+     "g10": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        14
+       ],
+       "B": [
+        8
+       ],
+       "Y": [
+        15
+       ]
+      }
+     },
+     "g11": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        10
+       ],
+       "B": [
+        12
+       ],
+       "Y": [
+        16
+       ]
+      }
+     },
+     "g12": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        16
+       ],
+       "B": [
+        15
+       ],
+       "Y": [
+        17
+       ]
+      }
+     }
+    },
+    "netnames": {
+     "a": {
+      "bits": [
+       2
+      ]
+     },
+     "b": {
+      "bits": [
+       3
+      ]
+     },
+     "c": {
+      "bits": [
+       4
+      ]
+     },
+     "d": {
+      "bits": [
+       5
+      ]
+     },
+     "nb": {
+      "bits": [
+       6
+      ]
+     },
+     "nc": {
+      "bits": [
+       7
+      ]
+     },
+     "nd": {
+      "bits": [
+       8
+      ]
+     },
+     "na": {
+      "bits": [
+       9
+      ]
+     },
+     "t1": {
+      "bits": [
+       10
+      ]
+     },
+     "t2": {
+      "bits": [
+       11
+      ]
+     },
+     "t3": {
+      "bits": [
+       12
+      ]
+     },
+     "t4": {
+      "bits": [
+       13
+      ]
+     },
+     "t5": {
+      "bits": [
+       14
+      ]
+     },
+     "t6": {
+      "bits": [
+       15
+      ]
+     },
+     "o1": {
+      "bits": [
+       16
+      ]
+     },
+     "y": {
+      "bits": [
+       17
+      ]
+     }
+    }
+   }
+  }
+ },
+ "inspection": {
+  "order_id": "ord_v867_004",
+  "version": "v8",
+  "attempt": 2,
+  "pass": true,
+  "correct": {
+   "ok": true,
+   "passed": 16,
+   "total": 16
+  },
+  "rules": {
+   "format": "ok",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 12,
+  "best_known_gates": 5,
+  "depth": 5,
+  "failure_category": "none",
+  "note": "all inputs correct and every fab rule satisfied",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 2616,
+   "tokens_out": 21300,
+   "thinking_chars": 48331,
+   "cached_tokens": 0,
+   "cost_usd": 0.00439,
+   "time_s": 169.57,
+   "ttft_s": 1.5367179000022588
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 1.5367179000022588,
+   "time_s": 40.95741360000102,
+   "tokens_in": 846,
+   "tokens_out": 2255,
+   "thinking_chars": 6402,
+   "cached_tokens": null,
+   "cost_usd": 0.0004933,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 1.0877921000064816,
+   "time_s": 85.62082599999849,
+   "tokens_in": 885,
+   "tokens_out": 12000,
+   "thinking_chars": 25168,
+   "cached_tokens": null,
+   "cost_usd": 0.00244425,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.44153510000614915,
+   "time_s": 42.989902600005735,
+   "tokens_in": 885,
+   "tokens_out": 7045,
+   "thinking_chars": 16761,
+   "cached_tokens": null,
+   "cost_usd": 0.00145325,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

@@ -1,0 +1,50 @@
+{
+ "version": "v1",
+ "parent": null,
+ "created": "2026-10-17T10:41:50",
+ "routing": {
+  "architect": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "max_tokens": 12000
+  },
+  "designer": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "max_tokens": 12000
+  },
+  "designer_novel": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "max_tokens": 12000
+  },
+  "assembler": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "max_tokens": 12000
+  },
+  "investigator": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "max_tokens": 6000
+  },
+  "gate": {
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "max_tokens": 8000
+  }
+ },
+ "flags": {
+  "schema_on": false,
+  "no_fast_lane": false,
+  "route_novel_to_super": false,
+  "loop_cutter": false,
+  "tidy_tool": false,
+  "fanout_buffer_rule": false,
+  "library_first": false,
+  "stable_prefix": false
+ },
+ "playbook": null,
+ "library": [],
+ "change_log": []
+}

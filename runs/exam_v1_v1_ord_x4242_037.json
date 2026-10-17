@@ -1,0 +1,59 @@
+{
+ "run_id": "exam_v1_v1_ord_x4242_037",
+ "version": "v1",
+ "order": {
+  "id": "ord_x4242_037",
+  "pool": "exam",
+  "rung": 1,
+  "title": "Calculator that subtracts one 3-bit number from another",
+  "spec": "Works out a minus b for two 3-bit numbers; s is the 3-bit answer (it wraps around when b is bigger than a) and cout lights up when a is at least as big as b.",
+  "inputs": [
+   "a2",
+   "a1",
+   "a0",
+   "b2",
+   "b1",
+   "b0"
+  ],
+  "outputs": [
+   "s2",
+   "s1",
+   "s0",
+   "cout"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "sequence": null,
+  "seed": 779550164
+ },
+ "attempts": 0,
+ "events": [
+  {
+   "t": 0,
+   "type": "order"
+  },
+  {
+   "t": 0,
+   "type": "fail",
+   "attempt": 1,
+   "category": "format",
+   "note": "runner error: 'a'",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 0,
+   "type": "done"
+  }
+ ],
+ "blueprint": null,
+ "yosys_json": null,
+ "inspection": null,
+ "calls": []
+}

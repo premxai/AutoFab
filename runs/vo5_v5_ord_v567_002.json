@@ -1,0 +1,484 @@
+{
+ "run_id": "vo5_v5_ord_v567_002",
+ "version": "v5",
+ "order": {
+  "id": "ord_v567_002",
+  "pool": "validation",
+  "rung": 6,
+  "title": "Majority vote of 3 judges",
+  "spec": "3 judges (a, b, c) each vote yes (1) or no (0); the output y is 1 when at least 2 of them vote yes, otherwise 0.",
+  "inputs": [
+   "a",
+   "b",
+   "c"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 936725839,
+  "sequence": null
+ },
+ "attempts": 1,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 15.83,
+   "type": "plan",
+   "parts": [
+    "majority_vote"
+   ],
+   "definition_of_done": [
+    "Every gate has a unique name, a valid type (AND, OR, XOR, NOT), exactly 1 or 2 inputs, and exactly 1 output (L001).",
+    "No gate name is reused for both a gate and an instance; all names are distinct (L001).",
+    "Every output signal is connected to a real gate input or primary signal; no dangling or unconnected outputs (L001, L003).",
+    "All primary inputs (a, b, c) are correctly mapped and used exactly once (L001).",
+    "Output y implements the majority function: y = 1 iff at least two of {a, b, c} are 1, verified across all 8 input combinations (L002).",
+    "If any library part is instantiated, its port names match the verified library definitions exactly (L004); here reuse='' so internal connectivity is self-consistent.",
+    "The full blueprint passes automated inspector verification on every possible input vector."
+   ]
+  },
+  {
+   "t": 15.83,
+   "type": "spawn",
+   "agent": "designer:majority_vote",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 48.01,
+   "type": "place",
+   "block": "majority_vote",
+   "kind": "part",
+   "label": "MAJORI"
+  },
+  {
+   "t": 48.01,
+   "type": "place",
+   "block": "and1",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 48.01,
+   "type": "place",
+   "block": "and2",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 48.01,
+   "type": "place",
+   "block": "and3",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 48.01,
+   "type": "place",
+   "block": "or1",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 48.01,
+   "type": "place",
+   "block": "or2",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 48.01,
+   "type": "wire",
+   "from": "a",
+   "to": "and1.in"
+  },
+  {
+   "t": 48.01,
+   "type": "wire",
+   "from": "b",
+   "to": "and1.in"
+  },
+  {
+   "t": 48.01,
+   "type": "wire",
+   "from": "a",
+   "to": "and2.in"
+  },
+  {
+   "t": 48.01,
+   "type": "wire",
+   "from": "c",
+   "to": "and2.in"
+  },
+  {
+   "t": 48.01,
+   "type": "wire",
+   "from": "b",
+   "to": "and3.in"
+  },
+  {
+   "t": 48.01,
+   "type": "wire",
+   "from": "c",
+   "to": "and3.in"
+  },
+  {
+   "t": 48.01,
+   "type": "wire",
+   "from": "ab",
+   "to": "or1.in"
+  },
+  {
+   "t": 48.01,
+   "type": "wire",
+   "from": "ac",
+   "to": "or1.in"
+  },
+  {
+   "t": 48.01,
+   "type": "wire",
+   "from": "t1",
+   "to": "or2.in"
+  },
+  {
+   "t": 48.01,
+   "type": "wire",
+   "from": "bc",
+   "to": "or2.in"
+  },
+  {
+   "t": 48.01,
+   "type": "test",
+   "attempt": 1,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "8/8 inputs correct"
+  },
+  {
+   "t": 48.01,
+   "type": "pass",
+   "attempt": 1
+  },
+  {
+   "t": 48.01,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "a",
+   "b",
+   "c"
+  ],
+  "outputs": {
+   "y": "y"
+  },
+  "instances": [],
+  "gates": [
+   {
+    "name": "and1",
+    "type": "AND",
+    "inputs": [
+     "a",
+     "b"
+    ],
+    "output": "ab"
+   },
+   {
+    "name": "and2",
+    "type": "AND",
+    "inputs": [
+     "a",
+     "c"
+    ],
+    "output": "ac"
+   },
+   {
+    "name": "and3",
+    "type": "AND",
+    "inputs": [
+     "b",
+     "c"
+    ],
+    "output": "bc"
+   },
+   {
+    "name": "or1",
+    "type": "OR",
+    "inputs": [
+     "ab",
+     "ac"
+    ],
+    "output": "t1"
+   },
+   {
+    "name": "or2",
+    "type": "OR",
+    "inputs": [
+     "t1",
+     "bc"
+    ],
+    "output": "y"
+   }
+  ],
+  "flipflops": []
+ },
+ "yosys_json": {
+  "modules": {
+   "chip": {
+    "ports": {
+     "a": {
+      "direction": "input",
+      "bits": [
+       2
+      ]
+     },
+     "b": {
+      "direction": "input",
+      "bits": [
+       3
+      ]
+     },
+     "c": {
+      "direction": "input",
+      "bits": [
+       4
+      ]
+     },
+     "y": {
+      "direction": "output",
+      "bits": [
+       9
+      ]
+     }
+    },
+    "cells": {
+     "and1": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        3
+       ],
+       "Y": [
+        5
+       ]
+      }
+     },
+     "and2": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        4
+       ],
+       "Y": [
+        6
+       ]
+      }
+     },
+     "and3": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "B": [
+        4
+       ],
+       "Y": [
+        7
+       ]
+      }
+     },
+     "or1": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        5
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        8
+       ]
+      }
+     },
+     "or2": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        8
+       ],
+       "B": [
+        7
+       ],
+       "Y": [
+        9
+       ]
+      }
+     }
+    },
+    "netnames": {
+     "a": {
+      "bits": [
+       2
+      ]
+     },
+     "b": {
+      "bits": [
+       3
+      ]
+     },
+     "c": {
+      "bits": [
+       4
+      ]
+     },
+     "ab": {
+      "bits": [
+       5
+      ]
+     },
+     "ac": {
+      "bits": [
+       6
+      ]
+     },
+     "bc": {
+      "bits": [
+       7
+      ]
+     },
+     "t1": {
+      "bits": [
+       8
+      ]
+     },
+     "y": {
+      "bits": [
+       9
+      ]
+     }
+    }
+   }
+  }
+ },
+ "inspection": {
+  "order_id": "ord_v567_002",
+  "version": "v5",
+  "attempt": 1,
+  "pass": true,
+  "correct": {
+   "ok": true,
+   "passed": 8,
+   "total": 8
+  },
+  "rules": {
+   "format": "ok",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 5,
+  "best_known_gates": 4,
+  "depth": 3,
+  "failure_category": "none",
+  "note": "all inputs correct and every fab rule satisfied",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 1363,
+   "tokens_out": 5394,
+   "thinking_chars": 17052,
+   "cached_tokens": 0,
+   "cost_usd": 0.00115,
+   "time_s": 48.01,
+   "ttft_s": 0.5311728000087896
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.5311728000087896,
+   "time_s": 15.82691239999258,
+   "tokens_in": 668,
+   "tokens_out": 2537,
+   "thinking_chars": 8499,
+   "cached_tokens": null,
+   "cost_usd": 0.0005408,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.32651360001182184,
+   "time_s": 32.17858249999699,
+   "tokens_in": 695,
+   "tokens_out": 2857,
+   "thinking_chars": 8553,
+   "cached_tokens": null,
+   "cost_usd": 0.00060615,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

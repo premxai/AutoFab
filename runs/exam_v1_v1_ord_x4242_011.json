@@ -1,0 +1,810 @@
+{
+ "run_id": "exam_v1_v1_ord_x4242_011",
+ "version": "v1",
+ "order": {
+  "id": "ord_x4242_011",
+  "pool": "exam",
+  "rung": 6,
+  "title": "Odd-parity detector for 5 bits",
+  "spec": "Looks at 5 bits; the output y is 1 when the number of bits that are 1 is an odd number (counting zero as even), otherwise 0.",
+  "inputs": [
+   "b4",
+   "b3",
+   "b2",
+   "b1",
+   "b0"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 809539302,
+  "sequence": null
+ },
+ "attempts": 3,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 34.35,
+   "type": "plan",
+   "parts": [
+    "odd_parity_5bit"
+   ],
+   "definition_of_done": [
+    "Exhaustive functional simulation: for all 32 input combinations of (b4,b3,b2,b1,b0), the output y must equal 1 when the count of 1s is odd, and 0 otherwise.",
+    "Gate arity compliance: every NOT gate has exactly 1 input; every AND, OR, XOR gate has exactly 2 inputs. No gates with other arities are present.",
+    "Gate set compliance: the circuit contains only AND, OR, XOR, and NOT gates. No other gate types are used.",
+    "Port correctness: the circuit's primary inputs are exactly b4, b3, b2, b1, b0 and the primary output is exactly y, with no extra or missing ports.",
+    "Combinational-only behavior: the design has no sequential elements (flip-flops, latches) or feedback loops; output is a pure function of current inputs.",
+    "Binary output verification: for every simulated input vector, output y is strictly 0 or 1 (no unknown, high-impedance, or X states)."
+   ]
+  },
+  {
+   "t": 34.35,
+   "type": "spawn",
+   "agent": "designer:odd_parity_5bit",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 46.1,
+   "type": "place",
+   "block": "odd_parity_5bit",
+   "kind": "part",
+   "label": "ODD_PA"
+  },
+  {
+   "t": 46.1,
+   "type": "place",
+   "block": "XOR1",
+   "kind": "gate",
+   "label": "XOR2"
+  },
+  {
+   "t": 46.1,
+   "type": "place",
+   "block": "XOR2",
+   "kind": "gate",
+   "label": "XOR2"
+  },
+  {
+   "t": 46.1,
+   "type": "place",
+   "block": "XOR3",
+   "kind": "gate",
+   "label": "XOR2"
+  },
+  {
+   "t": 46.1,
+   "type": "place",
+   "block": "XOR4",
+   "kind": "gate",
+   "label": "XOR2"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "b4",
+   "to": "XOR1.a"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "b3",
+   "to": "XOR1.b"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "temp1",
+   "to": "XOR1.y"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "temp1",
+   "to": "XOR2.a"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "b2",
+   "to": "XOR2.b"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "temp2",
+   "to": "XOR2.y"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "temp2",
+   "to": "XOR3.a"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "b1",
+   "to": "XOR3.b"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "temp3",
+   "to": "XOR3.y"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "temp3",
+   "to": "XOR4.a"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "b0",
+   "to": "XOR4.b"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "y",
+   "to": "XOR4.y"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "b4",
+   "to": "XOR1.in"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "b3",
+   "to": "XOR1.in"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "temp1",
+   "to": "XOR2.in"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "b2",
+   "to": "XOR2.in"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "temp2",
+   "to": "XOR3.in"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "b1",
+   "to": "XOR3.in"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "temp3",
+   "to": "XOR4.in"
+  },
+  {
+   "t": 46.1,
+   "type": "wire",
+   "from": "b0",
+   "to": "XOR4.in"
+  },
+  {
+   "t": 46.1,
+   "type": "test",
+   "attempt": 1,
+   "inputs": {},
+   "expected": null,
+   "got": null
+  },
+  {
+   "t": 46.1,
+   "type": "fail",
+   "attempt": 1,
+   "category": "format",
+   "note": "name 'XOR1' is used twice (a gate and a instance); every name must be unique",
+   "bad_wires": [],
+   "bad_blocks": [
+    "XOR1"
+   ]
+  },
+  {
+   "t": 46.1,
+   "type": "retry",
+   "attempt": 2
+  },
+  {
+   "t": 46.1,
+   "type": "spawn",
+   "agent": "designer:odd_parity_5bit",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 56.84,
+   "type": "place",
+   "block": "odd_parity_5bit",
+   "kind": "part",
+   "label": "ODD_PA"
+  },
+  {
+   "t": 56.84,
+   "type": "place",
+   "block": "XOR_GATE1",
+   "kind": "gate",
+   "label": "XOR2"
+  },
+  {
+   "t": 56.84,
+   "type": "place",
+   "block": "XOR_GATE2",
+   "kind": "gate",
+   "label": "XOR2"
+  },
+  {
+   "t": 56.84,
+   "type": "place",
+   "block": "XOR_GATE3",
+   "kind": "gate",
+   "label": "XOR2"
+  },
+  {
+   "t": 56.84,
+   "type": "place",
+   "block": "XOR_GATE4",
+   "kind": "gate",
+   "label": "XOR2"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "b4",
+   "to": "XOR_INST1.a"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "b3",
+   "to": "XOR_INST1.b"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "temp1",
+   "to": "XOR_INST1.y"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "temp1",
+   "to": "XOR_INST2.a"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "b2",
+   "to": "XOR_INST2.b"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "temp2",
+   "to": "XOR_INST2.y"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "temp2",
+   "to": "XOR_INST3.a"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "b1",
+   "to": "XOR_INST3.b"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "temp3",
+   "to": "XOR_INST3.y"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "temp3",
+   "to": "XOR_INST4.a"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "b0",
+   "to": "XOR_INST4.b"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "y",
+   "to": "XOR_INST4.y"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "b4",
+   "to": "XOR_GATE1.in"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "b3",
+   "to": "XOR_GATE1.in"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "temp1",
+   "to": "XOR_GATE2.in"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "b2",
+   "to": "XOR_GATE2.in"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "temp2",
+   "to": "XOR_GATE3.in"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "b1",
+   "to": "XOR_GATE3.in"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "temp3",
+   "to": "XOR_GATE4.in"
+  },
+  {
+   "t": 56.84,
+   "type": "wire",
+   "from": "b0",
+   "to": "XOR_GATE4.in"
+  },
+  {
+   "t": 56.84,
+   "type": "test",
+   "attempt": 2,
+   "inputs": {},
+   "expected": null,
+   "got": null
+  },
+  {
+   "t": 56.84,
+   "type": "fail",
+   "attempt": 2,
+   "category": "format",
+   "note": "gate XOR_GATE1 has unknown type 'XOR2' (use AND, OR, XOR, NOT, NAND)",
+   "bad_wires": [],
+   "bad_blocks": [
+    "XOR_GATE1"
+   ]
+  },
+  {
+   "t": 56.84,
+   "type": "retry",
+   "attempt": 3
+  },
+  {
+   "t": 56.84,
+   "type": "spawn",
+   "agent": "designer:odd_parity_5bit",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 73.66,
+   "type": "place",
+   "block": "odd_parity_5bit",
+   "kind": "part",
+   "label": "ODD_PA"
+  },
+  {
+   "t": 73.66,
+   "type": "place",
+   "block": "XOR_GATE1",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 73.66,
+   "type": "place",
+   "block": "XOR_GATE2",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 73.66,
+   "type": "place",
+   "block": "XOR_GATE3",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 73.66,
+   "type": "place",
+   "block": "XOR_GATE4",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "b4",
+   "to": "XOR_INST1.a"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "b3",
+   "to": "XOR_INST1.b"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "temp1",
+   "to": "XOR_INST1.y"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "temp1",
+   "to": "XOR_INST2.a"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "b2",
+   "to": "XOR_INST2.b"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "temp2",
+   "to": "XOR_INST2.y"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "temp2",
+   "to": "XOR_INST3.a"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "b1",
+   "to": "XOR_INST3.b"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "temp3",
+   "to": "XOR_INST3.y"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "temp3",
+   "to": "XOR_INST4.a"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "b0",
+   "to": "XOR_INST4.b"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "y",
+   "to": "XOR_INST4.y"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "b4",
+   "to": "XOR_GATE1.in"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "b3",
+   "to": "XOR_GATE1.in"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "temp1",
+   "to": "XOR_GATE2.in"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "b2",
+   "to": "XOR_GATE2.in"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "temp2",
+   "to": "XOR_GATE3.in"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "b1",
+   "to": "XOR_GATE3.in"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "temp3",
+   "to": "XOR_GATE4.in"
+  },
+  {
+   "t": 73.66,
+   "type": "wire",
+   "from": "b0",
+   "to": "XOR_GATE4.in"
+  },
+  {
+   "t": 73.66,
+   "type": "test",
+   "attempt": 3,
+   "inputs": {},
+   "expected": null,
+   "got": null
+  },
+  {
+   "t": 73.66,
+   "type": "fail",
+   "attempt": 3,
+   "category": "format",
+   "note": "unknown part 'XOR2' (instance XOR_INST1)",
+   "bad_wires": [],
+   "bad_blocks": [
+    "XOR_INST1"
+   ]
+  },
+  {
+   "t": 73.66,
+   "type": "human_ping",
+   "note": "3 attempts exhausted"
+  },
+  {
+   "t": 73.66,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "b4",
+   "b3",
+   "b2",
+   "b1",
+   "b0"
+  ],
+  "outputs": {
+   "y": "y"
+  },
+  "instances": [
+   {
+    "name": "XOR_INST1",
+    "part": "XOR2",
+    "wire": {
+     "a": "b4",
+     "b": "b3",
+     "y": "temp1"
+    }
+   },
+   {
+    "name": "XOR_INST2",
+    "part": "XOR2",
+    "wire": {
+     "a": "temp1",
+     "b": "b2",
+     "y": "temp2"
+    }
+   },
+   {
+    "name": "XOR_INST3",
+    "part": "XOR2",
+    "wire": {
+     "a": "temp2",
+     "b": "b1",
+     "y": "temp3"
+    }
+   },
+   {
+    "name": "XOR_INST4",
+    "part": "XOR2",
+    "wire": {
+     "a": "temp3",
+     "b": "b0",
+     "y": "y"
+    }
+   }
+  ],
+  "gates": [
+   {
+    "name": "XOR_GATE1",
+    "type": "XOR",
+    "inputs": [
+     "b4",
+     "b3"
+    ],
+    "output": "temp1"
+   },
+   {
+    "name": "XOR_GATE2",
+    "type": "XOR",
+    "inputs": [
+     "temp1",
+     "b2"
+    ],
+    "output": "temp2"
+   },
+   {
+    "name": "XOR_GATE3",
+    "type": "XOR",
+    "inputs": [
+     "temp2",
+     "b1"
+    ],
+    "output": "temp3"
+   },
+   {
+    "name": "XOR_GATE4",
+    "type": "XOR",
+    "inputs": [
+     "temp3",
+     "b0"
+    ],
+    "output": "y"
+   }
+  ],
+  "flipflops": []
+ },
+ "yosys_json": null,
+ "inspection": {
+  "order_id": "ord_x4242_011",
+  "version": "v1",
+  "attempt": 3,
+  "pass": false,
+  "correct": {
+   "ok": false,
+   "passed": 0,
+   "total": 32
+  },
+  "rules": {
+   "format": "fail",
+   "allowed_gates": "n/a",
+   "pins": "n/a",
+   "fanout": "n/a",
+   "depth": "n/a",
+   "unused": "n/a",
+   "budget": "n/a"
+  },
+  "gates": 0,
+  "best_known_gates": 4,
+  "depth": 0,
+  "failure_category": "format",
+  "note": "unknown part 'XOR2' (instance XOR_INST1)",
+  "bad_wires": [],
+  "bad_blocks": [
+   "XOR_INST1"
+  ],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 2209,
+   "tokens_out": 11972,
+   "thinking_chars": 33749,
+   "cached_tokens": 0,
+   "cost_usd": 0.0025,
+   "time_s": 73.66,
+   "ttft_s": 0.181985999995959
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.181985999995959,
+   "time_s": 34.34684090000519,
+   "tokens_in": 321,
+   "tokens_out": 3652,
+   "thinking_chars": 12452,
+   "cached_tokens": null,
+   "cost_usd": 0.0007464500000000001,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.2963106999959564,
+   "time_s": 11.754312999997637,
+   "tokens_in": 364,
+   "tokens_out": 2761,
+   "thinking_chars": 6681,
+   "cached_tokens": null,
+   "cost_usd": 0.0005704000000000001,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.3036182999931043,
+   "time_s": 10.730174800002715,
+   "tokens_in": 751,
+   "tokens_out": 3178,
+   "thinking_chars": 8196,
+   "cached_tokens": null,
+   "cost_usd": 0.00067315,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.30308479999075644,
+   "time_s": 16.82716219998838,
+   "tokens_in": 773,
+   "tokens_out": 2381,
+   "thinking_chars": 6420,
+   "cached_tokens": null,
+   "cost_usd": 0.0005148500000000001,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

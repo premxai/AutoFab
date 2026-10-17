@@ -1,0 +1,57 @@
+{
+ "run_id": "p3_v3_ord_p307_006",
+ "version": "v3",
+ "order": {
+  "id": "ord_p307_006",
+  "pool": "practice",
+  "rung": 1,
+  "title": "Calculator that adds or subtracts two 2-bit numbers",
+  "spec": "When the switch op is 0 it adds the 2-bit numbers a and b, when op is 1 it works out a minus b; s is the 2-bit answer and cout is the carry out (for subtraction it lights up when a is at least b).",
+  "inputs": [
+   "a1",
+   "a0",
+   "b1",
+   "b0",
+   "op"
+  ],
+  "outputs": [
+   "s1",
+   "s0",
+   "cout"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "sequence": null,
+  "seed": 352738066
+ },
+ "attempts": 0,
+ "events": [
+  {
+   "t": 0,
+   "type": "order"
+  },
+  {
+   "t": 0,
+   "type": "fail",
+   "attempt": 1,
+   "category": "format",
+   "note": "runner error: 'inverter_in'",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 0,
+   "type": "done"
+  }
+ ],
+ "blueprint": null,
+ "yosys_json": null,
+ "inspection": null,
+ "calls": []
+}

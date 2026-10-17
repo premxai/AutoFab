@@ -1,0 +1,29 @@
+EXAM v1: pass 0.12 by_rung {'1': 0.0, '5': 0.0, '2': 0.4, '3': 0.0, '6': 0.25, '4': 0.0} gates/best 1.74 cost 0.0067
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\sri varshini\OneDrive\Desktop\AutoFab\engine\runner.py", line 220, in <module>
+    asyncio.run(run_shifts(a.shifts, a.practice, a.validation, a.parallel, [v.strip() for v in a.exam.split(",") if v.strip()], a.seed))
+    ^^^^^^
+  File "C:\Users\sri varshini\OneDrive\Desktop\AutoFab\engine\runner.py", line 216, in main
+    snap, lib = GATE.load(a.exam_only), Library.load()
+  File "C:\Users\sri varshini\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\sri varshini\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\sri varshini\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py", line 725, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Users\sri varshini\OneDrive\Desktop\AutoFab\engine\runner.py", line 112, in run_shifts
+    STATE["shifts"].append(entry); write_state()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sri varshini\OneDrive\Desktop\AutoFab\engine\investigator.py", line 82, in investigate_shift
+    failed.sort(key=lambda r: CATEGORIES.index(r["inspection"].get("failure_category", "wrong_logic")))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\sri varshini\OneDrive\Desktop\AutoFab\engine\investigator.py", line 82, in <lambda>
+    failed.sort(key=lambda r: CATEGORIES.index(r["inspection"].get("failure_category", "wrong_logic")))
+                                               ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'get'
+EXIT 1

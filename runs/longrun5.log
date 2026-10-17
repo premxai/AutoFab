@@ -1,0 +1,9 @@
+resuming at shift 4 on v4 (exams done: ['v1'])
+revert: schema_and_route pass=0.08 cost=0.026 (rung regression (old {'1': 0.6, '2': 1.0, '3': 0.0, '5': 0.0, '4': 0.0} -> new {'1': 0.2, '2': 0.0, '3': 0.0, '5': 0.0, '4': 0.0}))
+EXAM v5: pass 0.38 by_rung {'1': 0.38, '5': 0.25, '2': 0.7, '3': 0.17, '6': 0.75, '4': 0.0} gates/best 1.32 cost 0.0058
+revert: schema_on pass=0.25 cost=0.006 (pass 0.42->0.25 (noise 0.08), cost x1.20)
+revert: schema_and_route pass=0.00 cost=0.018 (pass 0.25->0.00 (noise 0.08), cost x2.77)
+revert: schema_on pass=0.25 cost=0.007 (pass 0.33->0.25 (noise 0.08), cost x1.25)
+EXAM v8: pass 0.40 by_rung {'1': 0.62, '5': 0.5, '2': 0.6, '3': 0.17, '6': 0.5, '4': 0.0} gates/best 1.29 cost 0.0048
+revert: schema_and_route pass=0.08 cost=0.025 (pass 0.50->0.08 (noise 0.08), cost x3.82)
+EXIT 0

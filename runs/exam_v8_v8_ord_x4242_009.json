@@ -1,0 +1,615 @@
+{
+ "run_id": "exam_v8_v8_ord_x4242_009",
+ "version": "v8",
+ "order": {
+  "id": "ord_x4242_009",
+  "pool": "exam",
+  "rung": 6,
+  "title": "Comparator that says whether a is bigger than b (2-bit)",
+  "spec": "Compares two 2-bit numbers a and b; the output y is 1 only when a is strictly bigger than b.",
+  "inputs": [
+   "a1",
+   "a0",
+   "b1",
+   "b0"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 619788506,
+  "sequence": null
+ },
+ "attempts": 1,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 23.56,
+   "type": "plan",
+   "parts": [
+    "chip"
+   ],
+   "definition_of_done": [
+    "all inputs correct",
+    "every pin wired"
+   ]
+  },
+  {
+   "t": 23.56,
+   "type": "spawn",
+   "agent": "designer:chip",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 81.27,
+   "type": "place",
+   "block": "chip",
+   "kind": "part",
+   "label": "CHIP"
+  },
+  {
+   "t": 81.27,
+   "type": "place",
+   "block": "not_b1",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 81.27,
+   "type": "place",
+   "block": "not_b0",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 81.27,
+   "type": "place",
+   "block": "and_gt1",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 81.27,
+   "type": "place",
+   "block": "and_gt0",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 81.27,
+   "type": "place",
+   "block": "xor_cmp",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 81.27,
+   "type": "place",
+   "block": "not_xor",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 81.27,
+   "type": "place",
+   "block": "and_eq_gt0",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 81.27,
+   "type": "place",
+   "block": "or_final",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 81.27,
+   "type": "wire",
+   "from": "b1",
+   "to": "not_b1.in"
+  },
+  {
+   "t": 81.27,
+   "type": "wire",
+   "from": "b0",
+   "to": "not_b0.in"
+  },
+  {
+   "t": 81.27,
+   "type": "wire",
+   "from": "a1",
+   "to": "and_gt1.in"
+  },
+  {
+   "t": 81.27,
+   "type": "wire",
+   "from": "b1_not",
+   "to": "and_gt1.in"
+  },
+  {
+   "t": 81.27,
+   "type": "wire",
+   "from": "a0",
+   "to": "and_gt0.in"
+  },
+  {
+   "t": 81.27,
+   "type": "wire",
+   "from": "b0_not",
+   "to": "and_gt0.in"
+  },
+  {
+   "t": 81.27,
+   "type": "wire",
+   "from": "a1",
+   "to": "xor_cmp.in"
+  },
+  {
+   "t": 81.27,
+   "type": "wire",
+   "from": "b1",
+   "to": "xor_cmp.in"
+  },
+  {
+   "t": 81.27,
+   "type": "wire",
+   "from": "xor_a1_b1",
+   "to": "not_xor.in"
+  },
+  {
+   "t": 81.27,
+   "type": "wire",
+   "from": "eq_cmp",
+   "to": "and_eq_gt0.in"
+  },
+  {
+   "t": 81.27,
+   "type": "wire",
+   "from": "gt0",
+   "to": "and_eq_gt0.in"
+  },
+  {
+   "t": 81.27,
+   "type": "wire",
+   "from": "gt1",
+   "to": "or_final.in"
+  },
+  {
+   "t": 81.27,
+   "type": "wire",
+   "from": "eq_and_gt0",
+   "to": "or_final.in"
+  },
+  {
+   "t": 81.27,
+   "type": "test",
+   "attempt": 1,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "16/16 inputs correct"
+  },
+  {
+   "t": 81.27,
+   "type": "pass",
+   "attempt": 1
+  },
+  {
+   "t": 81.27,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "a1",
+   "a0",
+   "b1",
+   "b0"
+  ],
+  "outputs": {
+   "y": "y"
+  },
+  "instances": [],
+  "gates": [
+   {
+    "name": "not_b1",
+    "type": "NOT",
+    "inputs": [
+     "b1"
+    ],
+    "output": "b1_not"
+   },
+   {
+    "name": "not_b0",
+    "type": "NOT",
+    "inputs": [
+     "b0"
+    ],
+    "output": "b0_not"
+   },
+   {
+    "name": "and_gt1",
+    "type": "AND",
+    "inputs": [
+     "a1",
+     "b1_not"
+    ],
+    "output": "gt1"
+   },
+   {
+    "name": "and_gt0",
+    "type": "AND",
+    "inputs": [
+     "a0",
+     "b0_not"
+    ],
+    "output": "gt0"
+   },
+   {
+    "name": "xor_cmp",
+    "type": "XOR",
+    "inputs": [
+     "a1",
+     "b1"
+    ],
+    "output": "xor_a1_b1"
+   },
+   {
+    "name": "not_xor",
+    "type": "NOT",
+    "inputs": [
+     "xor_a1_b1"
+    ],
+    "output": "eq_cmp"
+   },
+   {
+    "name": "and_eq_gt0",
+    "type": "AND",
+    "inputs": [
+     "eq_cmp",
+     "gt0"
+    ],
+    "output": "eq_and_gt0"
+   },
+   {
+    "name": "or_final",
+    "type": "OR",
+    "inputs": [
+     "gt1",
+     "eq_and_gt0"
+    ],
+    "output": "y"
+   }
+  ],
+  "flipflops": []
+ },
+ "yosys_json": {
+  "modules": {
+   "chip": {
+    "ports": {
+     "a1": {
+      "direction": "input",
+      "bits": [
+       2
+      ]
+     },
+     "a0": {
+      "direction": "input",
+      "bits": [
+       3
+      ]
+     },
+     "b1": {
+      "direction": "input",
+      "bits": [
+       4
+      ]
+     },
+     "b0": {
+      "direction": "input",
+      "bits": [
+       5
+      ]
+     },
+     "y": {
+      "direction": "output",
+      "bits": [
+       13
+      ]
+     }
+    },
+    "cells": {
+     "not_b1": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        4
+       ],
+       "Y": [
+        6
+       ]
+      }
+     },
+     "not_b0": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        5
+       ],
+       "Y": [
+        7
+       ]
+      }
+     },
+     "and_gt1": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        8
+       ]
+      }
+     },
+     "and_gt0": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "B": [
+        7
+       ],
+       "Y": [
+        9
+       ]
+      }
+     },
+     "xor_cmp": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        4
+       ],
+       "Y": [
+        10
+       ]
+      }
+     },
+     "not_xor": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        10
+       ],
+       "Y": [
+        11
+       ]
+      }
+     },
+     "and_eq_gt0": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        11
+       ],
+       "B": [
+        9
+       ],
+       "Y": [
+        12
+       ]
+      }
+     },
+     "or_final": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        8
+       ],
+       "B": [
+        12
+       ],
+       "Y": [
+        13
+       ]
+      }
+     }
+    },
+    "netnames": {
+     "a1": {
+      "bits": [
+       2
+      ]
+     },
+     "a0": {
+      "bits": [
+       3
+      ]
+     },
+     "b1": {
+      "bits": [
+       4
+      ]
+     },
+     "b0": {
+      "bits": [
+       5
+      ]
+     },
+     "b1_not": {
+      "bits": [
+       6
+      ]
+     },
+     "b0_not": {
+      "bits": [
+       7
+      ]
+     },
+     "gt1": {
+      "bits": [
+       8
+      ]
+     },
+     "gt0": {
+      "bits": [
+       9
+      ]
+     },
+     "xor_a1_b1": {
+      "bits": [
+       10
+      ]
+     },
+     "eq_cmp": {
+      "bits": [
+       11
+      ]
+     },
+     "eq_and_gt0": {
+      "bits": [
+       12
+      ]
+     },
+     "y": {
+      "bits": [
+       13
+      ]
+     }
+    }
+   }
+  }
+ },
+ "inspection": {
+  "order_id": "ord_x4242_009",
+  "version": "v8",
+  "attempt": 1,
+  "pass": true,
+  "correct": {
+   "ok": true,
+   "passed": 16,
+   "total": 16
+  },
+  "rules": {
+   "format": "ok",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 8,
+  "best_known_gates": 7,
+  "depth": 4,
+  "failure_category": "none",
+  "note": "all inputs correct and every fab rule satisfied",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 1522,
+   "tokens_out": 6534,
+   "thinking_chars": 18662,
+   "cached_tokens": 0,
+   "cost_usd": 0.00138,
+   "time_s": 81.26,
+   "ttft_s": 0.9003399000066565
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": null,
+   "time_s": 23.557273000013083,
+   "tokens_in": 687,
+   "tokens_out": 0,
+   "thinking_chars": 0,
+   "cached_tokens": null,
+   "cost_usd": 3.435e-05,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": "HTTP 503 after 5 tries"
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.9003399000066565,
+   "time_s": 57.70684579999943,
+   "tokens_in": 835,
+   "tokens_out": 6534,
+   "thinking_chars": 18662,
+   "cached_tokens": null,
+   "cost_usd": 0.0013485500000000002,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

@@ -1,0 +1,610 @@
+{
+ "parts": {
+  "bit_gt": {
+   "id": "bit_gt",
+   "ports": {
+    "inputs": [
+     "a",
+     "b"
+    ],
+    "outputs": [
+     "gt"
+    ]
+   },
+   "blueprint": {
+    "inputs": [
+     "a",
+     "b"
+    ],
+    "outputs": {
+     "gt": "gt"
+    },
+    "instances": [],
+    "gates": [
+     {
+      "name": "not_b",
+      "type": "NOT",
+      "inputs": [
+       "b"
+      ],
+      "output": "b_not"
+     },
+     {
+      "name": "and_gt",
+      "type": "AND",
+      "inputs": [
+       "a",
+       "b_not"
+      ],
+      "output": "gt"
+     }
+    ],
+    "flipflops": []
+   },
+   "verified": true,
+   "gates": 2,
+   "born_shift": 1
+  },
+  "bit_eq": {
+   "id": "bit_eq",
+   "ports": {
+    "inputs": [
+     "a",
+     "b"
+    ],
+    "outputs": [
+     "eq"
+    ]
+   },
+   "blueprint": {
+    "inputs": [
+     "a",
+     "b"
+    ],
+    "outputs": {
+     "eq": "eq"
+    },
+    "instances": [],
+    "gates": [
+     {
+      "name": "g1",
+      "type": "XOR",
+      "inputs": [
+       "a",
+       "b"
+      ],
+      "output": "xout"
+     },
+     {
+      "name": "g2",
+      "type": "NOT",
+      "inputs": [
+       "xout"
+      ],
+      "output": "eq"
+     }
+    ],
+    "flipflops": []
+   },
+   "verified": true,
+   "gates": 2,
+   "born_shift": 1
+  },
+  "comp_2bit": {
+   "id": "comp_2bit",
+   "ports": {
+    "inputs": [
+     "a1",
+     "a0",
+     "b1",
+     "b0"
+    ],
+    "outputs": [
+     "y"
+    ]
+   },
+   "blueprint": {
+    "inputs": [
+     "a1",
+     "a0",
+     "b1",
+     "b0"
+    ],
+    "outputs": {
+     "y": "y"
+    },
+    "instances": [],
+    "gates": [
+     {
+      "name": "not_b1",
+      "type": "NOT",
+      "inputs": [
+       "b1"
+      ],
+      "output": "n_b1"
+     },
+     {
+      "name": "not_b0",
+      "type": "NOT",
+      "inputs": [
+       "b0"
+      ],
+      "output": "n_b0"
+     },
+     {
+      "name": "xor_a1_b1",
+      "type": "XOR",
+      "inputs": [
+       "a1",
+       "b1"
+      ],
+      "output": "xor_a1_b1"
+     },
+     {
+      "name": "not_xor1",
+      "type": "NOT",
+      "inputs": [
+       "xor_a1_b1"
+      ],
+      "output": "xnor_a1_b1"
+     },
+     {
+      "name": "and_t1",
+      "type": "AND",
+      "inputs": [
+       "a1",
+       "n_b1"
+      ],
+      "output": "t1"
+     },
+     {
+      "name": "and_t0",
+      "type": "AND",
+      "inputs": [
+       "a0",
+       "n_b0"
+      ],
+      "output": "t0"
+     },
+     {
+      "name": "and_t2",
+      "type": "AND",
+      "inputs": [
+       "xnor_a1_b1",
+       "t0"
+      ],
+      "output": "t2"
+     },
+     {
+      "name": "or_y",
+      "type": "OR",
+      "inputs": [
+       "t1",
+       "t2"
+      ],
+      "output": "y"
+     }
+    ],
+    "flipflops": []
+   },
+   "verified": true,
+   "gates": 8,
+   "born_shift": 1
+  },
+  "full_adder": {
+   "id": "full_adder",
+   "ports": {
+    "inputs": [
+     "a",
+     "b",
+     "cin"
+    ],
+    "outputs": [
+     "s",
+     "cout"
+    ]
+   },
+   "blueprint": {
+    "inputs": [
+     "a",
+     "b",
+     "cin"
+    ],
+    "outputs": {
+     "s": "s",
+     "cout": "cout"
+    },
+    "instances": [],
+    "gates": [
+     {
+      "name": "g1",
+      "type": "XOR",
+      "inputs": [
+       "a",
+       "b"
+      ],
+      "output": "x1"
+     },
+     {
+      "name": "g2",
+      "type": "XOR",
+      "inputs": [
+       "x1",
+       "cin"
+      ],
+      "output": "s"
+     },
+     {
+      "name": "g3",
+      "type": "AND",
+      "inputs": [
+       "a",
+       "b"
+      ],
+      "output": "ab"
+     },
+     {
+      "name": "g4",
+      "type": "AND",
+      "inputs": [
+       "cin",
+       "x1"
+      ],
+      "output": "cin_x1"
+     },
+     {
+      "name": "g5",
+      "type": "OR",
+      "inputs": [
+       "ab",
+       "cin_x1"
+      ],
+      "output": "cout"
+     }
+    ],
+    "flipflops": []
+   },
+   "verified": true,
+   "gates": 5,
+   "born_shift": 2
+  },
+  "ripple_carry_3bit_adder": {
+   "id": "ripple_carry_3bit_adder",
+   "ports": {
+    "inputs": [
+     "a2",
+     "a1",
+     "a0",
+     "b2",
+     "b1",
+     "b0",
+     "cin"
+    ],
+    "outputs": [
+     "s2",
+     "s1",
+     "s0",
+     "cout"
+    ]
+   },
+   "blueprint": {
+    "inputs": [
+     "a2",
+     "a1",
+     "a0",
+     "b2",
+     "b1",
+     "b0",
+     "cin"
+    ],
+    "outputs": {
+     "s0": "w2",
+     "s1": "w7",
+     "s2": "w12",
+     "cout": "w15"
+    },
+    "instances": [],
+    "gates": [
+     {
+      "name": "G1",
+      "type": "XOR",
+      "inputs": [
+       "a0",
+       "b0"
+      ],
+      "output": "w1"
+     },
+     {
+      "name": "G2",
+      "type": "XOR",
+      "inputs": [
+       "w1",
+       "cin"
+      ],
+      "output": "w2"
+     },
+     {
+      "name": "G3",
+      "type": "AND",
+      "inputs": [
+       "a0",
+       "b0"
+      ],
+      "output": "w3"
+     },
+     {
+      "name": "G4",
+      "type": "AND",
+      "inputs": [
+       "w1",
+       "cin"
+      ],
+      "output": "w4"
+     },
+     {
+      "name": "G5",
+      "type": "OR",
+      "inputs": [
+       "w3",
+       "w4"
+      ],
+      "output": "w5"
+     },
+     {
+      "name": "G6",
+      "type": "XOR",
+      "inputs": [
+       "a1",
+       "b1"
+      ],
+      "output": "w6"
+     },
+     {
+      "name": "G7",
+      "type": "XOR",
+      "inputs": [
+       "w6",
+       "w5"
+      ],
+      "output": "w7"
+     },
+     {
+      "name": "G8",
+      "type": "AND",
+      "inputs": [
+       "a1",
+       "b1"
+      ],
+      "output": "w8"
+     },
+     {
+      "name": "G9",
+      "type": "AND",
+      "inputs": [
+       "w6",
+       "w5"
+      ],
+      "output": "w9"
+     },
+     {
+      "name": "G10",
+      "type": "OR",
+      "inputs": [
+       "w8",
+       "w9"
+      ],
+      "output": "w10"
+     },
+     {
+      "name": "G11",
+      "type": "XOR",
+      "inputs": [
+       "a2",
+       "b2"
+      ],
+      "output": "w11"
+     },
+     {
+      "name": "G12",
+      "type": "XOR",
+      "inputs": [
+       "w11",
+       "w10"
+      ],
+      "output": "w12"
+     },
+     {
+      "name": "G13",
+      "type": "AND",
+      "inputs": [
+       "a2",
+       "b2"
+      ],
+      "output": "w13"
+     },
+     {
+      "name": "G14",
+      "type": "AND",
+      "inputs": [
+       "w11",
+       "w10"
+      ],
+      "output": "w14"
+     },
+     {
+      "name": "G15",
+      "type": "OR",
+      "inputs": [
+       "w13",
+       "w14"
+      ],
+      "output": "w15"
+     }
+    ],
+    "flipflops": []
+   },
+   "verified": true,
+   "gates": 15,
+   "born_shift": 2
+  },
+  "fa_lsb": {
+   "id": "fa_lsb",
+   "ports": {
+    "inputs": [
+     "a",
+     "b",
+     "cin"
+    ],
+    "outputs": [
+     "s",
+     "cout"
+    ]
+   },
+   "blueprint": {
+    "inputs": [
+     "a",
+     "b",
+     "cin"
+    ],
+    "outputs": {
+     "s": "s",
+     "cout": "cout"
+    },
+    "instances": [
+     {
+      "name": "full_adder",
+      "part": "full_adder",
+      "wire": {
+       "a": "a",
+       "b": "b",
+       "cin": "cin",
+       "s": "s",
+       "cout": "cout"
+      }
+     }
+    ],
+    "gates": [],
+    "flipflops": []
+   },
+   "verified": true,
+   "gates": 0,
+   "born_shift": 7
+  },
+  "fa_msb": {
+   "id": "fa_msb",
+   "ports": {
+    "inputs": [
+     "a",
+     "b",
+     "cin"
+    ],
+    "outputs": [
+     "s",
+     "cout"
+    ]
+   },
+   "blueprint": {
+    "inputs": [
+     "a",
+     "b",
+     "cin"
+    ],
+    "outputs": {
+     "s": "s",
+     "cout": "cout"
+    },
+    "instances": [
+     {
+      "name": "full_adder",
+      "part": "full_adder",
+      "wire": {
+       "a": "a",
+       "b": "b",
+       "cin": "cin",
+       "s": "s",
+       "cout": "cout"
+      }
+     }
+    ],
+    "gates": [],
+    "flipflops": []
+   },
+   "verified": true,
+   "gates": 0,
+   "born_shift": 7
+  }
+ },
+ "lessons": [
+  {
+   "id": "L001",
+   "when": "handing in a blueprint",
+   "pitfall": "library part 'lock_or' is broken: name 'or1' is used twice (a gate and a instance); every name must be unique",
+   "verification": "check that every gate has a name, a valid type, 1 or 2 inputs and an output, and every output maps to a real signal",
+   "category": "format",
+   "born_shift": 1,
+   "hits": 1,
+   "active": true
+  },
+  {
+   "id": "L002",
+   "when": "designing an unfamiliar function",
+   "pitfall": "no answer within the thinking budget",
+   "verification": "if no answer forms within a few hundred lines of reasoning, stop and hand the part to the stronger model",
+   "category": "spiral",
+   "born_shift": 1,
+   "hits": 36,
+   "active": true
+  },
+  {
+   "id": "L003",
+   "when": "handing in a blueprint",
+   "pitfall": "runner error: 'inverter_in'",
+   "verification": "check that every gate has a name, a valid type, 1 or 2 inputs and an output, and every output maps to a real signal",
+   "category": "format",
+   "born_shift": 3,
+   "hits": 1,
+   "active": true
+  },
+  {
+   "id": "L004",
+   "when": "handing in a blueprint",
+   "pitfall": "library part 'full_adder_0': blueprint inputs ['a', 'b', 'cin'] do not match its ports ['a0', 'b0', 'cin']",
+   "verification": "check that every gate has a name, a valid type, 1 or 2 inputs and an output, and every output maps to a real signal",
+   "category": "format",
+   "born_shift": 3,
+   "hits": 3,
+   "active": true
+  },
+  {
+   "id": "L005",
+   "when": "checking fab rules before handing in",
+   "pitfall": "signal 'op' feeds 5 gate inputs (limit 4)",
+   "verification": "count fan-out per signal and depth before handing in",
+   "category": "rules",
+   "born_shift": 6,
+   "hits": 3,
+   "active": true
+  },
+  {
+   "id": "L006",
+   "when": "checking fab rules before handing in",
+   "pitfall": "gate xor_a0_b0 is never used (its output 'x_a0_b0' feeds nothing)",
+   "verification": "count fan-out per signal and depth before handing in",
+   "category": "rules",
+   "born_shift": 6,
+   "hits": 2,
+   "active": true
+  },
+  {
+   "id": "L007",
+   "when": "handing in a blueprint",
+   "pitfall": "name 'ff_q0' is used twice (a instance and a flip-flop); every name must be unique",
+   "verification": "check that every gate has a name, a valid type, 1 or 2 inputs and an output, and every output maps to a real signal",
+   "category": "format",
+   "born_shift": 8,
+   "hits": 0,
+   "active": true
+  }
+ ],
+ "saved": "2026-10-17T14:24:02"
+}

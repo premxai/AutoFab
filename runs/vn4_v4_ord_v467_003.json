@@ -1,0 +1,765 @@
+{
+ "run_id": "vn4_v4_ord_v467_003",
+ "version": "v4",
+ "order": {
+  "id": "ord_v467_003",
+  "pool": "validation",
+  "rung": 1,
+  "title": "Calculator that adds two 3-bit numbers plus a carry-in",
+  "spec": "Adds the 3-bit numbers a and b plus the extra single bit cin; s is the 3-bit answer and cout lights up when the answer is too big to fit in 3 bits.",
+  "inputs": [
+   "a2",
+   "a1",
+   "a0",
+   "b2",
+   "b1",
+   "b0",
+   "cin"
+  ],
+  "outputs": [
+   "s2",
+   "s1",
+   "s0",
+   "cout"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 85569805,
+  "sequence": null
+ },
+ "attempts": 1,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 94.26,
+   "type": "plan",
+   "parts": [
+    "adder3bit"
+   ],
+   "definition_of_done": [
+    "Every gate instance has a unique name.",
+    "Each gate is one of the allowed types (AND, OR, XOR, NOT) and has the correct number of inputs (NOT \u2192 1, others \u2192 2).",
+    "All signals that appear as gate inputs or outputs are declared either as a chip input, chip output, or internal wire; no signal is left unconnected.",
+    "The internal wiring exactly matches the connections of the reused library part (or, if built from primitives, implements the specified Boolean function).",
+    "The blueprint passes functional validation: for every possible combination of the 7 inputs (a2,a1,a0,b2,b1,b0,cin) the outputs (s2,s1,s0,cout) equal the truth table of a 3\u2011bit adder with carry\u2011in.",
+    "All reused parts are taken from the verified library and their pin names match the part\u2019s declared ports.",
+    "No extra, unused gates or wires remain in the netlist.",
+    "Documentation (name, one\u2011sentence spec, I/O list) is present for each part."
+   ]
+  },
+  {
+   "t": 94.26,
+   "type": "spawn",
+   "agent": "designer:adder3bit",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 94.26,
+   "type": "place",
+   "block": "adder3bit",
+   "kind": "part",
+   "label": "ADDER3"
+  },
+  {
+   "t": 94.26,
+   "type": "wire",
+   "from": "a2",
+   "to": "ripple_carry_3bit_adder.a2"
+  },
+  {
+   "t": 94.26,
+   "type": "wire",
+   "from": "a1",
+   "to": "ripple_carry_3bit_adder.a1"
+  },
+  {
+   "t": 94.26,
+   "type": "wire",
+   "from": "a0",
+   "to": "ripple_carry_3bit_adder.a0"
+  },
+  {
+   "t": 94.26,
+   "type": "wire",
+   "from": "b2",
+   "to": "ripple_carry_3bit_adder.b2"
+  },
+  {
+   "t": 94.26,
+   "type": "wire",
+   "from": "b1",
+   "to": "ripple_carry_3bit_adder.b1"
+  },
+  {
+   "t": 94.26,
+   "type": "wire",
+   "from": "b0",
+   "to": "ripple_carry_3bit_adder.b0"
+  },
+  {
+   "t": 94.26,
+   "type": "wire",
+   "from": "cin",
+   "to": "ripple_carry_3bit_adder.cin"
+  },
+  {
+   "t": 94.26,
+   "type": "wire",
+   "from": "s2",
+   "to": "ripple_carry_3bit_adder.s2"
+  },
+  {
+   "t": 94.26,
+   "type": "wire",
+   "from": "s1",
+   "to": "ripple_carry_3bit_adder.s1"
+  },
+  {
+   "t": 94.26,
+   "type": "wire",
+   "from": "s0",
+   "to": "ripple_carry_3bit_adder.s0"
+  },
+  {
+   "t": 94.26,
+   "type": "wire",
+   "from": "cout",
+   "to": "ripple_carry_3bit_adder.cout"
+  },
+  {
+   "t": 94.26,
+   "type": "test",
+   "attempt": 1,
+   "inputs": {
+    "a": 7,
+    "b": 5
+   },
+   "expected": 12,
+   "got": 4
+  },
+  {
+   "t": 94.26,
+   "type": "pass",
+   "attempt": 1
+  },
+  {
+   "t": 94.26,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "a2",
+   "a1",
+   "a0",
+   "b2",
+   "b1",
+   "b0",
+   "cin"
+  ],
+  "outputs": {
+   "s2": "s2",
+   "s1": "s1",
+   "s0": "s0",
+   "cout": "cout"
+  },
+  "instances": [
+   {
+    "name": "ripple_carry_3bit_adder",
+    "part": "ripple_carry_3bit_adder",
+    "wire": {
+     "a2": "a2",
+     "a1": "a1",
+     "a0": "a0",
+     "b2": "b2",
+     "b1": "b1",
+     "b0": "b0",
+     "cin": "cin",
+     "s2": "s2",
+     "s1": "s1",
+     "s0": "s0",
+     "cout": "cout"
+    }
+   }
+  ],
+  "gates": [],
+  "flipflops": []
+ },
+ "yosys_json": {
+  "modules": {
+   "chip": {
+    "ports": {
+     "a2": {
+      "direction": "input",
+      "bits": [
+       2
+      ]
+     },
+     "a1": {
+      "direction": "input",
+      "bits": [
+       3
+      ]
+     },
+     "a0": {
+      "direction": "input",
+      "bits": [
+       4
+      ]
+     },
+     "b2": {
+      "direction": "input",
+      "bits": [
+       5
+      ]
+     },
+     "b1": {
+      "direction": "input",
+      "bits": [
+       6
+      ]
+     },
+     "b0": {
+      "direction": "input",
+      "bits": [
+       7
+      ]
+     },
+     "cin": {
+      "direction": "input",
+      "bits": [
+       8
+      ]
+     },
+     "s2": {
+      "direction": "output",
+      "bits": [
+       20
+      ]
+     },
+     "s1": {
+      "direction": "output",
+      "bits": [
+       15
+      ]
+     },
+     "s0": {
+      "direction": "output",
+      "bits": [
+       10
+      ]
+     },
+     "cout": {
+      "direction": "output",
+      "bits": [
+       23
+      ]
+     }
+    },
+    "cells": {
+     "ripple_carry_3bit_adder.G1": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        4
+       ],
+       "B": [
+        7
+       ],
+       "Y": [
+        9
+       ]
+      }
+     },
+     "ripple_carry_3bit_adder.G2": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        9
+       ],
+       "B": [
+        8
+       ],
+       "Y": [
+        10
+       ]
+      }
+     },
+     "ripple_carry_3bit_adder.G3": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        4
+       ],
+       "B": [
+        7
+       ],
+       "Y": [
+        11
+       ]
+      }
+     },
+     "ripple_carry_3bit_adder.G4": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        9
+       ],
+       "B": [
+        8
+       ],
+       "Y": [
+        12
+       ]
+      }
+     },
+     "ripple_carry_3bit_adder.G5": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        11
+       ],
+       "B": [
+        12
+       ],
+       "Y": [
+        13
+       ]
+      }
+     },
+     "ripple_carry_3bit_adder.G6": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        14
+       ]
+      }
+     },
+     "ripple_carry_3bit_adder.G7": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        14
+       ],
+       "B": [
+        13
+       ],
+       "Y": [
+        15
+       ]
+      }
+     },
+     "ripple_carry_3bit_adder.G8": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        16
+       ]
+      }
+     },
+     "ripple_carry_3bit_adder.G9": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        14
+       ],
+       "B": [
+        13
+       ],
+       "Y": [
+        17
+       ]
+      }
+     },
+     "ripple_carry_3bit_adder.G10": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        16
+       ],
+       "B": [
+        17
+       ],
+       "Y": [
+        18
+       ]
+      }
+     },
+     "ripple_carry_3bit_adder.G11": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        19
+       ]
+      }
+     },
+     "ripple_carry_3bit_adder.G12": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        19
+       ],
+       "B": [
+        18
+       ],
+       "Y": [
+        20
+       ]
+      }
+     },
+     "ripple_carry_3bit_adder.G13": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        21
+       ]
+      }
+     },
+     "ripple_carry_3bit_adder.G14": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        19
+       ],
+       "B": [
+        18
+       ],
+       "Y": [
+        22
+       ]
+      }
+     },
+     "ripple_carry_3bit_adder.G15": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        21
+       ],
+       "B": [
+        22
+       ],
+       "Y": [
+        23
+       ]
+      }
+     }
+    },
+    "netnames": {
+     "a2": {
+      "bits": [
+       2
+      ]
+     },
+     "a1": {
+      "bits": [
+       3
+      ]
+     },
+     "a0": {
+      "bits": [
+       4
+      ]
+     },
+     "b2": {
+      "bits": [
+       5
+      ]
+     },
+     "b1": {
+      "bits": [
+       6
+      ]
+     },
+     "b0": {
+      "bits": [
+       7
+      ]
+     },
+     "cin": {
+      "bits": [
+       8
+      ]
+     },
+     "ripple_carry_3bit_adder.w1": {
+      "bits": [
+       9
+      ]
+     },
+     "s0": {
+      "bits": [
+       10
+      ]
+     },
+     "ripple_carry_3bit_adder.w3": {
+      "bits": [
+       11
+      ]
+     },
+     "ripple_carry_3bit_adder.w4": {
+      "bits": [
+       12
+      ]
+     },
+     "ripple_carry_3bit_adder.w5": {
+      "bits": [
+       13
+      ]
+     },
+     "ripple_carry_3bit_adder.w6": {
+      "bits": [
+       14
+      ]
+     },
+     "s1": {
+      "bits": [
+       15
+      ]
+     },
+     "ripple_carry_3bit_adder.w8": {
+      "bits": [
+       16
+      ]
+     },
+     "ripple_carry_3bit_adder.w9": {
+      "bits": [
+       17
+      ]
+     },
+     "ripple_carry_3bit_adder.w10": {
+      "bits": [
+       18
+      ]
+     },
+     "ripple_carry_3bit_adder.w11": {
+      "bits": [
+       19
+      ]
+     },
+     "s2": {
+      "bits": [
+       20
+      ]
+     },
+     "ripple_carry_3bit_adder.w13": {
+      "bits": [
+       21
+      ]
+     },
+     "ripple_carry_3bit_adder.w14": {
+      "bits": [
+       22
+      ]
+     },
+     "cout": {
+      "bits": [
+       23
+      ]
+     }
+    }
+   }
+  }
+ },
+ "inspection": {
+  "order_id": "ord_v467_003",
+  "version": "v4",
+  "attempt": 1,
+  "pass": true,
+  "correct": {
+   "ok": true,
+   "passed": 128,
+   "total": 128
+  },
+  "rules": {
+   "format": "ok",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 15,
+  "best_known_gates": 31,
+  "depth": 7,
+  "failure_category": "none",
+  "note": "all inputs correct and every fab rule satisfied",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "tokens_in": 656,
+   "tokens_out": 738,
+   "thinking_chars": 1460,
+   "cached_tokens": 0,
+   "cost_usd": 0.00197,
+   "time_s": 94.26,
+   "ttft_s": 0.7456115999957547
+  }
+ },
+ "calls": [
+  {
+   "parsed": {
+    "definition_of_done": [
+     "Every gate instance has a unique name.",
+     "Each gate is one of the allowed types (AND, OR, XOR, NOT) and has the correct number of inputs (NOT \u2192 1, others \u2192 2).",
+     "All signals that appear as gate inputs or outputs are declared either as a chip input, chip output, or internal wire; no signal is left unconnected.",
+     "The internal wiring exactly matches the connections of the reused library part (or, if built from primitives, implements the specified Boolean function).",
+     "The blueprint passes functional validation: for every possible combination of the 7 inputs (a2,a1,a0,b2,b1,b0,cin) the outputs (s2,s1,s0,cout) equal the truth table of a 3\u2011bit adder with carry\u2011in.",
+     "All reused parts are taken from the verified library and their pin names match the part\u2019s declared ports.",
+     "No extra, unused gates or wires remain in the netlist.",
+     "Documentation (name, one\u2011sentence spec, I/O list) is present for each part."
+    ],
+    "parts": [
+     {
+      "name": "adder3bit",
+      "spec": "Adds two 3\u2011bit numbers and a carry\u2011in, producing a 3\u2011bit sum and a carry\u2011out.",
+      "inputs": [
+       "a2",
+       "a1",
+       "a0",
+       "b2",
+       "b1",
+       "b0",
+       "cin"
+      ],
+      "outputs": [
+       "s2",
+       "s1",
+       "s0",
+       "cout"
+      ],
+      "reuse": "ripple_carry_3bit_adder"
+     }
+    ]
+   },
+   "spiral": false,
+   "ttft_s": 0.7456115999957547,
+   "time_s": 94.2552771000046,
+   "tokens_in": 656,
+   "tokens_out": 738,
+   "thinking_chars": 1460,
+   "cached_tokens": 0,
+   "cost_usd": 0.001968,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

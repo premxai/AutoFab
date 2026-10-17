@@ -1,0 +1,913 @@
+{
+ "run_id": "vn4_v4_ord_v467_002",
+ "version": "v4",
+ "order": {
+  "id": "ord_v467_002",
+  "pool": "validation",
+  "rung": 1,
+  "title": "Calculator that adds two 3-bit numbers",
+  "spec": "Adds the 3-bit number a to the 3-bit number b; s is the 3-bit answer and cout lights up when the answer is too big to fit in 3 bits.",
+  "inputs": [
+   "a2",
+   "a1",
+   "a0",
+   "b2",
+   "b1",
+   "b0"
+  ],
+  "outputs": [
+   "s2",
+   "s1",
+   "s0",
+   "cout"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 53426535,
+  "sequence": null
+ },
+ "attempts": 3,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B"
+  },
+  {
+   "t": 70.4,
+   "type": "plan",
+   "parts": [
+    "fa0",
+    "fa1",
+    "fa2"
+   ],
+   "definition_of_done": [
+    "Every gate in the netlist has a unique name, a valid type (AND, OR, XOR, NOT) and the correct number of inputs (1 for NOT, 2 for the others).",
+    "Every gate\u2019s output is connected to exactly one signal; every signal used as an input is driven by exactly one gate output (or a primary input).",
+    "All primary inputs and outputs of the chip are declared and match the specification (a2,a1,a0,b2,b1,b0 \u2192 s2,s1,s0,cout).",
+    "No signal is left unconnected or dangling; there are no floating nets.",
+    "The functional behavior of the whole netlist matches the truth table of a 3\u2011bit binary adder for all 2\u2076 = 64 input combinations (inspector verification).",
+    "Each reused library part is instantiated exactly as verified (its pin names match the part\u2019s port list).",
+    "The netlist can be hierarchically flattened without name conflicts \u2013 i.e., after flattening every gate still has a unique name.",
+    "All internal nets have meaningful names that follow the naming convention <part>_<signal> (e.g., fa0_cout, fa1_s).",
+    "The design passes the AutoFab format checker (no duplicate gate/instance names, no mismatched port lists)."
+   ]
+  },
+  {
+   "t": 70.4,
+   "type": "spawn",
+   "agent": "designer:fa0",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 70.4,
+   "type": "spawn",
+   "agent": "designer:fa1",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 70.4,
+   "type": "spawn",
+   "agent": "designer:fa2",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 70.4,
+   "type": "place",
+   "block": "fa0",
+   "kind": "part",
+   "label": "FA0"
+  },
+  {
+   "t": 70.4,
+   "type": "place",
+   "block": "fa1",
+   "kind": "part",
+   "label": "FA1"
+  },
+  {
+   "t": 70.4,
+   "type": "place",
+   "block": "fa2",
+   "kind": "part",
+   "label": "FA2"
+  },
+  {
+   "t": 70.4,
+   "type": "spawn",
+   "agent": "assembler",
+   "role": "assembler",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "chip_input_a0",
+   "to": "fa0.a0"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "chip_input_b0",
+   "to": "fa0.b0"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "chip_input_cin",
+   "to": "fa0.cin0"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "signal_s0",
+   "to": "fa0.s0"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "internal_c0",
+   "to": "fa0.cout0"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "chip_input_a1",
+   "to": "fa1.a1"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "chip_input_b1",
+   "to": "fa1.b1"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "internal_c0",
+   "to": "fa1.cin1"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "signal_s1",
+   "to": "fa1.s1"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "internal_c1",
+   "to": "fa1.cout1"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "chip_input_a2",
+   "to": "fa2.a2"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "chip_input_b2",
+   "to": "fa2.b2"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "internal_c1",
+   "to": "fa2.cin2"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "signal_s2",
+   "to": "fa2.s2"
+  },
+  {
+   "t": 96.17,
+   "type": "wire",
+   "from": "signal_cout",
+   "to": "fa2.cout"
+  },
+  {
+   "t": 96.17,
+   "type": "test",
+   "attempt": 1,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "0/64 inputs correct"
+  },
+  {
+   "t": 96.17,
+   "type": "fail",
+   "attempt": 1,
+   "category": "format",
+   "note": "fa0 (full_adder): port(s) ['a', 'b', 'cin', 's', 'cout'] not wired",
+   "bad_wires": [],
+   "bad_blocks": [
+    "fa0"
+   ]
+  },
+  {
+   "t": 96.17,
+   "type": "retry",
+   "attempt": 2
+  },
+  {
+   "t": 96.17,
+   "type": "spawn",
+   "agent": "designer:fa0",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 96.17,
+   "type": "place",
+   "block": "fa0",
+   "kind": "part",
+   "label": "FA0"
+  },
+  {
+   "t": 96.17,
+   "type": "spawn",
+   "agent": "assembler",
+   "role": "assembler",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "chip_input_a0",
+   "to": "fa0.a0"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "chip_input_b0",
+   "to": "fa0.b0"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "gnd_0",
+   "to": "fa0.cin0"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "output_s0",
+   "to": "fa0.s0"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "internal_cout0",
+   "to": "fa0.cout0"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "chip_input_a1",
+   "to": "fa1.a1"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "chip_input_b1",
+   "to": "fa1.b1"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "internal_cout0",
+   "to": "fa1.cin1"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "output_s1",
+   "to": "fa1.s1"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "internal_cout1",
+   "to": "fa1.cout1"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "chip_input_a2",
+   "to": "fa2.a2"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "chip_input_b2",
+   "to": "fa2.b2"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "internal_cout1",
+   "to": "fa2.cin2"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "output_s2",
+   "to": "fa2.s2"
+  },
+  {
+   "t": 120.22,
+   "type": "wire",
+   "from": "output_cout",
+   "to": "fa2.cout"
+  },
+  {
+   "t": 120.22,
+   "type": "test",
+   "attempt": 2,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "0/64 inputs correct"
+  },
+  {
+   "t": 120.22,
+   "type": "fail",
+   "attempt": 2,
+   "category": "format",
+   "note": "library part 'fa0': blueprint inputs ['a', 'b', 'cin'] do not match its ports ['a0', 'b0', 'cin0']",
+   "bad_wires": [],
+   "bad_blocks": [
+    "fa0"
+   ]
+  },
+  {
+   "t": 120.22,
+   "type": "retry",
+   "attempt": 3
+  },
+  {
+   "t": 120.22,
+   "type": "spawn",
+   "agent": "designer:fa0",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 120.22,
+   "type": "place",
+   "block": "fa0",
+   "kind": "part",
+   "label": "FA0"
+  },
+  {
+   "t": 120.22,
+   "type": "spawn",
+   "agent": "assembler",
+   "role": "assembler",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 171.44,
+   "type": "place",
+   "block": "g0",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "a0",
+   "to": "fa0.a0"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "b0",
+   "to": "fa0.b0"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "zero_cin",
+   "to": "fa0.cin0"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "s0",
+   "to": "fa0.s0"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "c0",
+   "to": "fa0.cout0"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "a1",
+   "to": "fa1.a1"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "b1",
+   "to": "fa1.b1"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "c0",
+   "to": "fa1.cin1"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "s1",
+   "to": "fa1.s1"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "c1",
+   "to": "fa1.cout1"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "a2",
+   "to": "fa2.a2"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "b2",
+   "to": "fa2.b2"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "c1",
+   "to": "fa2.cin2"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "s2",
+   "to": "fa2.s2"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "cout",
+   "to": "fa2.cout"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "a0",
+   "to": "g0.in"
+  },
+  {
+   "t": 171.44,
+   "type": "wire",
+   "from": "a0",
+   "to": "g0.in"
+  },
+  {
+   "t": 171.44,
+   "type": "test",
+   "attempt": 3,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "0/64 inputs correct"
+  },
+  {
+   "t": 171.44,
+   "type": "fail",
+   "attempt": 3,
+   "category": "format",
+   "note": "fa0 (full_adder): port(s) ['a', 'b', 'cin', 's', 'cout'] not wired",
+   "bad_wires": [],
+   "bad_blocks": [
+    "fa0"
+   ]
+  },
+  {
+   "t": 171.44,
+   "type": "human_ping",
+   "note": "3 attempts exhausted"
+  },
+  {
+   "t": 171.44,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "a2",
+   "a1",
+   "a0",
+   "b2",
+   "b1",
+   "b0"
+  ],
+  "outputs": {
+   "s0": "fa0.s0",
+   "s1": "fa1.s1",
+   "s2": "fa2.s2",
+   "cout": "fa2.cout"
+  },
+  "instances": [
+   {
+    "name": "fa0",
+    "part": "full_adder",
+    "wire": {
+     "a0": "a0",
+     "b0": "b0",
+     "cin0": "zero_cin",
+     "s0": "s0",
+     "cout0": "c0"
+    }
+   },
+   {
+    "name": "fa1",
+    "part": "full_adder",
+    "wire": {
+     "a1": "a1",
+     "b1": "b1",
+     "cin1": "c0",
+     "s1": "s1",
+     "cout1": "c1"
+    }
+   },
+   {
+    "name": "fa2",
+    "part": "full_adder",
+    "wire": {
+     "a2": "a2",
+     "b2": "b2",
+     "cin2": "c1",
+     "s2": "s2",
+     "cout": "cout"
+    }
+   }
+  ],
+  "gates": [
+   {
+    "name": "g0",
+    "type": "XOR",
+    "inputs": [
+     "a0",
+     "a0"
+    ],
+    "output": "zero_cin"
+   }
+  ],
+  "flipflops": []
+ },
+ "yosys_json": null,
+ "inspection": {
+  "order_id": "ord_v467_002",
+  "version": "v4",
+  "attempt": 3,
+  "pass": false,
+  "correct": {
+   "ok": false,
+   "passed": 0,
+   "total": 64
+  },
+  "rules": {
+   "format": "fail",
+   "allowed_gates": "n/a",
+   "pins": "n/a",
+   "fanout": "n/a",
+   "depth": "n/a",
+   "unused": "n/a",
+   "budget": "n/a"
+  },
+  "gates": 0,
+  "best_known_gates": 14,
+  "depth": 0,
+  "failure_category": "format",
+  "note": "fa0 (full_adder): port(s) ['a', 'b', 'cin', 's', 'cout'] not wired",
+  "bad_wires": [],
+  "bad_blocks": [
+   "fa0"
+  ],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 2899,
+   "tokens_out": 17497,
+   "thinking_chars": 49980,
+   "cached_tokens": 0,
+   "cost_usd": 0.00586,
+   "time_s": 171.44,
+   "ttft_s": 0.5150821999995969
+  }
+ },
+ "calls": [
+  {
+   "parsed": {
+    "definition_of_done": [
+     "Every gate in the netlist has a unique name, a valid type (AND, OR, XOR, NOT) and the correct number of inputs (1 for NOT, 2 for the others).",
+     "Every gate\u2019s output is connected to exactly one signal; every signal used as an input is driven by exactly one gate output (or a primary input).",
+     "All primary inputs and outputs of the chip are declared and match the specification (a2,a1,a0,b2,b1,b0 \u2192 s2,s1,s0,cout).",
+     "No signal is left unconnected or dangling; there are no floating nets.",
+     "The functional behavior of the whole netlist matches the truth table of a 3\u2011bit binary adder for all 2\u2076 = 64 input combinations (inspector verification).",
+     "Each reused library part is instantiated exactly as verified (its pin names match the part\u2019s port list).",
+     "The netlist can be hierarchically flattened without name conflicts \u2013 i.e., after flattening every gate still has a unique name.",
+     "All internal nets have meaningful names that follow the naming convention <part>_<signal> (e.g., fa0_cout, fa1_s).",
+     "The design passes the AutoFab format checker (no duplicate gate/instance names, no mismatched port lists)."
+    ],
+    "parts": [
+     {
+      "name": "fa0",
+      "spec": "Full\u2011adder for the least\u2011significant bit: computes sum0 = a0 xor b0 xor cin0 and cout0 = majority(a0,b0,cin0).",
+      "inputs": [
+       "a0",
+       "b0",
+       "cin0"
+      ],
+      "outputs": [
+       "s0",
+       "cout0"
+      ],
+      "reuse": "full_adder"
+     },
+     {
+      "name": "fa1",
+      "spec": "Full\u2011adder for the middle bit: computes sum1 = a1 xor b1 xor cin1 and cout1 = majority(a1,b1,cin1) where cin1 is the carry from fa0.",
+      "inputs": [
+       "a1",
+       "b1",
+       "cin1"
+      ],
+      "outputs": [
+       "s1",
+       "cout1"
+      ],
+      "reuse": "full_adder"
+     },
+     {
+      "name": "fa2",
+      "spec": "Full\u2011adder for the most\u2011significant bit: computes sum2 = a2 xor b2 xor cin2 and cout2 = majority(a2,b2,cin2) where cin2 is the carry from fa1; cout2 is the chip\u2019s carry\u2011out.",
+      "inputs": [
+       "a2",
+       "b2",
+       "cin2"
+      ],
+      "outputs": [
+       "s2",
+       "cout"
+      ],
+      "reuse": "full_adder"
+     }
+    ]
+   },
+   "spiral": false,
+   "ttft_s": 0.5150821999995969,
+   "time_s": 70.40125809999881,
+   "tokens_in": 649,
+   "tokens_out": 932,
+   "thinking_chars": 1247,
+   "cached_tokens": 0,
+   "cost_usd": 0.0024314999999999996,
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "a2 -> chip_input_a2",
+     "a1 -> chip_input_a1",
+     "a0 -> chip_input_a0",
+     "b2 -> chip_input_b2",
+     "b1 -> chip_input_b1",
+     "b0 -> chip_input_b0",
+     "cin -> chip_input_cin"
+    ],
+    "outputs": {
+     "s2": "signal_s2 (driven by fa2.s2)",
+     "s1": "signal_s1 (driven by fa1.s1)",
+     "s0": "signal_s0 (driven by fa0.s0)",
+     "cout": "signal_cout (driven by fa2.cout)"
+    },
+    "instances": [
+     {
+      "name": "fa0",
+      "part": "full_adder",
+      "wire": {
+       "a0": "chip_input_a0",
+       "b0": "chip_input_b0",
+       "cin0": "chip_input_cin",
+       "s0": "signal_s0",
+       "cout0": "internal_c0"
+      }
+     },
+     {
+      "name": "fa1",
+      "part": "full_adder",
+      "wire": {
+       "a1": "chip_input_a1",
+       "b1": "chip_input_b1",
+       "cin1": "internal_c0",
+       "s1": "signal_s1",
+       "cout1": "internal_c1"
+      }
+     },
+     {
+      "name": "fa2",
+      "part": "full_adder",
+      "wire": {
+       "a2": "chip_input_a2",
+       "b2": "chip_input_b2",
+       "cin2": "internal_c1",
+       "s2": "signal_s2",
+       "cout": "signal_cout"
+      }
+     }
+    ],
+    "gates": [],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 0.3844842999969842,
+   "time_s": 25.762350899996818,
+   "tokens_in": 750,
+   "tokens_out": 3960,
+   "thinking_chars": 11322,
+   "cached_tokens": null,
+   "cost_usd": 0.0008295,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "a2",
+     "a1",
+     "a0",
+     "b2",
+     "b1",
+     "b0"
+    ],
+    "outputs": {
+     "s2": "fa2.s2",
+     "s1": "fa1.s1",
+     "s0": "fa0.s0",
+     "cout": "fa2.cout"
+    },
+    "instances": [
+     {
+      "name": "fa0",
+      "part": "fa0",
+      "wire": {
+       "a0": "chip_input_a0",
+       "b0": "chip_input_b0",
+       "cin0": "gnd_0",
+       "s0": "output_s0",
+       "cout0": "internal_cout0"
+      }
+     },
+     {
+      "name": "fa1",
+      "part": "fa1",
+      "wire": {
+       "a1": "chip_input_a1",
+       "b1": "chip_input_b1",
+       "cin1": "internal_cout0",
+       "s1": "output_s1",
+       "cout1": "internal_cout1"
+      }
+     },
+     {
+      "name": "fa2",
+      "part": "fa2",
+      "wire": {
+       "a2": "chip_input_a2",
+       "b2": "chip_input_b2",
+       "cin2": "internal_cout1",
+       "s2": "output_s2",
+       "cout": "output_cout"
+      }
+     }
+    ],
+    "gates": [],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 0.32371519999287557,
+   "time_s": 24.04916830000002,
+   "tokens_in": 750,
+   "tokens_out": 3895,
+   "thinking_chars": 11191,
+   "cached_tokens": null,
+   "cost_usd": 0.0008165,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": {
+    "inputs": [
+     "a2",
+     "a1",
+     "a0",
+     "b2",
+     "b1",
+     "b0"
+    ],
+    "outputs": {
+     "s0": "fa0.s0",
+     "s1": "fa1.s1",
+     "s2": "fa2.s2",
+     "cout": "fa2.cout"
+    },
+    "instances": [
+     {
+      "name": "fa0",
+      "part": "full_adder",
+      "wire": {
+       "a0": "a0",
+       "b0": "b0",
+       "cin0": "zero_cin",
+       "s0": "s0",
+       "cout0": "c0"
+      }
+     },
+     {
+      "name": "fa1",
+      "part": "full_adder",
+      "wire": {
+       "a1": "a1",
+       "b1": "b1",
+       "cin1": "c0",
+       "s1": "s1",
+       "cout1": "c1"
+      }
+     },
+     {
+      "name": "fa2",
+      "part": "full_adder",
+      "wire": {
+       "a2": "a2",
+       "b2": "b2",
+       "cin2": "c1",
+       "s2": "s2",
+       "cout": "cout"
+      }
+     }
+    ],
+    "gates": [
+     {
+      "name": "g0",
+      "type": "XOR",
+      "inputs": [
+       "a0",
+       "a0"
+      ],
+      "output": "zero_cin"
+     }
+    ],
+    "flipflops": []
+   },
+   "spiral": false,
+   "ttft_s": 0.28159910000977106,
+   "time_s": 51.22395189999952,
+   "tokens_in": 750,
+   "tokens_out": 8710,
+   "thinking_chars": 26220,
+   "cached_tokens": null,
+   "cost_usd": 0.0017795,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

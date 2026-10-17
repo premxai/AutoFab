@@ -1,0 +1,2 @@
+revert: route_novel_to_super pass=0.17 cost=0.009 (rung regression (old {'5': 0.0, '1': 0.0, '2': 1.0, '4': 0.0, '6': 0.5} -> new {'5': 0.0, '1': 0.0, '2': 1.0, '4': 0.0, '6': 0.0}))
+EXIT 0

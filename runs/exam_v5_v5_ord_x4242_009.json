@@ -1,0 +1,443 @@
+{
+ "run_id": "exam_v5_v5_ord_x4242_009",
+ "version": "v5",
+ "order": {
+  "id": "ord_x4242_009",
+  "pool": "exam",
+  "rung": 6,
+  "title": "Comparator that says whether a is bigger than b (2-bit)",
+  "spec": "Compares two 2-bit numbers a and b; the output y is 1 only when a is strictly bigger than b.",
+  "inputs": [
+   "a1",
+   "a0",
+   "b1",
+   "b0"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 619788506,
+  "sequence": null
+ },
+ "attempts": 1,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 72.46,
+   "type": "plan",
+   "parts": [
+    "magnitude_comparator_2bit"
+   ],
+   "definition_of_done": [
+    "Output y is 1 if and only if unsigned 2-bit a (a1,a0) is strictly greater than unsigned 2-bit b (b1,b0), across all 16 input combinations.",
+    "Input pins a1, a0, b1, b0 are correctly mapped to the part's ports.",
+    "Output pin y is correctly driven from the part's output signal.",
+    "No signal name collisions or duplicate identifiers exist within the overall design.",
+    "All 16 input vector simulations produce y matching the strict-greater-than truth table.",
+    "The part integrates cleanly without introducing unused, floating, or incorrectly connected signals."
+   ]
+  },
+  {
+   "t": 72.46,
+   "type": "spawn",
+   "agent": "designer:magnitude_comparator_2bit",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 72.46,
+   "type": "place",
+   "block": "magnitude_comparator_2bit",
+   "kind": "part",
+   "label": "MAGNIT"
+  },
+  {
+   "t": 72.46,
+   "type": "wire",
+   "from": "a1",
+   "to": "comp_2bit.a1"
+  },
+  {
+   "t": 72.46,
+   "type": "wire",
+   "from": "a0",
+   "to": "comp_2bit.a0"
+  },
+  {
+   "t": 72.46,
+   "type": "wire",
+   "from": "b1",
+   "to": "comp_2bit.b1"
+  },
+  {
+   "t": 72.46,
+   "type": "wire",
+   "from": "b0",
+   "to": "comp_2bit.b0"
+  },
+  {
+   "t": 72.46,
+   "type": "wire",
+   "from": "y",
+   "to": "comp_2bit.y"
+  },
+  {
+   "t": 72.46,
+   "type": "test",
+   "attempt": 1,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "16/16 inputs correct"
+  },
+  {
+   "t": 72.46,
+   "type": "pass",
+   "attempt": 1
+  },
+  {
+   "t": 72.46,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "a1",
+   "a0",
+   "b1",
+   "b0"
+  ],
+  "outputs": {
+   "y": "y"
+  },
+  "instances": [
+   {
+    "name": "comp_2bit",
+    "part": "comp_2bit",
+    "wire": {
+     "a1": "a1",
+     "a0": "a0",
+     "b1": "b1",
+     "b0": "b0",
+     "y": "y"
+    }
+   }
+  ],
+  "gates": [],
+  "flipflops": []
+ },
+ "yosys_json": {
+  "modules": {
+   "chip": {
+    "ports": {
+     "a1": {
+      "direction": "input",
+      "bits": [
+       2
+      ]
+     },
+     "a0": {
+      "direction": "input",
+      "bits": [
+       3
+      ]
+     },
+     "b1": {
+      "direction": "input",
+      "bits": [
+       4
+      ]
+     },
+     "b0": {
+      "direction": "input",
+      "bits": [
+       5
+      ]
+     },
+     "y": {
+      "direction": "output",
+      "bits": [
+       13
+      ]
+     }
+    },
+    "cells": {
+     "comp_2bit.not_b1": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        4
+       ],
+       "Y": [
+        6
+       ]
+      }
+     },
+     "comp_2bit.not_b0": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        5
+       ],
+       "Y": [
+        7
+       ]
+      }
+     },
+     "comp_2bit.xor_a1_b1": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        4
+       ],
+       "Y": [
+        8
+       ]
+      }
+     },
+     "comp_2bit.not_xor1": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        8
+       ],
+       "Y": [
+        9
+       ]
+      }
+     },
+     "comp_2bit.and_t1": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        10
+       ]
+      }
+     },
+     "comp_2bit.and_t0": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "B": [
+        7
+       ],
+       "Y": [
+        11
+       ]
+      }
+     },
+     "comp_2bit.and_t2": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        9
+       ],
+       "B": [
+        11
+       ],
+       "Y": [
+        12
+       ]
+      }
+     },
+     "comp_2bit.or_y": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        10
+       ],
+       "B": [
+        12
+       ],
+       "Y": [
+        13
+       ]
+      }
+     }
+    },
+    "netnames": {
+     "a1": {
+      "bits": [
+       2
+      ]
+     },
+     "a0": {
+      "bits": [
+       3
+      ]
+     },
+     "b1": {
+      "bits": [
+       4
+      ]
+     },
+     "b0": {
+      "bits": [
+       5
+      ]
+     },
+     "comp_2bit.n_b1": {
+      "bits": [
+       6
+      ]
+     },
+     "comp_2bit.n_b0": {
+      "bits": [
+       7
+      ]
+     },
+     "comp_2bit.xor_a1_b1": {
+      "bits": [
+       8
+      ]
+     },
+     "comp_2bit.xnor_a1_b1": {
+      "bits": [
+       9
+      ]
+     },
+     "comp_2bit.t1": {
+      "bits": [
+       10
+      ]
+     },
+     "comp_2bit.t0": {
+      "bits": [
+       11
+      ]
+     },
+     "comp_2bit.t2": {
+      "bits": [
+       12
+      ]
+     },
+     "y": {
+      "bits": [
+       13
+      ]
+     }
+    }
+   }
+  }
+ },
+ "inspection": {
+  "order_id": "ord_x4242_009",
+  "version": "v5",
+  "attempt": 1,
+  "pass": true,
+  "correct": {
+   "ok": true,
+   "passed": 16,
+   "total": 16
+  },
+  "rules": {
+   "format": "ok",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 8,
+  "best_known_gates": 7,
+  "depth": 4,
+  "failure_category": "none",
+  "note": "all inputs correct and every fab rule satisfied",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 666,
+   "tokens_out": 11531,
+   "thinking_chars": 42621,
+   "cached_tokens": 0,
+   "cost_usd": 0.00234,
+   "time_s": 72.46,
+   "ttft_s": 0.499613899999531
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.499613899999531,
+   "time_s": 72.45588789999601,
+   "tokens_in": 666,
+   "tokens_out": 11531,
+   "thinking_chars": 42621,
+   "cached_tokens": null,
+   "cost_usd": 0.0023395000000000004,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

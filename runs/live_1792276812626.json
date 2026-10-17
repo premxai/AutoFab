@@ -1,0 +1,332 @@
+{
+ "run_id": "live_1792276812626",
+ "version": "v8",
+ "order": {
+  "id": "ord_j76813_325",
+  "pool": "validation",
+  "rung": 2,
+  "title": "Door lock that opens only for codes 1, 3, 5, 7",
+  "spec": "A door lock with 4 switches a, b, c, d (a is the biggest digit of the binary number): the light y turns on only when the switches show the numbers 1, 3, 5 or 7, and stays off for every other number.",
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 0,
+  "sequence": null
+ },
+ "attempts": 1,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.41,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 49.61,
+   "type": "plan",
+   "parts": [
+    "door_lock"
+   ],
+   "definition_of_done": [
+    "Every gate has a unique name, a valid type (AND, OR, XOR, NOT), exactly 1 or 2 inputs, and 1 output.",
+    "Every output signal maps to a real gate output; no floating or unconnected outputs.",
+    "Primary inputs are exactly [a, b, c, d] and primary output is y, matching the spec.",
+    "Fan-out per signal does not exceed 4 (counted across all gates and depth).",
+    "No gate output is left unused (fan-out 0) \u2013 every gate output must drive at least one other gate or the primary output.",
+    "If library parts are used, their port names match the blueprint inputs/outputs exactly.",
+    "No signal name conflicts or duplicate gate names (e.g., 'or1' used as both gate and instance).",
+    "The circuit functionally implements y=1 iff the 4-bit binary number (a MSB) equals 1, 3, 5, or 7; verified across all 16 input combinations.",
+    "All fab rule checks from lessons L001\u2013L006 pass (naming, port matching, fan-out limits, no unused signals)."
+   ]
+  },
+  {
+   "t": 49.93,
+   "type": "spawn",
+   "agent": "designer:door_lock",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 75.17,
+   "type": "place",
+   "block": "door_lock",
+   "kind": "part",
+   "label": "DOOR_L"
+  },
+  {
+   "t": 75.49,
+   "type": "place",
+   "block": "not_a",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 75.49,
+   "type": "place",
+   "block": "and_na_d",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 75.49,
+   "type": "wire",
+   "from": "a",
+   "to": "not_a.in"
+  },
+  {
+   "t": 75.49,
+   "type": "wire",
+   "from": "na",
+   "to": "and_na_d.in"
+  },
+  {
+   "t": 75.49,
+   "type": "wire",
+   "from": "d",
+   "to": "and_na_d.in"
+  },
+  {
+   "t": 75.49,
+   "type": "test",
+   "attempt": 1,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "16/16 inputs correct"
+  },
+  {
+   "t": 75.49,
+   "type": "pass",
+   "attempt": 1
+  },
+  {
+   "t": 75.49,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": {
+   "y": "y"
+  },
+  "instances": [],
+  "gates": [
+   {
+    "name": "not_a",
+    "type": "NOT",
+    "inputs": [
+     "a"
+    ],
+    "output": "na"
+   },
+   {
+    "name": "and_na_d",
+    "type": "AND",
+    "inputs": [
+     "na",
+     "d"
+    ],
+    "output": "y"
+   }
+  ],
+  "flipflops": []
+ },
+ "yosys_json": {
+  "modules": {
+   "chip": {
+    "ports": {
+     "a": {
+      "direction": "input",
+      "bits": [
+       2
+      ]
+     },
+     "b": {
+      "direction": "input",
+      "bits": [
+       3
+      ]
+     },
+     "c": {
+      "direction": "input",
+      "bits": [
+       4
+      ]
+     },
+     "d": {
+      "direction": "input",
+      "bits": [
+       5
+      ]
+     },
+     "y": {
+      "direction": "output",
+      "bits": [
+       7
+      ]
+     }
+    },
+    "cells": {
+     "not_a": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "Y": [
+        6
+       ]
+      }
+     },
+     "and_na_d": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        6
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        7
+       ]
+      }
+     }
+    },
+    "netnames": {
+     "a": {
+      "bits": [
+       2
+      ]
+     },
+     "b": {
+      "bits": [
+       3
+      ]
+     },
+     "c": {
+      "bits": [
+       4
+      ]
+     },
+     "d": {
+      "bits": [
+       5
+      ]
+     },
+     "na": {
+      "bits": [
+       6
+      ]
+     },
+     "y": {
+      "bits": [
+       7
+      ]
+     }
+    }
+   }
+  }
+ },
+ "inspection": {
+  "order_id": "ord_j76813_325",
+  "version": "v8",
+  "attempt": 1,
+  "pass": true,
+  "correct": {
+   "ok": true,
+   "passed": 16,
+   "total": 16
+  },
+  "rules": {
+   "format": "ok",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 2,
+  "best_known_gates": 2,
+  "depth": 2,
+  "failure_category": "none",
+  "note": "all inputs correct and every fab rule satisfied",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 1710,
+   "tokens_out": 9486,
+   "thinking_chars": 29115,
+   "cached_tokens": 0,
+   "cost_usd": 0.00198,
+   "time_s": 74.05,
+   "ttft_s": 1.0551835999940522
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 1.0551835999940522,
+   "time_s": 48.80984669999452,
+   "tokens_in": 832,
+   "tokens_out": 5851,
+   "thinking_chars": 19286,
+   "cached_tokens": null,
+   "cost_usd": 0.0012117999999999999,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.604898100005812,
+   "time_s": 25.2399282999977,
+   "tokens_in": 878,
+   "tokens_out": 3635,
+   "thinking_chars": 9829,
+   "cached_tokens": null,
+   "cost_usd": 0.0007708999999999999,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

@@ -1,0 +1,409 @@
+{
+ "run_id": "exam_v5_v5_ord_x4242_040",
+ "version": "v5",
+ "order": {
+  "id": "ord_x4242_040",
+  "pool": "exam",
+  "rung": 3,
+  "title": "Lock with a green light for codes 3, 4, 13, 15 and a red light for codes 0, 5, 9, 12",
+  "spec": "A lock with 4 switches a, b, c, d (a is the biggest digit of the binary number): the green light turns on only for the numbers 3, 4, 13 or 15, the red light turns on only for the numbers 0, 5, 9 or 12, and for every other number both lights stay off.",
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": [
+   "green",
+   "red"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 810542083,
+  "sequence": null
+ },
+ "attempts": 3,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 59.27,
+   "type": "plan",
+   "parts": [
+    "green_decoder",
+    "red_decoder"
+   ],
+   "definition_of_done": [
+    "Every gate instance has a unique name, a valid logic type (AND, OR, XOR, NOT), exactly 1 or 2 inputs, and exactly 1 output",
+    "All primary output signals (green, red) are driven by exactly one gate output with no floating or unconnected pins",
+    "Primary inputs are exactly a, b, c, d; primary outputs are exactly green, red",
+    "Green output evaluates to TRUE iff the 4-bit input (a MSB) represents code 3, 4, 13, or 15",
+    "Red output evaluates to TRUE iff the 4-bit input represents code 0, 5, 9, or 12",
+    "For every input code outside the green and red sets, both green and red outputs remain FALSE",
+    "Functional correctness verified by simulation across all 16 possible input combinations",
+    "No gate name conflicts (e.g., a signal name is not reused for both a gate and an instance)",
+    "Any reused library parts have input/output port names compatible with the chip's interface"
+   ]
+  },
+  {
+   "t": 59.27,
+   "type": "spawn",
+   "agent": "designer:green_decoder",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 59.27,
+   "type": "spawn",
+   "agent": "designer:red_decoder",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 142.25,
+   "type": "spiral",
+   "agent": "designer:green_decoder",
+   "thinking_chars": 19700,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 142.25,
+   "type": "place",
+   "block": "red_decoder",
+   "kind": "part",
+   "label": "RED_DE"
+  },
+  {
+   "t": 142.25,
+   "type": "fail",
+   "attempt": 1,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 142.25,
+   "type": "retry",
+   "attempt": 2
+  },
+  {
+   "t": 142.25,
+   "type": "spawn",
+   "agent": "designer:green_decoder",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 190.39,
+   "type": "place",
+   "block": "green_decoder",
+   "kind": "part",
+   "label": "GREEN_"
+  },
+  {
+   "t": 190.39,
+   "type": "spawn",
+   "agent": "assembler",
+   "role": "assembler",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 243.47,
+   "type": "spiral",
+   "agent": "assembler",
+   "thinking_chars": 30353,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 243.47,
+   "type": "fail",
+   "attempt": 2,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 243.47,
+   "type": "retry",
+   "attempt": 3
+  },
+  {
+   "t": 243.47,
+   "type": "spawn",
+   "agent": "assembler",
+   "role": "assembler",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 270.15,
+   "type": "wire",
+   "from": "a",
+   "to": "decoder_green.a"
+  },
+  {
+   "t": 270.15,
+   "type": "wire",
+   "from": "b",
+   "to": "decoder_green.b"
+  },
+  {
+   "t": 270.15,
+   "type": "wire",
+   "from": "c",
+   "to": "decoder_green.c"
+  },
+  {
+   "t": 270.15,
+   "type": "wire",
+   "from": "d",
+   "to": "decoder_green.d"
+  },
+  {
+   "t": 270.15,
+   "type": "wire",
+   "from": "green",
+   "to": "decoder_green.green"
+  },
+  {
+   "t": 270.15,
+   "type": "wire",
+   "from": "a",
+   "to": "decoder_red.a"
+  },
+  {
+   "t": 270.15,
+   "type": "wire",
+   "from": "b",
+   "to": "decoder_red.b"
+  },
+  {
+   "t": 270.15,
+   "type": "wire",
+   "from": "c",
+   "to": "decoder_red.c"
+  },
+  {
+   "t": 270.15,
+   "type": "wire",
+   "from": "d",
+   "to": "decoder_red.d"
+  },
+  {
+   "t": 270.15,
+   "type": "wire",
+   "from": "red",
+   "to": "decoder_red.red"
+  },
+  {
+   "t": 270.16,
+   "type": "test",
+   "attempt": 3,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "0/16 inputs correct"
+  },
+  {
+   "t": 270.16,
+   "type": "fail",
+   "attempt": 3,
+   "category": "format",
+   "note": "library part 'red_decoder' is broken: gate g1 has unknown type 'XOR2' (use AND, OR, XOR, NOT, NAND)",
+   "bad_wires": [],
+   "bad_blocks": [
+    "decoder_red"
+   ]
+  },
+  {
+   "t": 270.16,
+   "type": "human_ping",
+   "note": "3 attempts exhausted"
+  },
+  {
+   "t": 270.16,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": {
+   "green": "green",
+   "red": "red"
+  },
+  "instances": [
+   {
+    "name": "decoder_green",
+    "part": "green_decoder",
+    "wire": {
+     "a": "a",
+     "b": "b",
+     "c": "c",
+     "d": "d",
+     "green": "green"
+    }
+   },
+   {
+    "name": "decoder_red",
+    "part": "red_decoder",
+    "wire": {
+     "a": "a",
+     "b": "b",
+     "c": "c",
+     "d": "d",
+     "red": "red"
+    }
+   }
+  ],
+  "gates": [],
+  "flipflops": []
+ },
+ "yosys_json": null,
+ "inspection": {
+  "order_id": "ord_x4242_040",
+  "version": "v5",
+  "attempt": 3,
+  "pass": false,
+  "correct": {
+   "ok": false,
+   "passed": 0,
+   "total": 16
+  },
+  "rules": {
+   "format": "fail",
+   "allowed_gates": "n/a",
+   "pins": "n/a",
+   "fanout": "n/a",
+   "depth": "n/a",
+   "unused": "n/a",
+   "budget": "n/a"
+  },
+  "gates": 0,
+  "best_known_gates": 9,
+  "depth": 0,
+  "failure_category": "format",
+  "note": "library part 'red_decoder' is broken: gate g1 has unknown type 'XOR2' (use AND, OR, XOR, NOT, NAND)",
+  "bad_wires": [],
+  "bad_blocks": [
+   "decoder_red"
+  ],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 4695,
+   "tokens_out": 50652,
+   "thinking_chars": 125088,
+   "cached_tokens": 0,
+   "cost_usd": 0.01037,
+   "time_s": 313.07,
+   "ttft_s": 0.377311300006113
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.377311300006113,
+   "time_s": 59.269387199994526,
+   "tokens_in": 742,
+   "tokens_out": 4756,
+   "thinking_chars": 15712,
+   "cached_tokens": null,
+   "cost_usd": 0.0009883000000000001,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.46480370000062976,
+   "time_s": 42.92292460000317,
+   "tokens_in": 775,
+   "tokens_out": 5543,
+   "thinking_chars": 13387,
+   "cached_tokens": null,
+   "cost_usd": 0.00114735,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 0.4644597000005888,
+   "time_s": 82.97479849999945,
+   "tokens_in": 776,
+   "tokens_out": 12000,
+   "thinking_chars": 19700,
+   "cached_tokens": null,
+   "cost_usd": 0.0024388,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.4709396999969613,
+   "time_s": 48.14439289999427,
+   "tokens_in": 776,
+   "tokens_out": 10938,
+   "thinking_chars": 26888,
+   "cached_tokens": null,
+   "cost_usd": 0.0022264,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 0.527375600009691,
+   "time_s": 53.0786994999944,
+   "tokens_in": 813,
+   "tokens_out": 12000,
+   "thinking_chars": 30353,
+   "cached_tokens": null,
+   "cost_usd": 0.00244065,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.34532179999223445,
+   "time_s": 26.68102839999483,
+   "tokens_in": 813,
+   "tokens_out": 5415,
+   "thinking_chars": 19048,
+   "cached_tokens": null,
+   "cost_usd": 0.0011236500000000001,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

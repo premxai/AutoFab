@@ -1,0 +1,56 @@
+{
+ "run_id": "vo6_v6_ord_v657_004",
+ "version": "v6",
+ "order": {
+  "id": "ord_v657_004",
+  "pool": "validation",
+  "rung": 1,
+  "title": "Calculator that adds two 2-bit numbers",
+  "spec": "Adds the 2-bit number a to the 2-bit number b; s is the 2-bit answer and cout lights up when the answer is too big to fit in 2 bits.",
+  "inputs": [
+   "a1",
+   "a0",
+   "b1",
+   "b0"
+  ],
+  "outputs": [
+   "s1",
+   "s0",
+   "cout"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "sequence": null,
+  "seed": 60535130
+ },
+ "attempts": 0,
+ "events": [
+  {
+   "t": 0,
+   "type": "order"
+  },
+  {
+   "t": 0,
+   "type": "fail",
+   "attempt": 1,
+   "category": "format",
+   "note": "runner error: 'cin'",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 0,
+   "type": "done"
+  }
+ ],
+ "blueprint": null,
+ "yosys_json": null,
+ "inspection": null,
+ "calls": []
+}

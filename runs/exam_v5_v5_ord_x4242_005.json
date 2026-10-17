@@ -1,0 +1,834 @@
+{
+ "run_id": "exam_v5_v5_ord_x4242_005",
+ "version": "v5",
+ "order": {
+  "id": "ord_x4242_005",
+  "pool": "exam",
+  "rung": 5,
+  "title": "Traffic light that cycles red \u2192 yellow \u2192 green",
+  "spec": "A traffic light that starts on red and, every time the clock ticks, moves to yellow, then green, then back to red. Exactly one of the lights g (green), y (yellow), r (red) is on at any moment.",
+  "inputs": [],
+  "outputs": [
+   "g",
+   "y",
+   "r"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": true,
+  "seed": 868467899,
+  "sequence": {
+   "steps": 6,
+   "expected": [
+    {
+     "g": 0,
+     "y": 0,
+     "r": 1
+    },
+    {
+     "g": 0,
+     "y": 1,
+     "r": 0
+    },
+    {
+     "g": 1,
+     "y": 0,
+     "r": 0
+    },
+    {
+     "g": 0,
+     "y": 0,
+     "r": 1
+    },
+    {
+     "g": 0,
+     "y": 1,
+     "r": 0
+    },
+    {
+     "g": 1,
+     "y": 0,
+     "r": 0
+    }
+   ]
+  }
+ },
+ "attempts": 3,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 27.54,
+   "type": "plan",
+   "parts": [
+    "traffic_light_controller"
+   ],
+   "definition_of_done": [
+    "At clock tick 0, r=1, y=0, g=0 (initial red state is active).",
+    "On each rising clock edge, the active light advances deterministically: red \u2192 yellow \u2192 green \u2192 red.",
+    "Exactly one of {g, y, r} is logic-high at all times across every possible input sequence; no overlap, no idle/all-off state.",
+    "All gate and flip-flop output names are unique, have a valid type (AND/OR/XOR/NOT/DFF), 1\u20132 inputs, and drive exactly one consumer or output.",
+    "No output signal is left unconnected, floating, or mapped to a non-existent name (per formatting checks L001/L003/L004).",
+    "The design uses only allowed components: 2-input AND, OR, XOR; 1-input NOT; and D flip-flops with named d-input and output.",
+    "State behavior is verified for all clock cycles modulo 3, starting from reset state 0."
+   ]
+  },
+  {
+   "t": 27.54,
+   "type": "spawn",
+   "agent": "designer:traffic_light_controller",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 105.29,
+   "type": "spiral",
+   "agent": "designer:traffic_light_controller",
+   "thinking_chars": 35012,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 105.29,
+   "type": "fail",
+   "attempt": 1,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 105.29,
+   "type": "retry",
+   "attempt": 2
+  },
+  {
+   "t": 105.29,
+   "type": "spawn",
+   "agent": "designer:traffic_light_controller",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 172.22,
+   "type": "place",
+   "block": "traffic_light_controller",
+   "kind": "part",
+   "label": "TRAFFI"
+  },
+  {
+   "t": 172.22,
+   "type": "place",
+   "block": "NOT1",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 172.22,
+   "type": "place",
+   "block": "NOT2",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 172.22,
+   "type": "place",
+   "block": "AND1",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 172.22,
+   "type": "place",
+   "block": "AND2",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 172.22,
+   "type": "place",
+   "block": "AND3",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 172.22,
+   "type": "wire",
+   "from": "ff1",
+   "to": "NOT1.in"
+  },
+  {
+   "t": 172.22,
+   "type": "wire",
+   "from": "ff0",
+   "to": "NOT2.in"
+  },
+  {
+   "t": 172.22,
+   "type": "wire",
+   "from": "n1",
+   "to": "AND1.in"
+  },
+  {
+   "t": 172.22,
+   "type": "wire",
+   "from": "n0",
+   "to": "AND1.in"
+  },
+  {
+   "t": 172.22,
+   "type": "wire",
+   "from": "n1",
+   "to": "AND2.in"
+  },
+  {
+   "t": 172.22,
+   "type": "wire",
+   "from": "ff0",
+   "to": "AND2.in"
+  },
+  {
+   "t": 172.22,
+   "type": "wire",
+   "from": "ff1",
+   "to": "AND3.in"
+  },
+  {
+   "t": 172.22,
+   "type": "wire",
+   "from": "n0",
+   "to": "AND3.in"
+  },
+  {
+   "t": 172.22,
+   "type": "test",
+   "attempt": 2,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "6/6 inputs correct"
+  },
+  {
+   "t": 172.22,
+   "type": "fail",
+   "attempt": 2,
+   "category": "format",
+   "note": "blueprint declares input(s) ['clk'] that the order does not have",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 172.22,
+   "type": "retry",
+   "attempt": 3
+  },
+  {
+   "t": 172.22,
+   "type": "spawn",
+   "agent": "designer:traffic_light_controller",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 242.42,
+   "type": "place",
+   "block": "traffic_light_controller",
+   "kind": "part",
+   "label": "TRAFFI"
+  },
+  {
+   "t": 242.42,
+   "type": "place",
+   "block": "not1",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 242.42,
+   "type": "place",
+   "block": "not2",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 242.42,
+   "type": "place",
+   "block": "or1",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 242.42,
+   "type": "place",
+   "block": "not3",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 242.42,
+   "type": "place",
+   "block": "and1",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 242.42,
+   "type": "place",
+   "block": "and2",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 242.42,
+   "type": "place",
+   "block": "and3",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 242.42,
+   "type": "wire",
+   "from": "ff1",
+   "to": "not1.in"
+  },
+  {
+   "t": 242.42,
+   "type": "wire",
+   "from": "ff0",
+   "to": "not2.in"
+  },
+  {
+   "t": 242.42,
+   "type": "wire",
+   "from": "ff1",
+   "to": "or1.in"
+  },
+  {
+   "t": 242.42,
+   "type": "wire",
+   "from": "ff0",
+   "to": "or1.in"
+  },
+  {
+   "t": 242.42,
+   "type": "wire",
+   "from": "or1",
+   "to": "not3.in"
+  },
+  {
+   "t": 242.42,
+   "type": "wire",
+   "from": "n1",
+   "to": "and1.in"
+  },
+  {
+   "t": 242.42,
+   "type": "wire",
+   "from": "n0",
+   "to": "and1.in"
+  },
+  {
+   "t": 242.42,
+   "type": "wire",
+   "from": "n1",
+   "to": "and2.in"
+  },
+  {
+   "t": 242.42,
+   "type": "wire",
+   "from": "ff0",
+   "to": "and2.in"
+  },
+  {
+   "t": 242.42,
+   "type": "wire",
+   "from": "ff1",
+   "to": "and3.in"
+  },
+  {
+   "t": 242.42,
+   "type": "wire",
+   "from": "n0",
+   "to": "and3.in"
+  },
+  {
+   "t": 242.42,
+   "type": "test",
+   "attempt": 3,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "6/6 inputs correct"
+  },
+  {
+   "t": 242.42,
+   "type": "fail",
+   "attempt": 3,
+   "category": "format",
+   "note": "blueprint declares input(s) ['clk'] that the order does not have",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 242.42,
+   "type": "human_ping",
+   "note": "3 attempts exhausted"
+  },
+  {
+   "t": 242.42,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "clk"
+  ],
+  "outputs": {
+   "r": "out_r",
+   "y": "out_y",
+   "g": "out_g"
+  },
+  "instances": [],
+  "gates": [
+   {
+    "name": "not1",
+    "type": "NOT",
+    "inputs": [
+     "ff1"
+    ],
+    "output": "n1"
+   },
+   {
+    "name": "not2",
+    "type": "NOT",
+    "inputs": [
+     "ff0"
+    ],
+    "output": "n0"
+   },
+   {
+    "name": "or1",
+    "type": "OR",
+    "inputs": [
+     "ff1",
+     "ff0"
+    ],
+    "output": "or1"
+   },
+   {
+    "name": "not3",
+    "type": "NOT",
+    "inputs": [
+     "or1"
+    ],
+    "output": "n2"
+   },
+   {
+    "name": "and1",
+    "type": "AND",
+    "inputs": [
+     "n1",
+     "n0"
+    ],
+    "output": "out_r"
+   },
+   {
+    "name": "and2",
+    "type": "AND",
+    "inputs": [
+     "n1",
+     "ff0"
+    ],
+    "output": "out_y"
+   },
+   {
+    "name": "and3",
+    "type": "AND",
+    "inputs": [
+     "ff1",
+     "n0"
+    ],
+    "output": "out_g"
+   }
+  ],
+  "flipflops": [
+   {
+    "name": "ff0",
+    "d": "n2"
+   },
+   {
+    "name": "ff1",
+    "d": "out_y"
+   }
+  ]
+ },
+ "yosys_json": {
+  "modules": {
+   "chip": {
+    "ports": {
+     "clk": {
+      "direction": "input",
+      "bits": [
+       2
+      ]
+     },
+     "r": {
+      "direction": "output",
+      "bits": [
+       9
+      ]
+     },
+     "y": {
+      "direction": "output",
+      "bits": [
+       10
+      ]
+     },
+     "g": {
+      "direction": "output",
+      "bits": [
+       11
+      ]
+     }
+    },
+    "cells": {
+     "not1": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "Y": [
+        4
+       ]
+      }
+     },
+     "not2": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        5
+       ],
+       "Y": [
+        6
+       ]
+      }
+     },
+     "or1": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        7
+       ]
+      }
+     },
+     "not3": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        7
+       ],
+       "Y": [
+        8
+       ]
+      }
+     },
+     "and1": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        4
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        9
+       ]
+      }
+     },
+     "and2": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        4
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        10
+       ]
+      }
+     },
+     "and3": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "B": [
+        6
+       ],
+       "Y": [
+        11
+       ]
+      }
+     },
+     "ff0": {
+      "type": "$_DFF_P_",
+      "port_directions": {
+       "D": "input",
+       "C": "input",
+       "Q": "output"
+      },
+      "connections": {
+       "D": [
+        8
+       ],
+       "C": [
+        2
+       ],
+       "Q": [
+        5
+       ]
+      }
+     },
+     "ff1": {
+      "type": "$_DFF_P_",
+      "port_directions": {
+       "D": "input",
+       "C": "input",
+       "Q": "output"
+      },
+      "connections": {
+       "D": [
+        10
+       ],
+       "C": [
+        2
+       ],
+       "Q": [
+        3
+       ]
+      }
+     }
+    },
+    "netnames": {
+     "clk": {
+      "bits": [
+       2
+      ]
+     },
+     "ff1": {
+      "bits": [
+       3
+      ]
+     },
+     "n1": {
+      "bits": [
+       4
+      ]
+     },
+     "ff0": {
+      "bits": [
+       5
+      ]
+     },
+     "n0": {
+      "bits": [
+       6
+      ]
+     },
+     "or1": {
+      "bits": [
+       7
+      ]
+     },
+     "n2": {
+      "bits": [
+       8
+      ]
+     },
+     "out_r": {
+      "bits": [
+       9
+      ]
+     },
+     "out_y": {
+      "bits": [
+       10
+      ]
+     },
+     "out_g": {
+      "bits": [
+       11
+      ]
+     },
+     "r": {
+      "bits": [
+       9
+      ]
+     },
+     "y": {
+      "bits": [
+       10
+      ]
+     },
+     "g": {
+      "bits": [
+       11
+      ]
+     }
+    }
+   }
+  }
+ },
+ "inspection": {
+  "order_id": "ord_x4242_005",
+  "version": "v5",
+  "attempt": 3,
+  "pass": false,
+  "correct": {
+   "ok": true,
+   "passed": 6,
+   "total": 6
+  },
+  "rules": {
+   "format": "fail",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 7,
+  "best_known_gates": null,
+  "depth": 2,
+  "failure_category": "format",
+  "note": "blueprint declares input(s) ['clk'] that the order does not have",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 3207,
+   "tokens_out": 34478,
+   "thinking_chars": 106994,
+   "cached_tokens": 0,
+   "cost_usd": 0.00706,
+   "time_s": 242.42,
+   "ttft_s": 0.9232763000036357
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.9232763000036357,
+   "time_s": 27.534735400011414,
+   "tokens_in": 716,
+   "tokens_out": 4221,
+   "thinking_chars": 16096,
+   "cached_tokens": null,
+   "cost_usd": 0.00088,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 4.3141807000065455,
+   "time_s": 77.74893279999378,
+   "tokens_in": 747,
+   "tokens_out": 12000,
+   "thinking_chars": 35012,
+   "cached_tokens": null,
+   "cost_usd": 0.00243735,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 1.0040507999947295,
+   "time_s": 66.9320413999958,
+   "tokens_in": 747,
+   "tokens_out": 7637,
+   "thinking_chars": 22587,
+   "cached_tokens": null,
+   "cost_usd": 0.00156475,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.40773669999907725,
+   "time_s": 70.20125369999732,
+   "tokens_in": 997,
+   "tokens_out": 10620,
+   "thinking_chars": 33299,
+   "cached_tokens": null,
+   "cost_usd": 0.0021738499999999997,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

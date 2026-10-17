@@ -1,0 +1,921 @@
+{
+ "run_id": "p1_v1_ord_p107_010",
+ "version": "v1",
+ "order": {
+  "id": "ord_p107_010",
+  "pool": "practice",
+  "rung": 2,
+  "title": "Door lock that opens only for codes 3, 6, 10, 15",
+  "spec": "A door lock with 4 switches a, b, c, d (a is the biggest digit of the binary number): the light y turns on only when the switches show the numbers 3, 6, 10 or 15, and stays off for every other number.",
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 58190625,
+  "sequence": null
+ },
+ "attempts": 3,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 28.74,
+   "type": "plan",
+   "parts": [
+    "minterm_3",
+    "minterm_6",
+    "minterm_10",
+    "minterm_15",
+    "lock_or"
+   ],
+   "definition_of_done": [
+    "Inspector applies all 16 input combinations of a,b,c,d.",
+    "For each combination, verifies y is 1 exactly for codes 3, 6, 10, 15 and 0 otherwise.",
+    "Verifies y output matches the expected truth table for all 16 input states.",
+    "Verifies output y is stable and deterministic for each fixed input set.",
+    "Verifies all part specifications are consistent with the overall door lock function."
+   ]
+  },
+  {
+   "t": 28.74,
+   "type": "spawn",
+   "agent": "designer:minterm_3",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 28.74,
+   "type": "spawn",
+   "agent": "designer:minterm_6",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 28.74,
+   "type": "spawn",
+   "agent": "designer:minterm_10",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 28.74,
+   "type": "spawn",
+   "agent": "designer:minterm_15",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 28.74,
+   "type": "spawn",
+   "agent": "designer:lock_or",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 58.51,
+   "type": "place",
+   "block": "minterm_3",
+   "kind": "part",
+   "label": "MINTER"
+  },
+  {
+   "t": 58.51,
+   "type": "place",
+   "block": "minterm_6",
+   "kind": "part",
+   "label": "MINTER"
+  },
+  {
+   "t": 58.51,
+   "type": "place",
+   "block": "minterm_10",
+   "kind": "part",
+   "label": "MINTER"
+  },
+  {
+   "t": 58.51,
+   "type": "place",
+   "block": "minterm_15",
+   "kind": "part",
+   "label": "MINTER"
+  },
+  {
+   "t": 58.51,
+   "type": "place",
+   "block": "lock_or",
+   "kind": "part",
+   "label": "LOCK_O"
+  },
+  {
+   "t": 58.51,
+   "type": "spawn",
+   "agent": "assembler",
+   "role": "assembler",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "a",
+   "to": "m3.a"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "b",
+   "to": "m3.b"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "c",
+   "to": "m3.c"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "d",
+   "to": "m3.d"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "eq3",
+   "to": "m3.eq3"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "a",
+   "to": "m6.a"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "b",
+   "to": "m6.b"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "c",
+   "to": "m6.c"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "d",
+   "to": "m6.d"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "eq6",
+   "to": "m6.eq6"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "a",
+   "to": "m10.a"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "b",
+   "to": "m10.b"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "c",
+   "to": "m10.c"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "d",
+   "to": "m10.d"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "eq10",
+   "to": "m10.eq10"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "a",
+   "to": "m15.a"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "b",
+   "to": "m15.b"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "c",
+   "to": "m15.c"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "d",
+   "to": "m15.d"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "eq15",
+   "to": "m15.eq15"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "eq3",
+   "to": "or_gate.eq3"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "eq6",
+   "to": "or_gate.eq6"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "eq10",
+   "to": "or_gate.eq10"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "eq15",
+   "to": "or_gate.eq15"
+  },
+  {
+   "t": 69.67,
+   "type": "wire",
+   "from": "y",
+   "to": "or_gate.y"
+  },
+  {
+   "t": 69.67,
+   "type": "test",
+   "attempt": 1,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "0/16 inputs correct"
+  },
+  {
+   "t": 69.67,
+   "type": "fail",
+   "attempt": 1,
+   "category": "format",
+   "note": "library part 'lock_or' is broken: name 'or1' is used twice (a gate and a instance); every name must be unique",
+   "bad_wires": [],
+   "bad_blocks": [
+    "or_gate"
+   ]
+  },
+  {
+   "t": 69.67,
+   "type": "retry",
+   "attempt": 2
+  },
+  {
+   "t": 69.67,
+   "type": "spawn",
+   "agent": "assembler",
+   "role": "assembler",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "a",
+   "to": "m3.a"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "b",
+   "to": "m3.b"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "c",
+   "to": "m3.c"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "d",
+   "to": "m3.d"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "eq3",
+   "to": "m3.eq3"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "a",
+   "to": "m6.a"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "b",
+   "to": "m6.b"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "c",
+   "to": "m6.c"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "d",
+   "to": "m6.d"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "eq6",
+   "to": "m6.eq6"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "a",
+   "to": "m10.a"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "b",
+   "to": "m10.b"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "c",
+   "to": "m10.c"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "d",
+   "to": "m10.d"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "eq10",
+   "to": "m10.eq10"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "a",
+   "to": "m15.a"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "b",
+   "to": "m15.b"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "c",
+   "to": "m15.c"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "d",
+   "to": "m15.d"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "eq15",
+   "to": "m15.eq15"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "eq3",
+   "to": "or_instance.eq3"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "eq6",
+   "to": "or_instance.eq6"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "eq10",
+   "to": "or_instance.eq10"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "eq15",
+   "to": "or_instance.eq15"
+  },
+  {
+   "t": 83.31,
+   "type": "wire",
+   "from": "y",
+   "to": "or_instance.y"
+  },
+  {
+   "t": 83.31,
+   "type": "test",
+   "attempt": 2,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "0/16 inputs correct"
+  },
+  {
+   "t": 83.31,
+   "type": "fail",
+   "attempt": 2,
+   "category": "format",
+   "note": "library part 'lock_or' is broken: name 'or1' is used twice (a gate and a instance); every name must be unique",
+   "bad_wires": [],
+   "bad_blocks": [
+    "or_instance"
+   ]
+  },
+  {
+   "t": 83.31,
+   "type": "retry",
+   "attempt": 3
+  },
+  {
+   "t": 83.31,
+   "type": "spawn",
+   "agent": "assembler",
+   "role": "assembler",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "a",
+   "to": "m3.a"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "b",
+   "to": "m3.b"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "c",
+   "to": "m3.c"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "d",
+   "to": "m3.d"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "eq3",
+   "to": "m3.eq3"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "a",
+   "to": "m6.a"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "b",
+   "to": "m6.b"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "c",
+   "to": "m6.c"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "d",
+   "to": "m6.d"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "eq6",
+   "to": "m6.eq6"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "a",
+   "to": "m10.a"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "b",
+   "to": "m10.b"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "c",
+   "to": "m10.c"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "d",
+   "to": "m10.d"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "eq10",
+   "to": "m10.eq10"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "a",
+   "to": "m15.a"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "b",
+   "to": "m15.b"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "c",
+   "to": "m15.c"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "d",
+   "to": "m15.d"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "eq15",
+   "to": "m15.eq15"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "eq3",
+   "to": "or_inst.eq3"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "eq6",
+   "to": "or_inst.eq6"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "eq10",
+   "to": "or_inst.eq10"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "eq15",
+   "to": "or_inst.eq15"
+  },
+  {
+   "t": 96.91,
+   "type": "wire",
+   "from": "y",
+   "to": "or_inst.y"
+  },
+  {
+   "t": 96.91,
+   "type": "test",
+   "attempt": 3,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "0/16 inputs correct"
+  },
+  {
+   "t": 96.91,
+   "type": "fail",
+   "attempt": 3,
+   "category": "format",
+   "note": "library part 'lock_or' is broken: name 'or1' is used twice (a gate and a instance); every name must be unique",
+   "bad_wires": [],
+   "bad_blocks": [
+    "or_inst"
+   ]
+  },
+  {
+   "t": 96.91,
+   "type": "human_ping",
+   "note": "3 attempts exhausted"
+  },
+  {
+   "t": 96.91,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": {
+   "y": "y"
+  },
+  "instances": [
+   {
+    "name": "m3",
+    "part": "minterm_3",
+    "wire": {
+     "a": "a",
+     "b": "b",
+     "c": "c",
+     "d": "d",
+     "eq3": "eq3"
+    }
+   },
+   {
+    "name": "m6",
+    "part": "minterm_6",
+    "wire": {
+     "a": "a",
+     "b": "b",
+     "c": "c",
+     "d": "d",
+     "eq6": "eq6"
+    }
+   },
+   {
+    "name": "m10",
+    "part": "minterm_10",
+    "wire": {
+     "a": "a",
+     "b": "b",
+     "c": "c",
+     "d": "d",
+     "eq10": "eq10"
+    }
+   },
+   {
+    "name": "m15",
+    "part": "minterm_15",
+    "wire": {
+     "a": "a",
+     "b": "b",
+     "c": "c",
+     "d": "d",
+     "eq15": "eq15"
+    }
+   },
+   {
+    "name": "or_inst",
+    "part": "lock_or",
+    "wire": {
+     "eq3": "eq3",
+     "eq6": "eq6",
+     "eq10": "eq10",
+     "eq15": "eq15",
+     "y": "y"
+    }
+   }
+  ],
+  "gates": [],
+  "flipflops": []
+ },
+ "yosys_json": null,
+ "inspection": {
+  "order_id": "ord_p107_010",
+  "version": "v1",
+  "attempt": 3,
+  "pass": false,
+  "correct": {
+   "ok": false,
+   "passed": 0,
+   "total": 16
+  },
+  "rules": {
+   "format": "fail",
+   "allowed_gates": "n/a",
+   "pins": "n/a",
+   "fanout": "n/a",
+   "depth": "n/a",
+   "unused": "n/a",
+   "budget": "n/a"
+  },
+  "gates": 0,
+  "best_known_gates": 3,
+  "depth": 0,
+  "failure_category": "format",
+  "note": "library part 'lock_or' is broken: name 'or1' is used twice (a gate and a instance); every name must be unique",
+  "bad_wires": [],
+  "bad_blocks": [
+   "or_inst"
+  ],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 4886,
+   "tokens_out": 32060,
+   "thinking_chars": 92788,
+   "cached_tokens": 0,
+   "cost_usd": 0.00666,
+   "time_s": 198.67,
+   "ttft_s": 0.20306349999736995
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.20306349999736995,
+   "time_s": 28.738060799994855,
+   "tokens_in": 386,
+   "tokens_out": 4892,
+   "thinking_chars": 15064,
+   "cached_tokens": null,
+   "cost_usd": 0.0009977,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.3962580999941565,
+   "time_s": 22.30978339999274,
+   "tokens_in": 422,
+   "tokens_out": 2447,
+   "thinking_chars": 6866,
+   "cached_tokens": null,
+   "cost_usd": 0.0005105000000000001,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.3016402999928687,
+   "time_s": 23.358016600002884,
+   "tokens_in": 415,
+   "tokens_out": 2349,
+   "thinking_chars": 6393,
+   "cached_tokens": null,
+   "cost_usd": 0.00049055,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.31707710000046063,
+   "time_s": 27.254284800001187,
+   "tokens_in": 422,
+   "tokens_out": 3057,
+   "thinking_chars": 9182,
+   "cached_tokens": null,
+   "cost_usd": 0.0006325,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.22544120000384282,
+   "time_s": 28.840307499995106,
+   "tokens_in": 419,
+   "tokens_out": 3560,
+   "thinking_chars": 10208,
+   "cached_tokens": null,
+   "cost_usd": 0.00073295,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.2101388000010047,
+   "time_s": 29.769105400002445,
+   "tokens_in": 419,
+   "tokens_out": 3893,
+   "thinking_chars": 11747,
+   "cached_tokens": null,
+   "cost_usd": 0.0007995500000000001,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.240370499988785,
+   "time_s": 11.162978100008331,
+   "tokens_in": 558,
+   "tokens_out": 3431,
+   "thinking_chars": 9132,
+   "cached_tokens": null,
+   "cost_usd": 0.0007141000000000001,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.3006063000066206,
+   "time_s": 13.637393500001053,
+   "tokens_in": 923,
+   "tokens_out": 4064,
+   "thinking_chars": 11897,
+   "cached_tokens": null,
+   "cost_usd": 0.00085895,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.21914649999234825,
+   "time_s": 13.5972397000005,
+   "tokens_in": 922,
+   "tokens_out": 4367,
+   "thinking_chars": 12299,
+   "cached_tokens": null,
+   "cost_usd": 0.0009195000000000001,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

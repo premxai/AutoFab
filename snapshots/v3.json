@@ -1,0 +1,158 @@
+{
+ "version": "v3",
+ "parent": "v2",
+ "created": "2026-10-17T11:40:58",
+ "routing": {
+  "architect": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "max_tokens": 12000
+  },
+  "designer": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "max_tokens": 12000
+  },
+  "designer_novel": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "max_tokens": 12000
+  },
+  "assembler": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "max_tokens": 12000
+  },
+  "investigator": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "max_tokens": 6000
+  },
+  "gate": {
+   "model": "nvidia/NVIDIA-Nemotron-3-Super-120B-A12B",
+   "thinking": true,
+   "max_tokens": 8000
+  }
+ },
+ "flags": {
+  "schema_on": false,
+  "no_fast_lane": false,
+  "route_novel_to_super": false,
+  "loop_cutter": false,
+  "tidy_tool": false,
+  "fanout_buffer_rule": false,
+  "library_first": false,
+  "stable_prefix": false
+ },
+ "playbook": [
+  "L001",
+  "L002"
+ ],
+ "library": [
+  "bit_eq",
+  "bit_gt",
+  "comp_2bit",
+  "full_adder",
+  "ripple_carry_3bit_adder"
+ ],
+ "change_log": [
+  {
+   "shift": 1,
+   "proposal": "schema_on",
+   "hypothesis": "most failures are no-answer spirals or unreadable blueprints; enforce the blueprint schema so no thinking is spent on format (5 spiral this shift)",
+   "verdict": "revert",
+   "reason": "rung regression (old {'4': 0.0, '3': 0.0, '1': 1.0, '2': 0.67, '5': 0.0} -> new {'4': 0.0, '3': 0.0, '1': 1.0, '2': 0.0, '5': 0.0})",
+   "before": {
+    "pass": 0.4,
+    "cost_usd": 0.007,
+    "n": 10,
+    "by_rung": {
+     "4": 0.0,
+     "3": 0.0,
+     "1": 1.0,
+     "2": 0.67,
+     "5": 0.0
+    },
+    "n_rung": {
+     "4": 3,
+     "3": 1,
+     "1": 2,
+     "2": 3,
+     "5": 1
+    },
+    "gates_vs_best": 1.5,
+    "attempts": 2.5
+   },
+   "after": {
+    "pass": 0.2,
+    "cost_usd": 0.0079,
+    "n": 10,
+    "by_rung": {
+     "4": 0.0,
+     "3": 0.0,
+     "1": 1.0,
+     "2": 0.0,
+     "5": 0.0
+    },
+    "n_rung": {
+     "4": 3,
+     "3": 1,
+     "1": 2,
+     "2": 3,
+     "5": 1
+    },
+    "gates_vs_best": 1.04,
+    "attempts": 2.8
+   }
+  },
+  {
+   "shift": 2,
+   "proposal": "route_novel_to_super",
+   "hypothesis": "the cheap worker never finishes novel functions; route novel parts to Super (5 spiral this shift)",
+   "verdict": "revert",
+   "reason": "rung regression (old {'6': 1.0, '1': 0.67, '4': 0.0, '3': 0.0, '5': 0.0} -> new {'6': 1.0, '1': 0.0, '4': 0.0, '3': 0.0, '5': 1.0})",
+   "before": {
+    "pass": 0.3,
+    "cost_usd": 0.0079,
+    "n": 10,
+    "by_rung": {
+     "6": 1.0,
+     "1": 0.67,
+     "4": 0.0,
+     "3": 0.0,
+     "5": 0.0
+    },
+    "n_rung": {
+     "6": 1,
+     "1": 3,
+     "4": 2,
+     "3": 3,
+     "5": 1
+    },
+    "gates_vs_best": 0.85,
+    "attempts": 2.5
+   },
+   "after": {
+    "pass": 0.2,
+    "cost_usd": 0.0195,
+    "n": 10,
+    "by_rung": {
+     "6": 1.0,
+     "1": 0.0,
+     "4": 0.0,
+     "3": 0.0,
+     "5": 1.0
+    },
+    "n_rung": {
+     "6": 1,
+     "1": 3,
+     "4": 2,
+     "3": 3,
+     "5": 1
+    },
+    "gates_vs_best": 1.0,
+    "attempts": 2.6
+   }
+  }
+ ]
+}

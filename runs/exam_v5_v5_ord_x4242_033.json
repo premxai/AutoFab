@@ -1,0 +1,1115 @@
+{
+ "run_id": "exam_v5_v5_ord_x4242_033",
+ "version": "v5",
+ "order": {
+  "id": "ord_x4242_033",
+  "pool": "exam",
+  "rung": 3,
+  "title": "Lock with a green light for codes 1, 2, 5 and a red light for codes 7, 8, 10",
+  "spec": "A lock with 4 switches a, b, c, d (a is the biggest digit of the binary number): the green light turns on only for the numbers 1, 2 or 5, the red light turns on only for the numbers 7, 8 or 10, and for every other number both lights stay off.",
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": [
+   "green",
+   "red"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 178087607,
+  "sequence": null
+ },
+ "attempts": 3,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 41.32,
+   "type": "plan",
+   "parts": [
+    "lock_controller"
+   ],
+   "definition_of_done": [
+    "Simulate all 16 possible input combinations (a,b,c,d) with a as MSB; green output must be logic HIGH exactly for inputs encoding decimal 1, 2, or 5, and LOW otherwise.",
+    "red output must be logic HIGH exactly for inputs encoding decimal 7, 8, or 10, and LOW otherwise.",
+    "For every input vector, green and red are never both HIGH simultaneously; for all inputs outside {1,2,5,7,8,10}, both outputs are LOW.",
+    "Functional correctness verified across all inputs; no ambiguous or undefined output states.",
+    "Format compliance: if a blueprint is submitted, every gate/output has a unique name, valid type (AND/OR/XOR/NOT), correct number of inputs (1 for NOT, 2 for others), and every output nets to a real signal (per L001, L003, L004)."
+   ]
+  },
+  {
+   "t": 41.32,
+   "type": "spawn",
+   "agent": "designer:lock_controller",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 126.44,
+   "type": "spiral",
+   "agent": "designer:lock_controller",
+   "thinking_chars": 27076,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 126.44,
+   "type": "fail",
+   "attempt": 1,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 126.44,
+   "type": "retry",
+   "attempt": 2
+  },
+  {
+   "t": 126.44,
+   "type": "spawn",
+   "agent": "designer:lock_controller",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 150.09,
+   "type": "spiral",
+   "agent": "designer:lock_controller",
+   "thinking_chars": 0,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 150.09,
+   "type": "fail",
+   "attempt": 2,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 150.09,
+   "type": "retry",
+   "attempt": 3
+  },
+  {
+   "t": 150.09,
+   "type": "spawn",
+   "agent": "designer:lock_controller",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "lock_controller",
+   "kind": "part",
+   "label": "LOCK_C"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "a_inv",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "b_inv",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "c_inv",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "d_inv",
+   "kind": "gate",
+   "label": "NOT"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "cxd",
+   "kind": "gate",
+   "label": "XOR"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "term1_green",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "temp2",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "term2_green",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "or_green",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "green",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "bc",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "bcd",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "term1_red",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "a_b_inv",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "term2_red",
+   "kind": "gate",
+   "label": "AND"
+  },
+  {
+   "t": 203.57,
+   "type": "place",
+   "block": "red",
+   "kind": "gate",
+   "label": "OR"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "a",
+   "to": "a_inv.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "b",
+   "to": "b_inv.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "c",
+   "to": "c_inv.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "d",
+   "to": "d_inv.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "c",
+   "to": "cxd.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "d",
+   "to": "cxd.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "b_inv",
+   "to": "term1_green.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "cxd",
+   "to": "term1_green.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "b",
+   "to": "temp2.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "c_inv",
+   "to": "temp2.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "temp2",
+   "to": "term2_green.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "d",
+   "to": "term2_green.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "term1_green",
+   "to": "or_green.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "term2_green",
+   "to": "or_green.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "a_inv",
+   "to": "green.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "or_green",
+   "to": "green.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "b",
+   "to": "bc.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "c",
+   "to": "bc.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "bc",
+   "to": "bcd.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "d",
+   "to": "bcd.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "a_inv",
+   "to": "term1_red.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "bcd",
+   "to": "term1_red.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "a",
+   "to": "a_b_inv.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "b_inv",
+   "to": "a_b_inv.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "a_b_inv",
+   "to": "term2_red.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "d_inv",
+   "to": "term2_red.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "term1_red",
+   "to": "red.in"
+  },
+  {
+   "t": 203.57,
+   "type": "wire",
+   "from": "term2_red",
+   "to": "red.in"
+  },
+  {
+   "t": 203.57,
+   "type": "test",
+   "attempt": 3,
+   "inputs": {},
+   "expected": null,
+   "got": null,
+   "summary": "16/16 inputs correct"
+  },
+  {
+   "t": 203.57,
+   "type": "pass",
+   "attempt": 3
+  },
+  {
+   "t": 203.57,
+   "type": "done"
+  }
+ ],
+ "blueprint": {
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": {
+   "green": "green",
+   "red": "red"
+  },
+  "instances": [],
+  "gates": [
+   {
+    "name": "a_inv",
+    "type": "NOT",
+    "inputs": [
+     "a"
+    ],
+    "output": "a_inv"
+   },
+   {
+    "name": "b_inv",
+    "type": "NOT",
+    "inputs": [
+     "b"
+    ],
+    "output": "b_inv"
+   },
+   {
+    "name": "c_inv",
+    "type": "NOT",
+    "inputs": [
+     "c"
+    ],
+    "output": "c_inv"
+   },
+   {
+    "name": "d_inv",
+    "type": "NOT",
+    "inputs": [
+     "d"
+    ],
+    "output": "d_inv"
+   },
+   {
+    "name": "cxd",
+    "type": "XOR",
+    "inputs": [
+     "c",
+     "d"
+    ],
+    "output": "cxd"
+   },
+   {
+    "name": "term1_green",
+    "type": "AND",
+    "inputs": [
+     "b_inv",
+     "cxd"
+    ],
+    "output": "term1_green"
+   },
+   {
+    "name": "temp2",
+    "type": "AND",
+    "inputs": [
+     "b",
+     "c_inv"
+    ],
+    "output": "temp2"
+   },
+   {
+    "name": "term2_green",
+    "type": "AND",
+    "inputs": [
+     "temp2",
+     "d"
+    ],
+    "output": "term2_green"
+   },
+   {
+    "name": "or_green",
+    "type": "OR",
+    "inputs": [
+     "term1_green",
+     "term2_green"
+    ],
+    "output": "or_green"
+   },
+   {
+    "name": "green",
+    "type": "AND",
+    "inputs": [
+     "a_inv",
+     "or_green"
+    ],
+    "output": "green"
+   },
+   {
+    "name": "bc",
+    "type": "AND",
+    "inputs": [
+     "b",
+     "c"
+    ],
+    "output": "bc"
+   },
+   {
+    "name": "bcd",
+    "type": "AND",
+    "inputs": [
+     "bc",
+     "d"
+    ],
+    "output": "bcd"
+   },
+   {
+    "name": "term1_red",
+    "type": "AND",
+    "inputs": [
+     "a_inv",
+     "bcd"
+    ],
+    "output": "term1_red"
+   },
+   {
+    "name": "a_b_inv",
+    "type": "AND",
+    "inputs": [
+     "a",
+     "b_inv"
+    ],
+    "output": "a_b_inv"
+   },
+   {
+    "name": "term2_red",
+    "type": "AND",
+    "inputs": [
+     "a_b_inv",
+     "d_inv"
+    ],
+    "output": "term2_red"
+   },
+   {
+    "name": "red",
+    "type": "OR",
+    "inputs": [
+     "term1_red",
+     "term2_red"
+    ],
+    "output": "red"
+   }
+  ],
+  "flipflops": []
+ },
+ "yosys_json": {
+  "modules": {
+   "chip": {
+    "ports": {
+     "a": {
+      "direction": "input",
+      "bits": [
+       2
+      ]
+     },
+     "b": {
+      "direction": "input",
+      "bits": [
+       3
+      ]
+     },
+     "c": {
+      "direction": "input",
+      "bits": [
+       4
+      ]
+     },
+     "d": {
+      "direction": "input",
+      "bits": [
+       5
+      ]
+     },
+     "green": {
+      "direction": "output",
+      "bits": [
+       15
+      ]
+     },
+     "red": {
+      "direction": "output",
+      "bits": [
+       21
+      ]
+     }
+    },
+    "cells": {
+     "a_inv": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "Y": [
+        6
+       ]
+      }
+     },
+     "b_inv": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "Y": [
+        7
+       ]
+      }
+     },
+     "c_inv": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        4
+       ],
+       "Y": [
+        8
+       ]
+      }
+     },
+     "d_inv": {
+      "type": "$_NOT_",
+      "port_directions": {
+       "A": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        5
+       ],
+       "Y": [
+        9
+       ]
+      }
+     },
+     "cxd": {
+      "type": "$_XOR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        4
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        10
+       ]
+      }
+     },
+     "term1_green": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        7
+       ],
+       "B": [
+        10
+       ],
+       "Y": [
+        11
+       ]
+      }
+     },
+     "temp2": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "B": [
+        8
+       ],
+       "Y": [
+        12
+       ]
+      }
+     },
+     "term2_green": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        12
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        13
+       ]
+      }
+     },
+     "or_green": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        11
+       ],
+       "B": [
+        13
+       ],
+       "Y": [
+        14
+       ]
+      }
+     },
+     "green": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        6
+       ],
+       "B": [
+        14
+       ],
+       "Y": [
+        15
+       ]
+      }
+     },
+     "bc": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        3
+       ],
+       "B": [
+        4
+       ],
+       "Y": [
+        16
+       ]
+      }
+     },
+     "bcd": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        16
+       ],
+       "B": [
+        5
+       ],
+       "Y": [
+        17
+       ]
+      }
+     },
+     "term1_red": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        6
+       ],
+       "B": [
+        17
+       ],
+       "Y": [
+        18
+       ]
+      }
+     },
+     "a_b_inv": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        2
+       ],
+       "B": [
+        7
+       ],
+       "Y": [
+        19
+       ]
+      }
+     },
+     "term2_red": {
+      "type": "$_AND_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        19
+       ],
+       "B": [
+        9
+       ],
+       "Y": [
+        20
+       ]
+      }
+     },
+     "red": {
+      "type": "$_OR_",
+      "port_directions": {
+       "A": "input",
+       "B": "input",
+       "Y": "output"
+      },
+      "connections": {
+       "A": [
+        18
+       ],
+       "B": [
+        20
+       ],
+       "Y": [
+        21
+       ]
+      }
+     }
+    },
+    "netnames": {
+     "a": {
+      "bits": [
+       2
+      ]
+     },
+     "b": {
+      "bits": [
+       3
+      ]
+     },
+     "c": {
+      "bits": [
+       4
+      ]
+     },
+     "d": {
+      "bits": [
+       5
+      ]
+     },
+     "a_inv": {
+      "bits": [
+       6
+      ]
+     },
+     "b_inv": {
+      "bits": [
+       7
+      ]
+     },
+     "c_inv": {
+      "bits": [
+       8
+      ]
+     },
+     "d_inv": {
+      "bits": [
+       9
+      ]
+     },
+     "cxd": {
+      "bits": [
+       10
+      ]
+     },
+     "term1_green": {
+      "bits": [
+       11
+      ]
+     },
+     "temp2": {
+      "bits": [
+       12
+      ]
+     },
+     "term2_green": {
+      "bits": [
+       13
+      ]
+     },
+     "or_green": {
+      "bits": [
+       14
+      ]
+     },
+     "green": {
+      "bits": [
+       15
+      ]
+     },
+     "bc": {
+      "bits": [
+       16
+      ]
+     },
+     "bcd": {
+      "bits": [
+       17
+      ]
+     },
+     "term1_red": {
+      "bits": [
+       18
+      ]
+     },
+     "a_b_inv": {
+      "bits": [
+       19
+      ]
+     },
+     "term2_red": {
+      "bits": [
+       20
+      ]
+     },
+     "red": {
+      "bits": [
+       21
+      ]
+     }
+    }
+   }
+  }
+ },
+ "inspection": {
+  "order_id": "ord_x4242_033",
+  "version": "v5",
+  "attempt": 3,
+  "pass": true,
+  "correct": {
+   "ok": true,
+   "passed": 16,
+   "total": 16
+  },
+  "rules": {
+   "format": "ok",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 16,
+  "best_known_gates": 12,
+  "depth": 5,
+  "failure_category": "none",
+  "note": "all inputs correct and every fab rule satisfied",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 2899,
+   "tokens_out": 23653,
+   "thinking_chars": 58409,
+   "cached_tokens": 0,
+   "cost_usd": 0.00488,
+   "time_s": 203.56,
+   "ttft_s": 0.34313619999738876
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.34313619999738876,
+   "time_s": 41.31520979999914,
+   "tokens_in": 726,
+   "tokens_out": 4708,
+   "thinking_chars": 15396,
+   "cached_tokens": null,
+   "cost_usd": 0.0009779,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 0.32025469999643974,
+   "time_s": 85.12448909999512,
+   "tokens_in": 775,
+   "tokens_out": 12000,
+   "thinking_chars": 27076,
+   "cached_tokens": null,
+   "cost_usd": 0.00243875,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": null,
+   "time_s": 23.64619070000481,
+   "tokens_in": 623,
+   "tokens_out": 0,
+   "thinking_chars": 0,
+   "cached_tokens": null,
+   "cost_usd": 3.1150000000000005e-05,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": "HTTP 429 after 5 tries"
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.3672482000110904,
+   "time_s": 53.47233210000559,
+   "tokens_in": 775,
+   "tokens_out": 6945,
+   "thinking_chars": 15937,
+   "cached_tokens": null,
+   "cost_usd": 0.00142775,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  }
+ ]
+}

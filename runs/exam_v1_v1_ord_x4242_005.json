@@ -1,0 +1,275 @@
+{
+ "run_id": "exam_v1_v1_ord_x4242_005",
+ "version": "v1",
+ "order": {
+  "id": "ord_x4242_005",
+  "pool": "exam",
+  "rung": 5,
+  "title": "Traffic light that cycles red \u2192 yellow \u2192 green",
+  "spec": "A traffic light that starts on red and, every time the clock ticks, moves to yellow, then green, then back to red. Exactly one of the lights g (green), y (yellow), r (red) is on at any moment.",
+  "inputs": [],
+  "outputs": [
+   "g",
+   "y",
+   "r"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": true,
+  "seed": 868467899,
+  "sequence": {
+   "steps": 6,
+   "expected": [
+    {
+     "g": 0,
+     "y": 0,
+     "r": 1
+    },
+    {
+     "g": 0,
+     "y": 1,
+     "r": 0
+    },
+    {
+     "g": 1,
+     "y": 0,
+     "r": 0
+    },
+    {
+     "g": 0,
+     "y": 0,
+     "r": 1
+    },
+    {
+     "g": 0,
+     "y": 1,
+     "r": 0
+    },
+    {
+     "g": 1,
+     "y": 0,
+     "r": 0
+    }
+   ]
+  }
+ },
+ "attempts": 3,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 11.56,
+   "type": "plan",
+   "parts": [
+    "traffic_light_controller"
+   ],
+   "definition_of_done": [
+    "Power-on initialization sets r=1, y=0, g=0 (exactly one output high)",
+    "On every rising clock edge, the active output cycles strictly: red \u2192 yellow \u2192 green \u2192 red",
+    "At all times (initial, between ticks, after any number of ticks), exactly one of {g, y, r} is high",
+    "The state sequence has exact period 3; no state repeats or skips within a cycle",
+    "Outputs settle to stable values before the next clock edge (no racing or glitches)"
+   ]
+  },
+  {
+   "t": 11.56,
+   "type": "spawn",
+   "agent": "designer:traffic_light_controller",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 51.76,
+   "type": "spiral",
+   "agent": "designer:traffic_light_controller",
+   "thinking_chars": 39611,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 51.76,
+   "type": "fail",
+   "attempt": 1,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 51.76,
+   "type": "retry",
+   "attempt": 2
+  },
+  {
+   "t": 51.76,
+   "type": "spawn",
+   "agent": "designer:traffic_light_controller",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 109.85,
+   "type": "spiral",
+   "agent": "designer:traffic_light_controller",
+   "thinking_chars": 37600,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 109.85,
+   "type": "fail",
+   "attempt": 2,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 109.85,
+   "type": "retry",
+   "attempt": 3
+  },
+  {
+   "t": 109.85,
+   "type": "spawn",
+   "agent": "designer:traffic_light_controller",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 135.39,
+   "type": "spiral",
+   "agent": "designer:traffic_light_controller",
+   "thinking_chars": 0,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 135.39,
+   "type": "fail",
+   "attempt": 3,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 135.39,
+   "type": "human_ping",
+   "note": "3 attempts exhausted"
+  },
+  {
+   "t": 135.39,
+   "type": "done"
+  }
+ ],
+ "blueprint": null,
+ "yosys_json": null,
+ "inspection": {
+  "order_id": "ord_x4242_005",
+  "version": "v1",
+  "attempt": 3,
+  "pass": false,
+  "correct": {
+   "ok": false,
+   "passed": 0,
+   "total": 6
+  },
+  "rules": {
+   "format": "fail",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 0,
+  "best_known_gates": null,
+  "depth": 0,
+  "failure_category": "spiral",
+  "note": "no answer within the thinking budget",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 1511,
+   "tokens_out": 27010,
+   "thinking_chars": 88348,
+   "cached_tokens": 0,
+   "cost_usd": 0.00548,
+   "time_s": 135.38,
+   "ttft_s": 0.44091150000167545
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.44091150000167545,
+   "time_s": 11.55873609999253,
+   "tokens_in": 363,
+   "tokens_out": 3010,
+   "thinking_chars": 11137,
+   "cached_tokens": null,
+   "cost_usd": 0.00062015,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 0.6555148999905214,
+   "time_s": 40.198985600000015,
+   "tokens_in": 404,
+   "tokens_out": 12000,
+   "thinking_chars": 39611,
+   "cached_tokens": null,
+   "cost_usd": 0.0024202,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 0.19835530000273138,
+   "time_s": 58.090473300006124,
+   "tokens_in": 404,
+   "tokens_out": 12000,
+   "thinking_chars": 37600,
+   "cached_tokens": null,
+   "cost_usd": 0.0024202,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": null,
+   "time_s": 25.536727899991092,
+   "tokens_in": 340,
+   "tokens_out": 0,
+   "thinking_chars": 0,
+   "cached_tokens": null,
+   "cost_usd": 1.7e-05,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": "HTTP 429 after 5 tries"
+  }
+ ]
+}

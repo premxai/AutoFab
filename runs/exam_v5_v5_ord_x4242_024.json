@@ -1,0 +1,247 @@
+{
+ "run_id": "exam_v5_v5_ord_x4242_024",
+ "version": "v5",
+ "order": {
+  "id": "ord_x4242_024",
+  "pool": "exam",
+  "rung": 2,
+  "title": "Door lock that opens only for codes 2, 5, 8, 10, 13, 15",
+  "spec": "A door lock with 4 switches a, b, c, d (a is the biggest digit of the binary number): the light y turns on only when the switches show the numbers 2, 5, 8, 10, 13 or 15, and stays off for every other number.",
+  "inputs": [
+   "a",
+   "b",
+   "c",
+   "d"
+  ],
+  "outputs": [
+   "y"
+  ],
+  "allowed_gates": [
+   "AND",
+   "OR",
+   "XOR",
+   "NOT"
+  ],
+  "gate_budget": null,
+  "flipflops_allowed": false,
+  "seed": 466190353,
+  "sequence": null
+ },
+ "attempts": 3,
+ "events": [
+  {
+   "t": 0.0,
+   "type": "order"
+  },
+  {
+   "t": 0.0,
+   "type": "spawn",
+   "agent": "architect",
+   "role": "architect",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 27.57,
+   "type": "plan",
+   "parts": [
+    "door_lock"
+   ],
+   "definition_of_done": [
+    "Output y is 1 for exactly the input codes 2, 5, 8, 10, 13, 15 across all 16 possible 4-bit combinations, and 0 for all other codes.",
+    "Every gate has a unique name, a valid type (AND, OR, XOR, NOT), and exactly the correct number of inputs: NOT has 1 input, AND/OR/XOR have 2 inputs.",
+    "Every gate drives exactly one output signal; no gate output fans out to multiple gate inputs unless explicitly intended, and all outputs are connected to real signals.",
+    "No gate name is reused for both a gate instance and a signal identifier (complies with L001 format lesson).",
+    "NOT (inverter) instances are properly named and do not conflict with other gate or signal names (complies with L003 format lesson).",
+    "If any library parts are instantiated, their port names match the blueprint port definitions exactly (complies with L004 format lesson).",
+    "Only allowed gate types (AND, OR, XOR, NOT) are used in the design.",
+    "The complete truth table for all 16 input combinations can be inspected and verified to match the door lock specification."
+   ]
+  },
+  {
+   "t": 27.57,
+   "type": "spawn",
+   "agent": "designer:door_lock",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 109.85,
+   "type": "spiral",
+   "agent": "designer:door_lock",
+   "thinking_chars": 28945,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 109.85,
+   "type": "fail",
+   "attempt": 1,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 109.85,
+   "type": "retry",
+   "attempt": 2
+  },
+  {
+   "t": 109.85,
+   "type": "spawn",
+   "agent": "designer:door_lock",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 194.5,
+   "type": "spiral",
+   "agent": "designer:door_lock",
+   "thinking_chars": 22471,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 194.5,
+   "type": "fail",
+   "attempt": 2,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 194.5,
+   "type": "retry",
+   "attempt": 3
+  },
+  {
+   "t": 194.5,
+   "type": "spawn",
+   "agent": "designer:door_lock",
+   "role": "designer",
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B"
+  },
+  {
+   "t": 214.57,
+   "type": "spiral",
+   "agent": "designer:door_lock",
+   "thinking_chars": 0,
+   "note": "no answer within the budget"
+  },
+  {
+   "t": 214.57,
+   "type": "fail",
+   "attempt": 3,
+   "category": "spiral",
+   "note": "no answer within the thinking budget",
+   "bad_wires": [],
+   "bad_blocks": []
+  },
+  {
+   "t": 214.57,
+   "type": "human_ping",
+   "note": "3 attempts exhausted"
+  },
+  {
+   "t": 214.57,
+   "type": "done"
+  }
+ ],
+ "blueprint": null,
+ "yosys_json": null,
+ "inspection": {
+  "order_id": "ord_x4242_024",
+  "version": "v5",
+  "attempt": 3,
+  "pass": false,
+  "correct": {
+   "ok": false,
+   "passed": 0,
+   "total": 16
+  },
+  "rules": {
+   "format": "fail",
+   "allowed_gates": "ok",
+   "pins": "ok",
+   "fanout": "ok",
+   "depth": "ok",
+   "unused": "ok",
+   "budget": "ok"
+  },
+  "gates": 0,
+  "best_known_gates": 8,
+  "depth": 0,
+  "failure_category": "spiral",
+  "note": "no answer within the thinking budget",
+  "bad_wires": [],
+  "bad_blocks": [],
+  "metrics": {
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "tokens_in": 2900,
+   "tokens_out": 27170,
+   "thinking_chars": 60967,
+   "cached_tokens": 0,
+   "cost_usd": 0.00558,
+   "time_s": 214.56,
+   "ttft_s": 0.8823475999961374
+  }
+ },
+ "calls": [
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": 0.8823475999961374,
+   "time_s": 27.562789900010102,
+   "tokens_in": 716,
+   "tokens_out": 3170,
+   "thinking_chars": 9551,
+   "cached_tokens": null,
+   "cost_usd": 0.0006697999999999999,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 0.46101730001100805,
+   "time_s": 82.28619739999704,
+   "tokens_in": 786,
+   "tokens_out": 12000,
+   "thinking_chars": 28945,
+   "cached_tokens": null,
+   "cost_usd": 0.0024393,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": true,
+   "ttft_s": 0.6231554999976652,
+   "time_s": 84.64356250000128,
+   "tokens_in": 786,
+   "tokens_out": 12000,
+   "thinking_chars": 22471,
+   "cached_tokens": null,
+   "cost_usd": 0.0024393,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": null
+  },
+  {
+   "parsed": null,
+   "spiral": false,
+   "ttft_s": null,
+   "time_s": 20.072268300005817,
+   "tokens_in": 612,
+   "tokens_out": 0,
+   "thinking_chars": 0,
+   "cached_tokens": null,
+   "cost_usd": 3.06e-05,
+   "model": "nvidia/Nemotron-3.5-Lightning-30B-A3B",
+   "thinking": true,
+   "error": "HTTP 429 after 5 tries"
+  }
+ ]
+}

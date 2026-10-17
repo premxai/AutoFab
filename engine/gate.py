@@ -42,19 +42,20 @@ def _super_everywhere(s):
 def _fast_lane_easy(s):
     s["routing"]["designer"] = {**s["routing"]["designer"], "thinking": False, "max_tokens": 2000}
 
-MENU = [  # (name, fixes category, applies)
-    ("schema_on", "format", _set_flag("schema_on")),
-    ("route_novel_to_super", "spiral", _route_novel),
-    ("loop_cutter", "spiral", _loop_cutter),
-    ("library_first", "assembly", _set_flag("library_first")),
-    ("fanout_buffer_rule", "rules", _set_flag("fanout_buffer_rule")),
-    ("tidy_tool", "budget", _set_flag("tidy_tool")),
-    ("stable_prefix", "cost", _set_flag("stable_prefix")),
-    ("no_fast_lane", "wrong_logic", _set_flag("no_fast_lane")),
+MENU = [  # (name, fixes categories, applies) — order within a category = order of preference
+    ("schema_on", ("format", "spiral"), _set_flag("schema_on")),          # measured: spirals are mostly format anxiety; the schema ends them
+    ("route_novel_to_super", ("spiral",), _route_novel),
+    ("loop_cutter", ("spiral",), _loop_cutter),
+    ("library_first", ("assembly",), _set_flag("library_first")),
+    ("fanout_buffer_rule", ("rules",), _set_flag("fanout_buffer_rule")),
+    ("tidy_tool", ("budget",), _set_flag("tidy_tool")),
+    ("stable_prefix", ("cost",), _set_flag("stable_prefix")),
+    ("no_fast_lane", ("wrong_logic",), _set_flag("no_fast_lane")),
     # experiments the Gate may try when nothing dominates; validation decides (these are expected to be rejected)
-    ("super_everywhere", "wrong_logic", _super_everywhere),
-    ("fast_lane_easy", "cost", _fast_lane_easy),
+    ("super_everywhere", ("wrong_logic",), _super_everywhere),
+    ("fast_lane_easy", ("cost",), _fast_lane_easy),
 ]
+MIN_RUNG_SAMPLES = 3
 
 
 def applied(snapshot):
@@ -72,11 +73,11 @@ def propose(snapshot, categories, cost_per_chip, pass_rate):
     for cat, n in ranked:
         if n == 0:
             break
-        if cat == "spiral" and snapshot["routing"]["designer_novel"]["model"] != SUPER and "route_novel_to_super" not in done:
-            return _p("route_novel_to_super", f"{n} spirals: the cheap worker never finishes novel functions; route novel parts to Super")
         for name, fixes, _ in MENU:
-            if fixes == cat and name not in done:
-                return _p(name, f"{cat} is the dominant failure ({n} this shift)")
+            if cat in fixes and name not in done:
+                why = {"schema_on": "most failures are no-answer spirals or unreadable blueprints; enforce the blueprint schema so no thinking is spent on format",
+                       "route_novel_to_super": "the cheap worker never finishes novel functions; route novel parts to Super"}.get(name, f"{cat} is the dominant failure")
+                return _p(name, f"{why} ({n} {cat} this shift)")
     if pass_rate >= 0.6 and "stable_prefix" not in done:
         return _p("stable_prefix", f"pass rate {pass_rate:.0%}; cost {cost_per_chip:.3f}$/chip: make the prompt prefix cache-friendly")
     for name in ("fast_lane_easy", "super_everywhere"):
@@ -100,17 +101,18 @@ def apply(snapshot, proposal):
 def summarize(chip_runs):
     n = max(1, len(chip_runs))
     passed = [r for r in chip_runs if (r.get("inspection") or {}).get("pass")]
-    by_rung = {}
+    by_rung, n_rung = {}, {}
     for r in chip_runs:
         rung = str(r["order"]["rung"])
         by_rung.setdefault(rung, [0, 0]); by_rung[rung][1] += 1
         if (r.get("inspection") or {}).get("pass"):
             by_rung[rung][0] += 1
+    n_rung = {k: v[1] for k, v in by_rung.items()}
     cost = sum(((r.get("inspection") or {}).get("metrics") or {}).get("cost_usd", 0) for r in chip_runs) / n
     gates_ratio = [r["inspection"]["gates"] / r["inspection"]["best_known_gates"] for r in passed
                    if r.get("inspection") and r["inspection"].get("best_known_gates")]
     return {"pass": len(passed) / n, "cost_usd": round(cost, 4), "n": n,
-            "by_rung": {k: round(v[0] / v[1], 2) for k, v in by_rung.items()},
+            "by_rung": {k: round(v[0] / v[1], 2) for k, v in by_rung.items()}, "n_rung": n_rung,
             "gates_vs_best": round(sum(gates_ratio) / len(gates_ratio), 2) if gates_ratio else None,
             "attempts": round(sum(r.get("attempts", 1) for r in chip_runs) / n, 2)}
 
@@ -121,7 +123,8 @@ def decide(old, new):
     noise = 1.0 / max(1, min(old["n"], new["n"]))
     dpass = new["pass"] - old["pass"]
     cost_ratio = (new["cost_usd"] / old["cost_usd"]) if old["cost_usd"] else 1.0
-    regress = any(new["by_rung"].get(k, 0) < v - 0.25 for k, v in old["by_rung"].items())
+    big = lambda s, k: s.get("n_rung", {}).get(k, 0) >= MIN_RUNG_SAMPLES
+    regress = any(new["by_rung"].get(k, 0) < v - 0.25 for k, v in old["by_rung"].items() if big(old, k) and big(new, k))
     if regress:
         return "revert", f"rung regression (old {old['by_rung']} -> new {new['by_rung']})"
     if dpass > noise and (cost_ratio <= 1.5 or dpass >= 0.2):

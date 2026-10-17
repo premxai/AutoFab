@@ -158,10 +158,30 @@ async def run_exam(snapshot, library, exam, parallel):
     write_state()
 
 
+def live_order(req):
+    """A judge picks an exam order by id (menu), or asks for a fresh unseen order of a rung."""
+    if req.get("order_id"):
+        for o in exam_orders():
+            if o["id"] == req["order_id"]:
+                return o
+    rung = int(req.get("rung") or 2)
+    return ORD.make_orders("validation", 1, int(time.time()) % 100000, rungs=[rung])[0]
+
+
+def write_menu():
+    """orders/menu.json: titles the stage can offer the judge (exam orders, no answers)."""
+    menu = [{"id": o["id"], "rung": o["rung"], "title": o["title"]} for o in exam_orders()]
+    json.dump(menu, open(os.path.join(ROOT, "orders", "menu.json"), "w", encoding="utf-8"), indent=1)
+    return menu
+
+
 async def live_loop(parallel):
     """Watch orders/live_*.json (written by server.py POST /order); run each on the requested or latest version."""
     seen = set()
     library = Library.load()
+    write_menu()
+    if os.path.exists(RUN_JSON):                       # keep the long run's shifts/exam on screen while serving live orders
+        STATE.update(json.load(open(RUN_JSON, encoding="utf-8")))
     STATE["status"] = "running"
     while True:
         for path in sorted(glob.glob(os.path.join(ROOT, "orders", "live_*.json"))):
@@ -172,7 +192,7 @@ async def live_loop(parallel):
             versions = sorted(glob.glob(os.path.join(GATE.SNAP_DIR, "v*.json")), key=lambda p: int(os.path.basename(p)[1:-5]))
             snap = GATE.load(req.get("version")) if req.get("version") and os.path.exists(os.path.join(GATE.SNAP_DIR, req["version"] + ".json")) \
                 else (GATE.load(os.path.basename(versions[-1])[:-5]) if versions else GATE.make_v1())
-            order = ORD.order_from_request(req) if hasattr(ORD, "order_from_request") else ORD.make_orders("practice", 1, int(time.time()))[0]
+            order = live_order(req)
             STATE["live"] = {"run_id": os.path.basename(path)[:-5], "version": snap["version"], "status": "running"}; write_state()
             run = (await run_batch([order], snap, library_for(snap, library), 1, False, 0, "live"))[0]
             STATE["live"] = _strip(run); write_state()

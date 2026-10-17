@@ -10,7 +10,8 @@ A tiny FastAPI server that serves the stage and the run data, accepts a live ord
 - `GET /` → `web/index.html`; `GET /web/*` static.
 - `GET /run.json` → `runs/run.json` (404 → `samples/run.sample.json`).
 - `GET /runs/{run_id}.json` → `runs/{run_id}.json`. `GET /snapshots/{version}.json`.
-- `POST /order` body `{"title","spec","version"}` → writes `orders/live_{ts}.json`, returns `202 {"run_id": "live_{ts}"}` (the runner watches that folder). If `runs/live_fallback.json` exists and the runner is not running, serve it as `live`.
+- `GET /menu.json` → `orders/menu.json` (list of `{id, rung, title}` the judge can pick from).
+- `POST /order` body `{"order_id": "..."}` or `{"rung": 2}`, optional `"version"` → writes the body to `orders/live_{ts}.json`, returns `202 {"run_id": "live_{ts}"}` (the runner watches that folder). If `samples/live_fallback.json` exists and the runner is not running, serve it as `live`.
 - `GET /schematic/{run_id}.svg` optional: if `runs/{run_id}.json` has `yosys_json`, return it as-is JSON at `/runs/{run_id}.yosys.json`; the page renders with netlistsvg in the browser (`await netlistsvg.render(netlistsvg.digitalSkin, json)`).
 - Vendoring: `npm install netlistsvg` in a temp folder, copy `node_modules/netlistsvg/built/netlistsvg.bundle.js` and `node_modules/elkjs/lib/elk.bundled.js` into `web/`. Do not commit `node_modules`.
 - CORS open for localhost. Run: `uvicorn server:app --port 8000`.

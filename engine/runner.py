@@ -14,7 +14,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RUNS = os.path.join(ROOT, "runs")
 RUN_JSON = os.path.join(RUNS, "run.json")
 EXAM_SEED = 4242
-STATE = {"updated": None, "status": "idle", "current_version": "v1", "versions": [], "shifts": [], "exam": {}, "live": None,
+STATE = {"updated": None, "status": "idle", "current_version": "v1", "versions": [], "shifts": [], "exam": {}, "live": None, "live_runs": {},
          "gauges": {"tok_s": 0, "ttft_s": None, "cache_rate": 0.0, "cost_total_usd": 0.0, "chips_per_hour": 0, "human_pings": 0}}
 _calls_seen = []
 _started = time.time()
@@ -177,43 +177,135 @@ async def run_exam(snapshot, library, exam, parallel):
 
 
 def live_order(req):
-    """A judge picks an exam order by id (menu), or asks for a fresh unseen order of a rung."""
+    """A judge picks an exam order by id (menu), types a plain-English note, or asks for a fresh unseen order of a rung."""
     if req.get("order_id"):
         for o in exam_orders():
             if o["id"] == req["order_id"]:
                 return o
+    if req.get("note"):
+        return order_from_note(str(req["note"]))
     rung = int(req.get("rung") or 2)
     return ORD.make_orders("validation", 1, int(time.time()) % 100000, rungs=[rung])[0]
+
+
+_NOTE_KINDS = [  # (keywords in the note, rung to draw from, keywords a generated title should contain)
+    (("lock", "door", "open", "code"), 2, ()),
+    (("subtract", "minus", "take away"), 1, ("subtract",)),
+    (("add", "plus", "sum", "calculator"), 1, ("add",)),
+    (("traffic",), 5, ("traffic",)), (("blink",), 5, ("blink",)), (("count",), 5, ("count",)),
+    (("bigger", "greater", "larger", "compare"), 6, ("bigger",)),
+    (("vote", "majority"), 6, ("majority",)), (("parity", "odd", "even"), 6, ("parity",)),
+    (("digit", "display", "segment"), 6, ("display", "segment")),
+]
+
+
+def order_from_note(note):
+    """Turn a judge's one-line note into a real order with a truth table. Door locks are built exactly from the codes in the
+    note; other kinds pick the closest generated order; anything else falls back to the best-matching exam order."""
+    import random, re
+    text = note.lower()
+    nums = [int(n) for n in re.findall(r"\d+", text)]
+    kind = next((k for k in _NOTE_KINDS if any(w in text for w in k[0])), None)
+    d = None
+    if kind and kind[1] == 2 and nums:
+        codes = sorted({n for n in nums if n < 32})
+        nin = 4 if max(codes) < 16 else 5
+        inputs = ORD._letters(nin)
+        title = f"Door lock that opens only for codes {ORD._codes_text(codes)}"
+        spec = (f"A door lock with {nin} switches {', '.join(inputs)} (a is the biggest digit of the binary number): "
+                f"the light y turns on only when the switches show {ORD._list_text(codes)}, and stays off for every other number.")
+        d = ORD._draft(2, title, spec, inputs, ["y"], ORD._table(inputs, ["y"], lambda bits: {"y": ORD._num(bits) in codes}))
+    elif kind:
+        rng = random.Random(f"note:{text}")
+        cands = [ORD.GENERATORS[kind[1]](rng) for _ in range(40)]
+        d = next((c for c in cands if all(w in c["title"].lower() for w in kind[2])), cands[0])
+    if d is None:                                      # free text: the exam order whose title shares the most words
+        words = set(re.findall(r"[a-z]+", text))
+        return max(exam_orders(), key=lambda o: len(words & set(re.findall(r"[a-z]+", o["title"].lower()))))
+    d.update({"id": f"ord_j{int(time.time()) % 100000}_{random.randrange(1000):03d}", "pool": "validation", "seed": 0,
+              "best_known_gates": ORD.yosys_io.best_known_gates(d) if d.get("truth") is not None else None})
+    if d["rung"] == 4:
+        ORD._finish_constrained(d)
+    return {k: d[k] for k in ORD.ORDER_KEYS}
 
 
 def write_menu():
     """orders/menu.json: titles the stage can offer the judge (exam orders, no answers)."""
     menu = [{"id": o["id"], "rung": o["rung"], "title": o["title"]} for o in exam_orders()]
+    os.makedirs(os.path.join(ROOT, "orders"), exist_ok=True)
     json.dump(menu, open(os.path.join(ROOT, "orders", "menu.json"), "w", encoding="utf-8"), indent=1)
-    return menu
+
+
+LIVE_KEEP = 20          # live runs kept in run.json (the newest)
+
+
+async def run_live(path, req, library, sem):
+    """One judge order, published live: run.json.live_runs[run_id] grows event by event, then holds the finished ChipRun."""
+    global _chips_done
+    rid = os.path.basename(path)[:-5]
+    versions = sorted(glob.glob(os.path.join(GATE.SNAP_DIR, "v*.json")), key=lambda p: int(os.path.basename(p)[1:-5]))
+    snap = GATE.load(req.get("version")) if req.get("version") and os.path.exists(os.path.join(GATE.SNAP_DIR, req["version"] + ".json")) \
+        else (GATE.load(os.path.basename(versions[-1])[:-5]) if versions else GATE.make_v1())
+    try:
+        order = live_order(req)
+    except Exception:
+        order = ORD.make_orders("validation", 1, int(time.time()) % 100000, rungs=[2])[0]
+    lib = library_for(snap, library)
+    entry = {"run_id": rid, "version": snap["version"], "status": "running", "order": ORD.agent_view(order), "events": [],
+             "attempts": 0, "blueprint": None, "inspection": None, "note": req.get("note")}
+    STATE["live_runs"][rid] = entry; STATE["live"] = entry; write_state()
+    last = [0.0]
+    def on_event(events):
+        entry["events"] = list(events)
+        if time.time() - last[0] > 0.4:                # throttle the rewrite of run.json
+            last[0] = time.time(); write_state()
+    async with sem:
+        try:
+            run = await run_order(order, snap, lib, rid, on_event=on_event)
+        except Exception as e:
+            run = {"run_id": rid, "version": snap["version"], "order": ORD.agent_view(order), "attempts": 0,
+                   "events": entry["events"] + [{"t": 0, "type": "fail", "attempt": 1, "category": "format", "note": f"runner error: {e}", "bad_wires": [], "bad_blocks": []}, {"t": 0, "type": "done"}],
+                   "blueprint": None, "yosys_json": None, "inspection": None, "calls": []}
+    try:
+        if run.get("blueprint"):
+            from . import yosys_io, inspector
+            run["yosys_json"] = yosys_io.to_yosys_json(inspector.flatten(run["blueprint"], lib.parts))
+    except Exception:
+        pass
+    _calls_seen.extend(run.get("calls", []))
+    _chips_done += 1
+    save_run(run)
+    done = _strip(run) | {"status": "done", "note": req.get("note")}
+    STATE["live_runs"][rid] = done; STATE["live"] = done
+    for old in sorted(STATE["live_runs"])[:-LIVE_KEEP]:
+        del STATE["live_runs"][old]
+    write_state()
 
 
 async def live_loop(parallel):
-    """Watch orders/live_*.json (written by server.py POST /order); run each on the requested or latest version."""
+    """Watch orders/live_*.json (written by server.py POST /order); run each on the requested or latest version, in parallel."""
     seen = set()
     library = Library.load()
     write_menu()
     if os.path.exists(RUN_JSON):                       # keep the long run's shifts/exam on screen while serving live orders
         STATE.update(json.load(open(RUN_JSON, encoding="utf-8")))
+    if not isinstance(STATE.get("live_runs"), dict):
+        STATE["live_runs"] = {}
     STATE["status"] = "running"
+    sem = asyncio.Semaphore(parallel)
+    seen.update(os.path.join(ROOT, "orders", f"{rid}.json") for rid in STATE["live_runs"])   # served before a restart
+    tasks = set()
     while True:
         for path in sorted(glob.glob(os.path.join(ROOT, "orders", "live_*.json"))):
             if path in seen:
                 continue
             seen.add(path)
-            req = json.load(open(path, encoding="utf-8"))
-            versions = sorted(glob.glob(os.path.join(GATE.SNAP_DIR, "v*.json")), key=lambda p: int(os.path.basename(p)[1:-5]))
-            snap = GATE.load(req.get("version")) if req.get("version") and os.path.exists(os.path.join(GATE.SNAP_DIR, req["version"] + ".json")) \
-                else (GATE.load(os.path.basename(versions[-1])[:-5]) if versions else GATE.make_v1())
-            order = live_order(req)
-            STATE["live"] = {"run_id": os.path.basename(path)[:-5], "version": snap["version"], "status": "running"}; write_state()
-            run = (await run_batch([order], snap, library_for(snap, library), 1, False, 0, "live"))[0]
-            STATE["live"] = _strip(run); write_state()
+            try:
+                req = json.load(open(path, encoding="utf-8"))
+            except ValueError:
+                continue
+            t = asyncio.create_task(run_live(path, req, library, sem)); tasks.add(t); t.add_done_callback(tasks.discard)
+        write_state()                                   # heartbeat: the server treats a fresh run.json as "runner alive"
         await asyncio.sleep(1)
 
 

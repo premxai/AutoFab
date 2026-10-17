@@ -117,18 +117,22 @@ async def post_order(request: Request):
         raise HTTPException(400, "body must be JSON")
     if not isinstance(body, dict):
         raise HTTPException(400, "body must be a JSON object")
-    order_id, rung, version = body.get("order_id"), body.get("rung"), body.get("version")
-    if order_id is not None:
+    order_id, rung, version, note = body.get("order_id"), body.get("rung"), body.get("version"), body.get("note")
+    if note is not None:
+        if not isinstance(note, str) or not 1 <= len(note.strip()) <= 200:
+            raise HTTPException(422, "note must be 1-200 characters of plain English")
+        note = note.strip()
+    elif order_id is not None:
         if not isinstance(order_id, str) or not SAFE_ID.match(order_id):
             raise HTTPException(422, "order_id must be a string from /menu.json")
     elif rung is not None:
         if isinstance(rung, bool) or not isinstance(rung, int) or not 1 <= rung <= 6:
             raise HTTPException(422, "rung must be an integer 1-6")
     else:
-        raise HTTPException(422, 'send {"order_id": ...} or {"rung": N}')
+        raise HTTPException(422, 'send {"note": "..."}, {"order_id": ...} or {"rung": N}')
     if version is not None and (not isinstance(version, str) or not VERSION.match(version)):
         raise HTTPException(422, 'version must look like "v8"')
-    req = {k: v for k, v in (("order_id", order_id), ("rung", rung), ("version", version)) if v is not None}
+    req = {k: v for k, v in (("note", note), ("order_id", order_id), ("rung", rung), ("version", version)) if v is not None}
     os.makedirs(ORDERS, exist_ok=True)
     ts = int(time.time() * 1000)
     while os.path.exists(os.path.join(ORDERS, f"live_{ts}.json")):

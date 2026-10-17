@@ -165,12 +165,17 @@ async def assemble(order, plan, part_bps, ctx, emit, feedback=None):
 
 
 # ---------------------------------------------------------------- one order, one version -> ChipRun
-async def run_order(order, snapshot, library, run_id, learn=False, shift=0):
+async def run_order(order, snapshot, library, run_id, learn=False, shift=0, on_event=None):
     """Returns a ChipRun (CONTRACTS §7). `library` is the Library object (frozen view in exam mode)."""
     t0 = time.time()
     events = []
     def emit(e):
         events.append({"t": round(time.time() - t0, 2), **e})
+        if on_event:
+            try:
+                on_event(events)                 # live mode publishes the growing event list
+            except Exception:
+                pass
     ctx = {"library": library, "playbook": snapshot.get("playbook"), "flags": snapshot["flags"],
            "routing": snapshot["routing"], "calls": []}
     emit({"type": "order"})

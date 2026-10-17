@@ -10,7 +10,7 @@ echo "== schema is valid JSON"; python -c "import json;json.load(open('docs/blue
 # --- engine/inspector (owner: engine/inspector branch)
 # python -m engine.inspector --selftest
 # --- engine/client (owner: engine/client branch; import-only without a key)
-# python -c "import engine.client"
+python -c "import engine.client"   # import-only fast path; full check (needs key): python -m engine.client --selftest
 # --- web/api (owner: web/api branch)
 # curl -sf localhost:8000/run.json > /dev/null
 echo "== OK"

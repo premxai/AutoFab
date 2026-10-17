@@ -1,8 +1,8 @@
 :root{
   --page:#FCF6EC; --card:#FFFFFF; --line:#F0E4D0; --ink:#1F1B16; --muted:#7A7067;
   --amber:#F5A524; --ok:#2E9E5B; --bad:#D9483B; --off:#C9C1B5; --soft:#FBF1E2;
-  --amber-soft:var(--amber-soft); --amber-ink:var(--amber-ink); --amber-line:var(--amber-line); --hi:var(--hi);
-  --ok-soft:var(--ok-soft); --bad-soft:var(--bad-soft); --grid:var(--grid); --dot:var(--dot); --bar:var(--bar);
+  --amber-soft:#FDEBD0; --amber-ink:#B7730E; --amber-line:#F8D9A6; --hi:#FDEFD8;
+  --ok-soft:#E6F4EA; --bad-soft:#FBECEA; --grid:#F1EBE1; --dot:#E9E1D4; --bar:#D9D0C2;
   --shadow:0 1px 2px rgba(60,40,10,.04),0 8px 24px -18px rgba(60,40,10,.18);
   --r:16px;
   --sans:"Plus Jakarta Sans",Inter,system-ui,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;

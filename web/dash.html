@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AutoFab · Dashboard</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%23FBF8F3'/%3E%3Crect x='4' y='4' width='8' height='8' rx='1.5' fill='none' stroke='%23E8A33D' stroke-width='1.6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="dash.css">
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+"three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap topin">
+    <a class="brand" href="dash.html"><i data-lucide="cpu"></i><span>AutoFab</span><span class="live" id="liveDot" hidden title="the factory is running"></span></a>
+    <div class="tools">
+      <div class="dd" id="verDD">
+        <button class="ddbtn" id="verBtn" type="button" aria-haspopup="listbox" aria-expanded="false"><i data-lucide="git-branch"></i><span id="verLab">Version —</span><i data-lucide="chevron-down" class="chev"></i></button>
+        <div class="ddmenu" id="verMenu" role="listbox" hidden></div>
+      </div>
+      <div class="dd" id="chipDD">
+        <button class="ddbtn wide" id="chipBtn" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="chipic" id="chipIc"></span><span class="ell" id="chipLab">Chip —</span><i data-lucide="chevron-down" class="chev"></i></button>
+        <div class="ddmenu chips" id="chipMenu" role="listbox" hidden></div>
+      </div>
+      <a class="btn" id="compareLink" href="compare.html"><i data-lucide="columns-2"></i><span>Compare</span></a>
+      <div class="dd" id="runDD">
+        <button class="btn primary" id="runBtn" type="button" aria-expanded="false"><i data-lucide="play"></i><span>Run</span></button>
+        <form class="runpanel" id="runPanel" autocomplete="off" hidden>
+          <label for="runIn">What should the factory build?</label>
+          <input id="runIn" type="text" placeholder="e.g. a door lock that opens for 3, 5 and 8">
+          <div class="examples" id="runEx"></div>
+          <div class="rrow">
+            <label class="sm" for="runVer">Factory version</label>
+            <select id="runVer"></select>
+          </div>
+          <div class="rrow" id="pastRow" hidden>
+            <label class="sm" for="runPast">Or rebuild a past order</label>
+            <select id="runPast"><option value="">none</option></select>
+          </div>
+          <p class="note" id="runNote"></p>
+          <div class="ractions">
+            <button class="btn ghost" id="runCancel" type="button">Cancel</button>
+            <button class="btn primary" type="submit"><i data-lucide="hammer"></i><span>Build</span></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="row1">
+    <div class="stages">
+      <section class="card stage" id="cOrder">
+        <div class="chead"><h2><i data-lucide="clipboard-list"></i>Order</h2><button class="exp" type="button" aria-label="Expand"><i data-lucide="maximize-2"></i></button></div>
+        <div class="cbody" id="orderBody"></div>
+      </section>
+      <div class="arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></div>
+      <section class="card stage" id="c3d">
+        <div class="chead"><h2><i data-lucide="box"></i>3D build</h2><button class="exp" type="button" aria-label="Expand"><i data-lucide="maximize-2"></i></button></div>
+        <div class="canvas" id="canvas3d"><div class="stamp" id="stamp" hidden></div></div>
+        <div class="under">
+          <p class="caption" id="caption">&nbsp;</p>
+          <div class="ctrl">
+            <button class="btn small" id="btnPause" type="button"><i data-lucide="pause"></i><span>Pause</span></button>
+            <button class="btn small" id="btnReplay" type="button"><i data-lucide="rotate-ccw"></i><span>Replay</span></button>
+          </div>
+        </div>
+      </section>
+      <div class="arrow" aria-hidden="true"><i data-lucide="arrow-right"></i></div>
+      <section class="card stage" id="cTest">
+        <div class="chead"><h2><i data-lucide="pointer"></i>Circuit test</h2><button class="exp" type="button" aria-label="Expand"><i data-lucide="maximize-2"></i></button></div>
+        <div class="cbody scroll" id="bench"></div>
+      </section>
+    </div>
+    <div class="graphs">
+      <section class="card graph" id="cPractice">
+        <div class="chead"><h2><i data-lucide="chart-column"></i>Practice, shift by shift</h2><button class="exp" type="button" aria-label="Expand"><i data-lucide="maximize-2"></i></button></div>
+        <div class="gbody" id="gPractice"></div>
+        <p class="gcap" id="gPracticeCap"></p>
+      </section>
+      <section class="card graph" id="cExam">
+        <div class="chead"><h2><i data-lucide="trophy"></i>Same 40 orders, every version</h2><button class="exp" type="button" aria-label="Expand"><i data-lucide="maximize-2"></i></button></div>
+        <div class="gbody"><div class="bars" id="bars"></div></div>
+        <div class="more tablewrap" id="examTable"></div>
+      </section>
+    </div>
+  </div>
+
+  <div class="row2">
+    <section class="card logcard" id="cLog">
+      <div class="chead"><h2><i data-lucide="scroll-text"></i><span id="logTitle">Agent log</span><span class="live" id="logLive" hidden></span></h2><button class="exp" type="button" aria-label="Expand"><i data-lucide="maximize-2"></i></button></div>
+      <ol class="log" id="log"></ol>
+    </section>
+    <section class="card lesscard" id="cLessons">
+      <div class="chead"><h2><i data-lucide="lightbulb"></i>Lessons · by version</h2><button class="exp" type="button" aria-label="Expand"><i data-lucide="maximize-2"></i></button></div>
+      <div class="lessons" id="lessons"></div>
+    </section>
+  </div>
+</main>
+
+<div class="ov" id="ov" hidden><div class="ovback" id="ovBack"></div><div class="ovbody" id="ovBody"></div></div>
+
+<footer class="wrap foot">Built on Crusoe · Nemotron 3.5 Lightning 30B and Nemotron 3 Super 120B · every number on this page comes from run.json</footer>
+
+<script type="module" src="dash.js"></script>
+</body>
+</html>

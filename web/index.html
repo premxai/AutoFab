@@ -1,0 +1,906 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AutoFab · the stage</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%230b0f14'/%3E%3Crect x='3' y='3' width='10' height='10' rx='2' fill='%2338e8ff'/%3E%3C/svg%3E">
+<style>
+:root{--bg:#0b0f14;--slab:#0f1b17;--panel:#141c25;--line:#243342;--text:#cfd8dc;--dim:#6b7c8a;
+  --cyan:#38e8ff;--blue:#38a0ff;--green:#3ddc84;--amber:#ffc857;--red:#ff5c6c}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);
+  font:14px/1.4 system-ui,"Segoe UI",Roboto,sans-serif;overflow:hidden}
+.mono{font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-variant-numeric:tabular-nums}
+#app{display:grid;height:100vh;grid-template-columns:3fr 2fr;grid-template-rows:1fr auto;gap:10px;padding:10px}
+#boards{grid-column:1;grid-row:1;display:flex;gap:10px;min-height:0;min-width:0}
+#side{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:10px;min-height:0;min-width:0;transition:opacity .6s}
+#strip{grid-column:1 / 3;grid-row:2;background:var(--panel);border:1px solid var(--line);border-radius:10px;
+  padding:8px 12px;display:flex;flex-direction:column;gap:6px;transition:opacity .6s}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-height:0}
+.panel h3{margin:0 0 6px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);font-weight:600}
+
+/* boards */
+.board{position:relative;flex:1;min-width:0;display:flex;flex-direction:column;border:1px solid var(--line);
+  border-radius:10px;overflow:hidden;background:var(--bg)}
+.board.hidden{display:none}
+.gl{position:relative;flex:1;min-height:0}
+.gl canvas{display:block;position:absolute;inset:0}
+.gl .labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.head{padding:10px 14px 4px;pointer-events:none;min-height:64px}
+.head .ttl{font-size:19px;font-weight:650;color:#e6edf3;opacity:0;transform:translateY(-4px);transition:all .5s}
+.head .ttl.on{opacity:1;transform:none}
+.head .spec{font-size:12px;color:var(--dim);margin-top:2px;opacity:0;transition:opacity .5s}
+.head .spec.on{opacity:1}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.chip{font-size:11px;padding:2px 8px;border:1px solid #2b4a5c;border-radius:20px;color:var(--cyan);background:#0e1c25aa}
+.cap{display:flex;gap:16px;align-items:center;flex-wrap:wrap;padding:7px 12px;background:var(--panel);
+  border-top:1px solid var(--line);font-size:13px;min-height:36px}
+.cap .ver{font-weight:700;color:var(--cyan);border:1px solid #2b4a5c;border-radius:5px;padding:0 7px}
+.cap .k{color:var(--dim);margin-right:4px}
+.cap .note{color:var(--amber);font-size:12px}
+.cap select{display:none;max-width:260px}
+.race .cap select{display:inline-block;flex-basis:100%;max-width:none;order:9}
+#boards .board:first-child .cap select{display:none!important}
+#app.race{grid-template-columns:2fr 1fr}
+.race .head .ttl{font-size:15px}.race .cap{gap:6px 14px;font-size:12px}
+.cap .mini{flex-basis:100%;font-size:12px;color:var(--dim);display:none}
+.race .cap .mini{display:block}
+.cap .mini.bad{color:var(--red)}.cap .mini.ok{color:var(--green)}.cap .mini.amb{color:var(--amber)}
+.lbl{font:700 14px/1 system-ui,sans-serif;color:#e6edf3;text-shadow:0 1px 3px #000,0 0 6px #000;white-space:nowrap;
+  transform:translateY(-4px)}
+.lbl.pad{font-size:10px;font-weight:600;color:#8fb4c4}
+.lbl.result{font:700 14px/1 ui-monospace,Consolas,monospace}
+.lbl.result.ok{color:var(--green)}.lbl.result.bad{color:var(--red)}
+.lbl.small{font-size:12px}
+
+/* side */
+#team .row{display:flex;align-items:center;gap:8px;padding:3px 0;border-bottom:1px solid #1c2a37;font-size:13px}
+#team .row:last-child{border:0}
+#team .dot{width:9px;height:9px;border-radius:50%;background:var(--dim);flex:none}
+#team .agent{font-weight:600;color:#e6edf3}
+#team .model{color:var(--dim);font-size:12px;white-space:nowrap}
+#team .st{white-space:nowrap;margin-left:auto;font-size:12px;color:var(--dim)}
+#team .row.working .dot{background:var(--blue);animation:pulse 1s infinite}
+#team .row.working .st{color:var(--blue)}
+#team .row.done .dot{background:var(--green)}#team .row.done .st{color:var(--green)}
+#team .row.spiral .dot{background:var(--red);animation:pulse .35s infinite}
+#team .row.spiral .st{color:var(--red)}
+#team .row.retry .dot{background:var(--amber)}#team .row.retry .st{color:var(--amber)}
+#team .empty{color:var(--dim);font-size:13px}
+@keyframes pulse{50%{opacity:.25}}
+#teamPanel{flex:1;overflow-x:hidden;overflow-y:auto}
+#inspector{font-size:17px;min-height:3.2em;color:var(--text)}
+#inspector.bad{color:var(--red)}#inspector.ok{color:var(--green)}#inspector.amb{color:var(--amber)}
+#inspector small{display:block;margin-top:4px;font-size:11px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase}
+#lesson{border:1px dashed #6b5a2a;background:#1a1810;color:var(--amber);font-size:14px;display:none}
+#lesson.on{display:block;animation:in .5s}
+#lesson b{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px;color:#b08a3a}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+#ping{display:none;color:#0b0f14;background:var(--amber);border-radius:8px;padding:8px 12px;font-weight:650}
+#ping.on{display:block;animation:in .4s}
+
+/* strip */
+.row1,.row2{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.shelf{display:flex;gap:6px;align-items:center}
+.shelf .lab{color:var(--dim);font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+button,select{background:#17202a;color:#e6edf3;border:1px solid #2b3a48;border-radius:6px;padding:5px 12px;font:inherit}
+button{cursor:pointer}button:hover{border-color:var(--cyan)}
+button.on{border-color:var(--cyan);color:var(--cyan);background:#10242c}
+button.vbtn{font-weight:700;min-width:44px;padding:5px 10px}
+button.vbtn.cur{border-color:var(--cyan);color:var(--cyan)}
+button.vbtn.none{opacity:.55}
+select{max-width:420px}
+.ctl{display:flex;gap:8px;align-items:center;color:var(--dim)}
+input[type=range]{width:110px;accent-color:var(--cyan)}
+#attempt{margin-left:auto;font-size:15px}
+#attempt b{color:var(--cyan)}
+#score{font-size:13px;color:var(--text)}
+#score .k{color:var(--dim)}
+#score .sep{color:#2b3a48;margin:0 8px}
+.gauges{margin-left:auto;display:flex;gap:16px;font-size:12px;color:var(--dim)}
+.gauges b{color:var(--text);font-weight:600}
+#humans{display:none;position:fixed;left:0;right:0;top:14px;text-align:center;font-size:20px;letter-spacing:.2em;
+  color:#9fb4c2;pointer-events:none;z-index:5}
+
+/* lights off: page near-black, boards keep glowing */
+body.lights #side,body.lights #strip{opacity:.06}
+body.lights #strip:hover,body.lights #strip:focus-within{opacity:1}
+body.lights .board{border-color:#0b0f14}
+body.lights .cap{opacity:.12}
+body.lights .head{opacity:.5}
+body.lights #humans{display:block}
+body.lights,body.lights #app{background:#020305}
+#err{position:fixed;right:12px;top:10px;color:var(--amber);font-size:12px;z-index:9}
+</style>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+"three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}
+</script>
+</head>
+<body>
+<div id="app">
+  <div id="boards"></div>
+  <aside id="side">
+    <div class="panel" id="teamPanel"><h3>Team</h3><div id="team"><div class="empty">Waiting for an order…</div></div></div>
+    <div class="panel"><h3>Inspector</h3><div id="inspector">—</div></div>
+    <div class="panel" id="ping"></div>
+    <div class="panel" id="lesson"></div>
+  </aside>
+  <footer id="strip">
+    <div class="row1">
+      <div class="shelf"><span class="lab">Versions</span><span id="shelf" class="shelf"></span></div>
+      <select id="picker" title="Chip picker"></select>
+      <button id="bReplay" title="Replay this chip">&#9654; Replay</button>
+      <button id="bPause" title="Pause / resume (space)">&#10074;&#10074;</button>
+      <button id="bRace" title="Two boards, same order, two versions">Race</button>
+      <label class="ctl">speed <input id="speed" type="range" min="0.5" max="8" step="0.5" value="2"><span id="speedV" class="mono">2×</span></label>
+      <button id="bLights" title="Lights off">Lights</button>
+      <div id="attempt" class="mono">attempt <b>–</b> / 3</div>
+    </div>
+    <div class="row2">
+      <div id="score" class="mono">loading…</div>
+      <div class="gauges mono" id="gauges"></div>
+    </div>
+  </footer>
+</div>
+<div id="humans" class="mono">HUMANS ON FLOOR: 0</div>
+<div id="err"></div>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { CSS2DRenderer, CSS2DObject } from 'three/addons/renderers/CSS2DRenderer.js';
+import { Line2 } from 'three/addons/lines/Line2.js';
+import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
+import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { ShaderPass } from 'three/addons/postprocessing/ShaderPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+/* ───────────────────────── constants ───────────────────────── */
+// The composer clears a linear target and OutputPass encodes again, so the clear colour must be pre-decoded twice
+const dec = v => v <= .04045 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4);
+const BG = new THREE.Color().setRGB(...[0x0b, 0x0f, 0x14].map(v => dec(dec(v / 255))), THREE.LinearSRGBColorSpace);
+const BLACK = new THREE.Color(0, 0, 0), BLOOM = 1, MAX_ATTEMPTS = 3;
+const COL = { build: '#38a0ff', pass: '#3ddc84', fail: '#ff5c6c', repair: '#ffc857', lit: '#38e8ff', pad: '#2f6f86' };
+const TRACE = { build: '#38e8ff', calm: '#2a7a96', bad: '#ff5c6c', repair: '#ffc857', pass: '#2fae6a' };
+const SIZE = { part: { w: 2.3, h: .8, d: 1.5, sx: 3.6, sz: 3.0, per: 5 },
+               gate: { w: 1.5, h: .6, d: 1.05, sx: 2.5, sz: 2.1, per: 7 },
+               result: { w: 4.4, h: .7, d: 1.5 } };
+const MIN_GAP = { order: .6, spawn: .2, plan: .8, place: .5, wire: .3, test: 2.0, fail: 1.4, retry: .9,
+                  pass: 1.2, lesson: 1.0, spiral: 1.0, human_ping: 1.0, done: .5 };
+const GAP_CAP = 3, GAP_CAP_SPIRAL = 5;
+const Y_TRACE = .05;
+const state = { speed: 2, paused: false, race: false, lights: false, chips: [], data: null };
+
+const $ = s => document.querySelector(s);
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+const fmt = n => n == null ? '—' : Number(n).toLocaleString('en-US');
+const shortModel = m => !m ? '' : /Super-VL/i.test(m) ? 'Super VL' : /Lightning/i.test(m) ? 'Lightning 30B' :
+  /Super/i.test(m) ? 'Super 120B' : /Nano/i.test(m) ? 'Nano 30B' : m.split('/').pop();
+const portOff = p => { let h = 7; for (const c of String(p)) h = (h * 31 + c.charCodeAt(0)) | 0; return (((h % 5) + 5) % 5 - 2) * .22; };
+const laneOff = i => ((i % 5) - 2) * .13;
+const ease = t => 1 - Math.pow(1 - Math.min(1, Math.max(0, t)), 3);
+
+function effTimes(events) {        // pacing only: caps long waits, spaces events out so each animation is visible
+  const out = []; let e = 0;
+  events.forEach((ev, i) => {
+    if (i) {
+      const prev = events[i - 1], gap = Math.max(0, ev.t - prev.t);
+      const cap = ev.type === 'spiral' ? GAP_CAP_SPIRAL : GAP_CAP;
+      e += Math.max(Math.min(gap, cap), MIN_GAP[prev.type] ?? .2);
+    }
+    out.push(e);
+  });
+  return out;
+}
+
+/* ───────────────────────── side panels (follow the primary board) ───────────────────────── */
+const ui = {
+  rows: new Map(),
+  reset() { this.rows.clear(); $('#team').innerHTML = ''; this.inspector('—', ''); $('#lesson').className = 'panel'; $('#lesson').innerHTML = '';
+    $('#ping').className = 'panel'; },
+  spawn(ev) {
+    $('#team .empty')?.remove();
+    if (this.rows.has(ev.agent)) return;
+    const r = el('div', 'row working');
+    r.append(el('span', 'dot'), el('span', 'agent', ev.agent), el('span', 'model', shortModel(ev.model)), el('span', 'st', 'working'));
+    $('#team').append(r); this.rows.set(ev.agent, { r, role: ev.role, st: 'working' });
+  },
+  set(agent, st, text) {
+    const o = this.rows.get(agent); if (!o) return;
+    o.st = st; o.r.className = 'row ' + st; o.r.querySelector('.st').textContent = text ?? st;
+  },
+  each(fn) { this.rows.forEach((o, k) => fn(o, k)); },
+  inspector(text, cls, tag) { const i = $('#inspector'); i.className = cls || ''; i.textContent = text;
+    if (tag) { const s = el('small', '', tag); i.append(s); } },
+  lesson(ev) { const l = $('#lesson'); l.className = 'panel on';
+    l.innerHTML = ''; l.append(el('b', '', 'Lesson the team wrote ' + (ev.id ? '· ' + ev.id : '')), el('span', '', ev.text)); },
+  ping(ev) { const p = $('#ping'); p.className = 'panel on'; p.textContent = 'Human pinged — ' + (ev.note || 'attention needed'); },
+  attempt(n) { $('#attempt').innerHTML = `attempt <b>${n ?? '–'}</b> / ${MAX_ATTEMPTS}`; },
+};
+
+/* ───────────────────────── Board: one 3D stage replaying one ChipRun ───────────────────────── */
+class Board {
+  constructor(host, { primary }) {
+    this.primary = primary; this.host = host;
+    host.innerHTML = '';
+    this.gl = el('div', 'gl'); this.labels = el('div', 'labels');
+    this.head = el('div', 'head'); this.ttl = el('div', 'ttl'); this.spec = el('div', 'spec'); this.chipsEl = el('div', 'chips');
+    this.head.append(this.ttl, this.spec, this.chipsEl);
+    this.cap = el('div', 'cap');
+    this.capVer = el('span', 'ver mono', '—'); this.capSel = el('select');
+    this.capAtt = el('span', 'mono'); this.capTime = el('span', 'mono'); this.capGates = el('span', 'mono');
+    this.capCost = el('span', 'mono'); this.capNote = el('span', 'note'); this.capMini = el('div', 'mini');
+    this.cap.append(this.capVer, this.capSel, this.capAtt, this.capTime, this.capGates, this.capCost, this.capNote, this.capMini);
+    host.append(this.head, this.gl, this.cap);
+
+    this.renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
+    this.renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+    this.renderer.setClearColor(BG, 1);
+    this.gl.append(this.renderer.domElement);
+    this.labelR = new CSS2DRenderer({ element: this.labels }); this.gl.append(this.labels);
+
+    this.scene = new THREE.Scene();
+    this.S = 8; this.camera = new THREE.OrthographicCamera(-this.S, this.S, this.S, -this.S, .1, 200);
+    this.camDir = new THREE.Vector3(1, 1, 1).normalize();
+    this.camera.position.copy(this.camDir).multiplyScalar(40); this.camera.lookAt(0, 0, 0);
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.enablePan = false; this.controls.enableDamping = true; this.controls.maxPolarAngle = Math.PI * .47;
+    this.controls.minZoom = .3; this.controls.maxZoom = 8;
+    this.controls.addEventListener('start', () => { this.userMoved = true; });
+
+    // lights
+    this.scene.add(new THREE.HemisphereLight(0x9fc8ff, 0x0a1210, .9));
+    const dl = new THREE.DirectionalLight(0xffffff, 1.1); dl.position.set(6, 12, 4); this.scene.add(dl);
+
+    // board group: rotated 45° about Y so local +x reads left→right on screen under the (1,1,1) iso camera
+    this.group = new THREE.Group(); this.group.rotation.y = Math.PI / 4; this.scene.add(this.group);
+    const slab = new THREE.Mesh(new RoundedBoxGeometry(46, .5, 30, 3, .1),
+      new THREE.MeshStandardMaterial({ color: 0x0f1b17, roughness: .9, metalness: 0 }));
+    slab.position.set(8, -.27, 2); this.group.add(slab);
+    const grid = new THREE.GridHelper(44, 44, 0x1d3a2e, 0x15261f); grid.position.set(8, 0, 2);
+    grid.scale.z = 30 / 44; this.group.add(grid);
+    this.content = new THREE.Group(); this.group.add(this.content);
+
+    // thinking ring + test pulse
+    this.ring = new THREE.Mesh(new THREE.TorusGeometry(1.3, .06, 12, 64), new THREE.MeshBasicMaterial({ color: COL.lit, toneMapped: false }));
+    this.ring.rotation.x = Math.PI / 2; this.ring.position.y = .1; this.ring.layers.enable(BLOOM); this.ring.visible = false; this.group.add(this.ring);
+    this.pulseMesh = new THREE.Mesh(new THREE.SphereGeometry(.24, 20, 16), new THREE.MeshBasicMaterial({ color: COL.lit, toneMapped: false }));
+    this.pulseMesh.layers.enable(BLOOM); this.pulseMesh.visible = false; this.group.add(this.pulseMesh);
+
+    this.nowMs = 0;
+    this.initPost();
+    this.ro = new ResizeObserver(() => this.resize()); this.ro.observe(this.gl);
+    this.resetScene(); this.resize();
+  }
+
+  /* ── post-processing: selective bloom (blocks, traces, pulse glow; slab and grid don't) ── */
+  initPost() {
+    const r = this.renderer;
+    this.bloomLayer = new THREE.Layers(); this.bloomLayer.set(BLOOM);
+    this.darkMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    this.stash = new Map();
+    this.bloomComposer = new EffectComposer(r); this.bloomComposer.renderToScreen = false;
+    this.bloomComposer.addPass(new RenderPass(this.scene, this.camera));
+    this.bloomPass = new UnrealBloomPass(new THREE.Vector2(256, 256), .5, .35, .05);
+    this.bloomComposer.addPass(this.bloomPass);
+    const mix = new ShaderPass(new THREE.ShaderMaterial({
+      uniforms: { baseTexture: { value: null }, bloomTexture: { value: this.bloomComposer.renderTarget2.texture } },
+      vertexShader: 'varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',
+      fragmentShader: 'uniform sampler2D baseTexture;uniform sampler2D bloomTexture;varying vec2 vUv;' +
+        'void main(){gl_FragColor=texture2D(baseTexture,vUv)+texture2D(bloomTexture,vUv);}' }), 'baseTexture');
+    mix.needsSwap = true;
+    this.finalComposer = new EffectComposer(r);
+    this.finalComposer.addPass(new RenderPass(this.scene, this.camera));
+    this.finalComposer.addPass(mix);
+    this.finalComposer.addPass(new OutputPass());
+  }
+  darken(o) {
+    if (o.isMesh && !o.isLine2 && !this.bloomLayer.test(o.layers)) { this.stash.set(o, o.material); o.material = this.darkMat; }
+    else if ((o.isLine || o.isLineSegments || o.isLine2) && !this.bloomLayer.test(o.layers)) { this.stash.set(o, o.visible); o.visible = false; }
+  }
+  restore() {
+    this.stash.forEach((v, o) => { if (typeof v === 'boolean') o.visible = v; else o.material = v; });
+    this.stash.clear();
+  }
+  render() {
+    this.renderer.setClearColor(BLACK, 1);
+    this.scene.traverse(o => this.darken(o));
+    this.bloomComposer.render();
+    this.restore();
+    this.renderer.setClearColor(BG, 1);
+    this.finalComposer.render();
+    this.labelR.render(this.scene, this.camera);
+  }
+  resize() {
+    const w = this.gl.clientWidth, h = this.gl.clientHeight; if (w < 4 || h < 4) return;
+    this.w = w; this.h = h;
+    this.renderer.setSize(w, h, false); this.renderer.domElement.style.width = w + 'px'; this.renderer.domElement.style.height = h + 'px';
+    this.bloomComposer.setSize(w, h); this.finalComposer.setSize(w, h);
+    this.bloomPass.resolution.set(w, h);
+    this.labelR.setSize(w, h);
+    const a = w / h; this.camera.left = -this.S * a; this.camera.right = this.S * a; this.camera.top = this.S; this.camera.bottom = -this.S;
+    this.camera.updateProjectionMatrix();
+    this.content.traverse(o => { if (o.isLine2) o.material.resolution.set(w, h); });
+    this.fitDirty = true;
+  }
+
+  /* ── scene reset ── */
+  resetScene() {
+    while (this.content.children.length) {
+      const o = this.content.children.pop();
+      o.traverse(c => { c.geometry?.dispose?.(); c.material?.dispose?.(); if (c.isCSS2DObject) c.element.remove(); });
+    }
+    this.labels.innerHTML = '';
+    this.blocks = new Map(); this.slotOf = new Map(); this.nextSlot = 0; this.planned = []; this.kind = 'part';
+    this.result = null; this.pads = new Map(); this.wires = []; this.pulse = null; this.lights = new Map();
+    this.attempt = 1; this.pendingDesigners = 0; this.liveSpiral = false; this.bounds = null;
+    this.ring.visible = false; this.pulseMesh.visible = false;
+    this.ttl.className = 'ttl'; this.spec.className = 'spec'; this.chipsEl.innerHTML = '';
+    this.fitDirty = true; this.userMoved = false;
+    this.gatesPlaced = 0;
+  }
+
+  /* ── playback ── */
+  play(run, meta = {}) {
+    this.run = run; this.meta = meta;
+    this.resetScene();
+    this.events = run.events || []; this.eff = effTimes(this.events);
+    this.vt = 0; this.idx = 0; this.finished = false; this.lastT = 0;
+    this.capVer.textContent = run.version || '—';
+    this.capNote.textContent = meta.note || '';
+    this.capAtt.innerHTML = `<span class="k">attempts</span>1`;
+    this.capTime.innerHTML = `<span class="k">time</span>0.0 s`;
+    this.capGates.innerHTML = `<span class="k">gates</span>—`;
+    this.capCost.innerHTML = `<span class="k">cost</span>—`;
+    this.capMini.textContent = ''; this.capMini.className = 'mini';
+    if (this.primary) { ui.reset(); ui.attempt(1); }
+    if (!this.events.length) { this.finished = true; }
+  }
+  setEvents(run) {                  // live runs grow while playing
+    this.run = run; this.events = run.events || []; this.eff = effTimes(this.events); this.finished = false;
+  }
+  tick(dt) {
+    this.nowMs += dt * 1000;
+    const dv = state.paused ? 0 : dt * state.speed;
+    if (this.events && !this.finished) {
+      this.vt += dv;
+      while (this.idx < this.events.length && this.eff[this.idx] <= this.vt) this.apply(this.events[this.idx++]);
+      if (this.idx >= this.events.length) this.finished = true;
+      // thinking counter while waiting for a spiral
+      const nx = this.events[this.idx];
+      if (nx && nx.type === 'spiral' && this.idx > 0) {
+        const a = this.eff[this.idx - 1], b = this.eff[this.idx], p = Math.min(1, (this.vt - a) / Math.max(.01, b - a));
+        const chars = Math.round(p * (nx.thinking_chars || 0));
+        this.waitSpiral = { p, chars };
+        if (this.primary) ui.each((o, k) => { if (o.role === 'designer' && o.st === 'working')
+          { o.r.querySelector('.st').textContent = `thinking · ${fmt(chars)} chars`; o.r.classList.toggle('spiral', p > .6); } });
+      } else this.waitSpiral = null;
+    }
+    this.animate(dt, dv);
+  }
+
+  /* ── event handling ── */
+  apply(ev) {
+    this.lastT = ev.t ?? this.lastT;
+    this.capTime.innerHTML = `<span class="k">time</span>${(this.lastT).toFixed(1)} s`;
+    const P = this.primary;
+    switch (ev.type) {
+      case 'order': {
+        const o = this.run.order || {};
+        this.ttl.textContent = o.title || ''; this.spec.textContent = o.spec || '';
+        this.ttl.className = 'ttl on'; this.spec.className = 'spec on';
+        if (P) ui.inspector('Order received.', '');
+        break; }
+      case 'spawn':
+        if (ev.role === 'designer') this.pendingDesigners++;
+        if (P) ui.spawn(ev);
+        this.updateRing();
+        break;
+      case 'plan': {
+        this.planned = ev.parts || [];
+        this.planned.forEach(n => this.slot(n));
+        this.chipsEl.innerHTML = '';
+        (ev.definition_of_done || []).forEach(t => this.chipsEl.append(el('span', 'chip', t)));
+        this.ensureResult(); this.relayout();
+        if (P) { ui.each((o, k) => { if (o.role === 'architect') ui.set(k, 'done', 'planned'); });
+          ui.inspector('Plan ready: ' + (ev.parts || []).length + ' part(s). Definition of done is on the board.', ''); }
+        break; }
+      case 'place': this.place(ev); if (P && ev.block) ui.set('designer:' + ev.block, 'done', 'placed'); break;
+      case 'wire': this.addWire(ev); break;
+      case 'test': this.startTest(ev); break;
+      case 'fail': this.fail(ev); break;
+      case 'retry': this.retry(ev); break;
+      case 'pass': this.passed(ev); break;
+      case 'lesson': if (P) ui.lesson(ev); break;
+      case 'spiral':
+        this.liveSpiral = true; this.updateRing();
+        this.capMini.textContent = `thinking spiral · ${fmt(ev.thinking_chars)} chars` + (ev.note ? ' · ' + ev.note : '');
+        this.capMini.className = 'mini bad';
+        if (P) { ui.each((o, k) => { if (o.role === 'designer' && o.st !== 'done') ui.set(k, 'spiral', `spiral · ${fmt(ev.thinking_chars)} chars`); });
+          ui.inspector('Thinking spiral: ' + (ev.note || 'the model never reached an answer'), 'bad', 'loop detector'); }
+        break;
+      case 'human_ping': if (P) ui.ping(ev); this.capMini.textContent = 'human pinged · ' + (ev.note || ''); this.capMini.className = 'mini amb'; break;
+      case 'done': this.finish(); break;
+    }
+  }
+  slot(name) { if (!this.slotOf.has(name)) this.slotOf.set(name, this.nextSlot++); return this.slotOf.get(name); }
+  realCount() { return this.blocks.size - (this.result ? 1 : 0); }
+  updateRing() { this.ring.visible = this.realCount() === 0 && this.pendingDesigners > 0;
+    this.ring.material.color.set(this.liveSpiral ? COL.fail : COL.lit); }
+
+  place(ev) {
+    const kind = ev.kind === 'gate' ? 'gate' : 'part';
+    if (this.realCount() === 0) this.kind = kind;
+    this.pendingDesigners = Math.max(0, this.pendingDesigners - 1);
+    const b = this.makeBlock(ev.block, kind, ev.label || ev.block);
+    b.slot = this.slot(ev.block); b.born = this.nowMs;
+    this.blocks.set(ev.block, b);
+    if (kind === 'gate') this.gatesPlaced++;
+    this.ensureResult(); this.relayout(); this.updateRing();
+    this.capGates.innerHTML = `<span class="k">blocks</span>${this.realCount()}`;
+  }
+  ensureResult() {
+    if (this.result) return;
+    const b = this.makeBlock('RESULT', 'result', 'RESULT'); b.born = this.nowMs; b.isResult = true;
+    this.result = b; this.blocks.set('RESULT', b);
+    b.label.element.className = 'lbl result';
+  }
+  makeBlock(name, kind, label) {
+    const sp = SIZE[kind];
+    const mat = new THREE.MeshStandardMaterial({ color: 0x0a1a28, emissive: new THREE.Color(COL.build), emissiveIntensity: 2,
+      toneMapped: false, roughness: .45, metalness: .15 });
+    const mesh = new THREE.Mesh(new RoundedBoxGeometry(sp.w, sp.h, sp.d, 4, .14), mat);
+    mesh.layers.enable(BLOOM); mesh.scale.setScalar(1.4); mesh.position.y = sp.h / 2 + 1.2;
+    const div = el('div', 'lbl' + (kind === 'gate' ? ' small' : ''), label);
+    const lab = new CSS2DObject(div); lab.position.set(0, sp.h / 2 + .25, 0); mesh.add(lab);
+    this.content.add(mesh);
+    return { name, kind, sp, mesh, mat, label: lab, state: 'build', cur: new THREE.Color(COL.build), lit: 0, born: 0, pos: new THREE.Vector3(), slot: -1 };
+  }
+  cellPos(b) {
+    const S = SIZE[this.kind], per = S.per;
+    return { x: (b.slot % per) * S.sx, z: Math.floor(b.slot / per) * S.sz };
+  }
+  relayout() {
+    const S = SIZE[this.kind];
+    let maxCol = 0, maxRow = 0;
+    this.blocks.forEach(b => { if (b.isResult) return; const c = this.cellPos(b); b.pos.set(c.x, 0, c.z);
+      maxCol = Math.max(maxCol, b.slot % S.per); maxRow = Math.max(maxRow, Math.floor(b.slot / S.per)); });
+    this.slotOf.forEach(s => { maxCol = Math.max(maxCol, s % S.per); maxRow = Math.max(maxRow, Math.floor(s / S.per)); });
+    this.cols = maxCol + 1; this.rows = maxRow + 1;
+    if (this.result) this.result.pos.set(this.cols * S.sx + 1.2, 0, 0);
+    this.blocks.forEach(b => { b.mesh.position.x = b.pos.x; b.mesh.position.z = b.pos.z; });
+    this.rebuildPads(); this.rebuildTraces(); this.computeBounds();
+  }
+
+  /* ── pads: tiny labelled terminals for signals that are not block ports ── */
+  isOut(sig) { return (this.run.order?.outputs || []).includes(sig); }
+  endpoint(tok) {
+    const [a, p] = String(tok).split('.');
+    if (p !== undefined && this.blocks.has(a) && a !== 'RESULT') return { kind: 'pin', b: this.blocks.get(a), port: p };
+    return { kind: 'pad', sig: tok };
+  }
+  padFor(sig, io, anchor) {
+    let p = this.pads.get(sig); if (p) return p;
+    const mesh = new THREE.Mesh(new RoundedBoxGeometry(.9, .22, .5, 3, .06),
+      new THREE.MeshStandardMaterial({ color: 0x0a1a28, emissive: new THREE.Color(COL.pad), emissiveIntensity: 2, toneMapped: false }));
+    mesh.layers.enable(BLOOM);
+    const lab = new CSS2DObject(el('div', 'lbl pad', sig)); lab.position.set(0, .35, 0); mesh.add(lab);
+    this.content.add(mesh);
+    // pick a free x near the block this pad serves
+    const same = [...this.pads.values()].filter(q => q.io === io);
+    let x = anchor + portOff(sig) * 2, tries = 0;
+    while (same.some(q => Math.abs(q.x - x) < .95) && tries++ < 40) x += .95;
+    p = { sig, io, mesh, x, z: 0 }; this.pads.set(sig, p); return p;
+  }
+  rebuildPads() {
+    const S = SIZE[this.kind], d = S.d ?? SIZE[this.kind].d;
+    const back = -d / 2 - 1.9, front = (this.rows - 1) * S.sz + d / 2 + 1.9;
+    this.pads.forEach(p => { p.z = p.io === 'in' ? back : front; p.mesh.position.set(p.x, .11, p.z); });
+  }
+
+  /* ── traces ── */
+  addWire(ev) {
+    const to = this.endpoint(ev.to), fr = this.endpoint(ev.from);
+    if (to.kind === 'pad' && fr.kind === 'pad') return;
+    // repairing: a new wire into an already-wired pin replaces the old one
+    const key = ev.to;
+    const old = this.wires.findIndex(w => w.to === key);
+    let repair = false;
+    if (old >= 0) { this.killWire(this.wires[old]); this.wires.splice(old, 1); repair = true; }
+    if (fr.kind === 'pad') this.padFor(fr.sig, this.isOut(fr.sig) ? 'out' : 'in', to.kind === 'pin' ? to.b.pos.x : 0);
+    if (to.kind === 'pad') this.padFor(to.sig, this.isOut(to.sig) ? 'out' : 'in', fr.kind === 'pin' ? fr.b.pos.x : 0);
+    const w = { from: ev.from, to: ev.to, fr, tn: to, lane: this.wires.length, state: repair ? 'repair' : 'build', line: null,
+                born: this.nowMs, prog: 0, color: new THREE.Color(repair ? TRACE.repair : TRACE.build), width: 3, pts: null };
+    this.wires.push(w);
+    this.relayout();
+  }
+  killWire(w) { if (w.line) { this.content.remove(w.line); w.line.geometry.dispose(); w.line.material.dispose(); w.line = null; } }
+  pinPos(e, side) {            // side: 'L' 'R' on blocks
+    const b = e.b, z = b.pos.z + portOff(e.port);
+    return side === 'L' ? [b.pos.x - b.sp.w / 2, z] : [b.pos.x + b.sp.w / 2, z];
+  }
+  route(w) {
+    const S = SIZE[this.kind], f = w.fr, t = w.tn, ln = w.lane, lo = laneOff(ln);
+    const y = Y_TRACE, P = [];
+    const push = (x, z) => P.push([x, y, z]);
+    if (f.kind === 'pin' && t.kind === 'pin') {
+      const [sx, sz] = this.pinPos(f, 'R'), [tx, tz] = this.pinPos(t, 'L');
+      const g1 = f.b.pos.x + S.sx / 2 + lo, g2 = t.b.pos.x - S.sx / 2 + lo;
+      push(sx, sz);
+      if (Math.abs(g1 - g2) < .01 && f.b.pos.z === t.b.pos.z) { push(g1, sz); push(g1, tz); }
+      else { const zc = t.b.pos.z + t.b.sp.d / 2 + .5 + Math.abs(lo);
+        push(g1, sz); push(g1, zc); push(g2, zc); push(g2, tz); }
+      push(tx, tz);
+    } else if (f.kind === 'pad') {                      // input pad → block
+      const p = this.pads.get(f.sig), [tx, tz] = this.pinPos(t, 'L');
+      const lane = p.z + .6 + Math.abs(lo) * 2 + (ln % 4) * .14, g = t.b.pos.x - S.sx / 2 + lo;
+      push(p.x, p.z + .25); push(p.x, lane); push(g, lane); push(g, tz); push(tx, tz);
+    } else {                                            // block → output pad
+      const p = this.pads.get(t.sig), [sx, sz] = this.pinPos(f, 'R');
+      const g = f.b.pos.x + S.sx / 2 + lo, lane = p.z - .6 - (ln % 4) * .14;
+      push(sx, sz); push(g, sz); push(g, lane); push(p.x, lane); push(p.x, p.z - .25);
+    }
+    return P;
+  }
+  densify(P) {
+    const out = [];
+    for (let i = 0; i < P.length - 1; i++) {
+      const a = P[i], b = P[i + 1], n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[2] - a[2]) / .12));
+      for (let k = 0; k < n; k++) out.push(a[0] + (b[0] - a[0]) * k / n, a[1], a[2] + (b[2] - a[2]) * k / n);
+    }
+    const l = P[P.length - 1]; out.push(l[0], l[1], l[2]);
+    return out;
+  }
+  rebuildTraces() {
+    this.wires.forEach(w => {
+      this.killWire(w);
+      if ((w.fr.kind === 'pad' && !this.pads.has(w.fr.sig)) || (w.tn.kind === 'pad' && !this.pads.has(w.tn.sig))) return;
+      w.pts = this.densify(this.route(w));
+      const g = new LineGeometry(); g.setPositions(w.pts);
+      const m = new LineMaterial({ color: w.color.getHex(), linewidth: w.width, worldUnits: false, toneMapped: false });
+      m.resolution.set(this.w || 100, this.h || 100);
+      w.nseg = w.pts.length / 3 - 1;
+      w.line = new Line2(g, m); w.line.layers.enable(BLOOM); w.line.frustumCulled = false;
+      g.instanceCount = Math.max(0, Math.ceil(w.nseg * w.prog));
+      this.content.add(w.line);
+    });
+  }
+  setWire(w, st) {
+    w.state = st;
+    w.width = st === 'bad' ? 5 : 3;
+    if (w.line) w.line.material.linewidth = w.width;
+  }
+
+  /* ── tests and verdicts ── */
+  startTest(ev) {
+    this.ensureResult(); this.relayout();
+    this.blocks.forEach(b => { if (!b.isResult) b.state = 'build'; });
+    this.wires.forEach(w => { if (w.state === 'bad' || w.state === 'repair') this.setWire(w, 'calm'); });
+    this.result.state = 'build'; this.result.label.element.className = 'lbl result';
+    this.result.label.element.textContent = 'testing…';
+    const pts = []; [...this.blocks.values()].filter(b => !b.isResult).sort((a, c) => a.slot - c.slot).forEach(b =>
+      pts.push(new THREE.Vector3(b.pos.x, 1.35, b.pos.z)));
+    pts.push(new THREE.Vector3(this.result.pos.x, 1.35, this.result.pos.z));
+    const path = new THREE.CurvePath();
+    for (let i = 0; i < pts.length - 1; i++) path.add(new THREE.LineCurve3(pts[i], pts[i + 1]));
+    this.pulse = { path: pts.length > 1 ? path : null, u: 0, dur: 1.7, ev, pts };
+    this.pulseMesh.visible = !!this.pulse.path;
+    this.testEv = ev;
+    if (!this.pulse.path) this.showResult(ev);
+    this.attempt = ev.attempt || this.attempt;
+    this.setAttempt(this.attempt);
+    if (this.primary) { ui.each((o, k) => { if (o.role === 'assembler') ui.set(k, 'done', 'wired'); });
+      ui.inspector(`Testing ${this.fmtInputs(ev)} …`, ''); }
+  }
+  fmtInputs(ev) {
+    const v = Object.values(ev.inputs || {});
+    return (this.run.order?.rung === 1 && v.length === 2) ? `${v[0]} + ${v[1]}` : v.length ? v.join(', ') : 'inputs';
+  }
+  showResult(ev) {
+    const ok = ev.got === ev.expected;
+    const r = this.result.label.element;
+    r.textContent = `${this.fmtInputs(ev)} = ${ev.got} ${ok ? '✓' : '✗'}`;
+    r.className = 'lbl result ' + (ok ? 'ok' : 'bad');
+    this.result.state = ok ? 'pass' : 'fail';
+  }
+  fail(ev) {
+    if (this.testEv && this.testEv.attempt === ev.attempt && this.pulse) { this.pulse = null; this.pulseMesh.visible = false; this.showResult(this.testEv); }
+    if (this.result && this.result.state !== 'fail') { this.result.state = 'fail'; }
+    (ev.bad_blocks || []).forEach(n => { const b = this.blocks.get(n); if (b) b.state = 'fail'; });
+    const bad = new Set((ev.bad_wires || []).map(p => p.join('|')));
+    this.wires.forEach(w => { if (bad.has(w.from + '|' + w.to)) this.setWire(w, 'bad'); });
+    this.attempt = ev.attempt || this.attempt; this.lastCat = ev.category;
+    this.capMini.textContent = `${ev.category}: ${ev.note || ''}`; this.capMini.className = 'mini bad';
+    if (this.primary) {
+      ui.inspector(ev.note || ev.category, 'bad', ev.category);
+      ui.each((o, k) => { if (o.st === 'spiral') return; if (o.st !== 'done') ui.set(k, 'working', 'working'); });
+    }
+    if (this.realCount() === 0 && this.result) { const r = this.result.label.element; r.textContent = 'no answer ✗'; r.className = 'lbl result bad'; }
+    if (!(ev.bad_blocks || []).length) { this.liveSpiral = true; this.updateRing(); }
+  }
+  retry(ev) {
+    this.attempt = ev.attempt || this.attempt + 1; this.setAttempt(this.attempt);
+    this.blocks.forEach(b => { if (b.state === 'fail' && !b.isResult) b.state = 'repair'; });
+    this.wires.forEach(w => { if (w.state === 'bad') w.state = 'repair', this.setWire(w, 'repair'); });
+    this.liveSpiral = false; this.ring.material.color.set(COL.repair);
+    if (this.realCount() === 0) { this.pendingDesigners = Math.max(1, this.pendingDesigners); this.ring.visible = true; this.ring.material.color.set(COL.repair); }
+    this.capMini.textContent = `retry · attempt ${this.attempt}`; this.capMini.className = 'mini amb';
+    if (this.primary) { ui.inspector(`Retry — attempt ${this.attempt}: the team re-reads the inspector's note.`, 'amb');
+      ui.each((o, k) => { if (o.role === 'architect') return; if (this.lastCat === 'assembly' && o.role === 'designer') return; ui.set(k, 'retry', 'retrying'); }); }
+  }
+  passed(ev) {
+    this.blocks.forEach(b => { b.state = 'pass'; });
+    this.wires.forEach(w => this.setWire(w, 'pass'));
+    if (this.pulse) { this.pulse = null; this.pulseMesh.visible = false; if (this.testEv) this.showResult(this.testEv); }
+    this.ring.visible = false;
+    const c = this.run.inspection?.correct;
+    const msg = c ? `Inspector checked all ${fmt(c.total)} possible inputs: ${c.ok ? 'all correct' : (c.passed + ' correct')}.` : 'Inspector: passed.';
+    this.capMini.textContent = msg; this.capMini.className = 'mini ok';
+    if (this.primary) { ui.inspector(msg, 'ok', 'attempt ' + (ev.attempt || this.attempt));
+      ui.each((o, k) => ui.set(k, 'done', 'done')); }
+  }
+  finish() {
+    const i = this.run.inspection, m = i?.metrics;
+    this.capAtt.innerHTML = `<span class="k">attempts</span>${this.run.attempts ?? this.attempt} ${i ? (i.pass ? '<span style="color:var(--green)">pass</span>' : '<span style="color:var(--red)">fail</span>') : ''}`;
+    this.capTime.innerHTML = `<span class="k">time</span>${(m?.time_s ?? this.lastT).toFixed(1)} s`;
+    this.capGates.innerHTML = `<span class="k">gates</span>${i?.gates ?? '—'}${i?.best_known_gates != null ? ` <span class="k">/ best ${i.best_known_gates}</span>` : ''}`;
+    this.capCost.innerHTML = `<span class="k">cost</span>${m?.cost_usd != null ? '$' + m.cost_usd.toFixed(4) : '—'}`;
+    this.pendingDesigners = 0; this.updateRing();
+    if (this.primary && i && !i.pass) { ui.each((o, k) => { if (o.st === 'working' || o.st === 'retry') ui.set(k, 'spiral', 'gave up'); }); }
+  }
+  setAttempt(n) {
+    this.capAtt.innerHTML = `<span class="k">attempts</span>${n}`;
+    if (this.primary) ui.attempt(n);
+  }
+
+  /* ── per-frame animation ── */
+  animate(dt, dv) {
+    const now = this.nowMs, tsec = now / 1000;
+    this.blocks.forEach(b => {
+      const age = (now - b.born) / 250, k = ease(age);
+      b.mesh.scale.setScalar(1.4 - .4 * k); b.mesh.position.y = b.sp.h / 2 + (1 - k) * 1.2;
+      // colour target
+      const tgt = new THREE.Color(b.isResult && b.state === 'build' ? COL.build : COL[b.state] || COL.build);
+      if (b.lit > 0) tgt.lerp(new THREE.Color(COL.lit), Math.min(1, b.lit));
+      b.cur.lerp(tgt, 1 - Math.exp(-dt * 12));
+      b.mat.emissive.copy(b.cur).multiplyScalar(.2); b.mat.color.copy(b.cur).multiplyScalar(.12);
+      b.mat.emissiveIntensity = 2 * (b.state === 'fail' ? .75 + .25 * Math.sin(tsec * 9) : b.state === 'repair' ? .85 + .15 * Math.sin(tsec * 5) : 1);
+      b.lit = Math.max(0, b.lit - dt * 2.5);
+    });
+    this.pads.forEach(p => { p.mesh.material.emissiveIntensity = 1.6; });
+    // traces draw on over 400 ms and settle
+    this.wires.forEach(w => {
+      if (!w.line) return;
+      const age = (now - w.born) / 400; w.prog = Math.min(1, age);
+      w.line.geometry.instanceCount = Math.max(0, Math.ceil(w.nseg * w.prog));
+      const goal = TRACE[w.state === 'calm' ? 'calm' : w.state] || TRACE.calm;
+      let g = goal;
+      if (w.state === 'build' && now - w.born > 900) g = TRACE.calm;
+      if (w.state === 'repair' && now - w.born > 1600) g = TRACE.repair;
+      w.color.lerp(new THREE.Color(g), 1 - Math.exp(-dt * 6));
+      w.line.material.color.copy(w.color);
+      if (w.state === 'build' && now - w.born > 900) w.state = 'calm';
+    });
+    // test pulse
+    if (this.pulse && this.pulse.path) {
+      this.pulse.u = Math.min(1, this.pulse.u + dv / this.pulse.dur);
+      const p = this.pulse.path.getPoint(this.pulse.u); this.pulseMesh.position.copy(p);
+      const s = 1 + .25 * Math.sin(tsec * 18); this.pulseMesh.scale.setScalar(s);
+      this.blocks.forEach(b => { if (!b.isResult && b.pos.distanceTo(new THREE.Vector3(p.x, 0, p.z)) < 1.3) b.lit = 1; });
+      if (this.pulse.u >= 1) { this.pulseMesh.visible = false; const ev = this.pulse.ev; this.pulse = null; this.showResult(ev); }
+    }
+    // thinking ring
+    if (this.ring.visible) {
+      const c = this.fitCenter || new THREE.Vector3(); this.ring.position.set(c.x, .1, c.z);
+      const s = 1 + .2 * Math.sin(tsec * (this.liveSpiral ? 7 : 2.5)) + (this.waitSpiral ? this.waitSpiral.p * .6 : 0);
+      this.ring.scale.setScalar(s);
+    }
+    this.fitCamera(dt);
+    this.controls.update();
+    this.render();
+  }
+
+  /* ── camera: isometric, re-fit to content ── */
+  computeBounds() {
+    const S = SIZE[this.kind];
+    let x0 = Infinity, x1 = -Infinity, z0 = Infinity, z1 = -Infinity;
+    const add = (x, z, hw, hd) => { x0 = Math.min(x0, x - hw); x1 = Math.max(x1, x + hw); z0 = Math.min(z0, z - hd); z1 = Math.max(z1, z + hd); };
+    this.blocks.forEach(b => add(b.pos.x, b.pos.z, b.sp.w / 2, b.sp.d / 2));
+    this.pads.forEach(p => add(p.x, p.z, .6, .4));
+    if (!isFinite(x0)) { x0 = -5; x1 = 5; z0 = -2.5; z1 = 2.5; }
+    this.bounds = { x0: x0 - 1.6, x1: x1 + 1.2, z0: z0 - 1.2, z1: z1 + 1.2 };
+    this.fitDirty = true;
+  }
+  fitCamera(dt) {
+    if (!this.w) return;
+    if (!this.bounds) this.computeBounds();
+    const b = this.bounds, cx = (b.x0 + b.x1) / 2, cz = (b.z0 + b.z1) / 2;
+    const c = new THREE.Vector3(cx, .4, cz); this.group.localToWorld(c); this.fitCenter = new THREE.Vector3(cx, 0, cz);
+    // extents in camera space
+    const dir = this.userMoved ? this.camera.position.clone().sub(this.controls.target).normalize() : this.camDir;
+    const cam = new THREE.Object3D(); cam.position.copy(c).addScaledVector(dir, 40); cam.lookAt(c); cam.updateMatrixWorld();
+    const inv = cam.matrixWorld.clone().invert();
+    let minX = 1e9, maxX = -1e9, minY = 1e9, maxY = -1e9;
+    for (const x of [b.x0, b.x1]) for (const z of [b.z0, b.z1]) for (const y of [0, 1.6]) {
+      const v = new THREE.Vector3(x, y, z); this.group.localToWorld(v); v.applyMatrix4(inv);
+      minX = Math.min(minX, v.x); maxX = Math.max(maxX, v.x); minY = Math.min(minY, v.y); maxY = Math.max(maxY, v.y);
+    }
+    const nw = Math.max((maxX - minX) * 1.08, 11), nh = Math.max(maxY - minY, 5.5) + 1.8;
+    const a = this.w / this.h, zoom = Math.min(2 * this.S * a / nw, 2 * this.S / nh);
+    const k = this.fitDirty ? 1 - Math.exp(-dt * 4) : 1;
+    this.controls.target.lerp(c, k); this.camera.zoom += (zoom - this.camera.zoom) * k;
+    this.camera.position.copy(this.controls.target).addScaledVector(dir, 40);
+    this.camera.updateProjectionMatrix();
+    if (Math.abs(this.camera.zoom - zoom) < .002 && this.controls.target.distanceTo(c) < .01) this.fitDirty = false;
+  }
+}
+
+/* ───────────────────────── controller ───────────────────────── */
+const boardsEl = $('#boards');
+const hostA = el('div', 'board'), hostB = el('div', 'board hidden');
+boardsEl.append(hostA, hostB);
+const A = new Board(hostA, { primary: true });
+let B = null;
+let chipA = null, chipB = null;
+const verNum = v => parseInt(String(v).replace(/\D/g, ''), 10) || 0;
+
+function collect(d) {
+  const out = [], seen = new Set();
+  const add = (run, group) => { if (!run || !run.run_id || seen.has(run.run_id)) return; seen.add(run.run_id); out.push({ run, group, id: run.run_id }); };
+  (d.shifts || []).forEach(s => {
+    (s.practice || []).forEach(r => add(r, `Practice · shift ${s.shift}`));
+    const v = s.validation; if (v) { (v.old || []).forEach(r => add(r, `Validation (old) · shift ${s.shift}`)); (v.new || []).forEach(r => add(r, `Validation (new) · shift ${s.shift}`)); }
+  });
+  Object.entries(d.exam || {}).forEach(([ver, e]) => (e.runs || []).forEach(r => add(r, `Exam · ${ver}`)));
+  if (d.live) add(d.live, 'Live');
+  return out;
+}
+const chipLabel = c => `${c.id} · ${c.run.version} · ${c.run.order?.title ?? '?'} ${c.run.inspection ? (c.run.inspection.pass ? '✓' : '✗') : ''}`;
+
+function fillSelect(sel, chips, current) {
+  sel.innerHTML = '';
+  const groups = new Map();
+  chips.forEach(c => { if (!groups.has(c.group)) { const g = el('optgroup'); g.label = c.group; groups.set(c.group, g); sel.append(g); }
+    const o = el('option', '', chipLabel(c)); o.value = c.id; groups.get(c.group).append(o); });
+  if (current) sel.value = current.id;
+}
+function renderPicker() {
+  fillSelect($('#picker'), state.chips, chipA);
+  if (B) fillSelect(B.capSel, state.chips, chipB);
+}
+function counterpart(c) {
+  const same = state.chips.filter(x => x.id !== c.id && x.run.order?.id === c.run.order?.id && x.run.version !== c.run.version)
+    .sort((a, b) => verNum(b.run.version) - verNum(a.run.version));
+  if (same.length) return { chip: same[0], note: '' };
+  const other = state.chips.find(x => x.id !== c.id);
+  return other ? { chip: other, note: 'no other version of this order recorded yet — racing two different chips' } : { chip: c, note: 'only one chip recorded — racing it against itself' };
+}
+function playA(chip, note) {
+  chipA = chip; if (!chip) return;
+  A.play(chip.run, { note }); $('#picker').value = chip.id; markShelf();
+}
+function playB(chip, note) { chipB = chip; if (!chip || !B) return; B.play(chip.run, { note }); B.capSel.value = chip.id; }
+function replay() {
+  if (!chipA) return;
+  if (state.race) { const cp = chipB ? { chip: chipB, note: B.meta?.note } : counterpart(chipA); playA(chipA, ''); playB(cp.chip, cp.note); }
+  else playA(chipA, '');
+}
+function setRace(on) {
+  state.race = on; $('#bRace').classList.toggle('on', on); $('#bRace').textContent = on ? 'Exit race' : 'Race';
+  hostB.classList.toggle('hidden', !on); boardsEl.classList.toggle('race', on);
+  hostA.classList.toggle('race', on); hostB.classList.toggle('race', on); $('#app').classList.toggle('race', on);
+  if (on) {
+    if (!B) { B = new Board(hostB, { primary: false }); B.capSel.addEventListener('change', () => { chipB = state.chips.find(c => c.id === B.capSel.value); const cp = chipA && chipB && chipA.run.order?.id !== chipB.run.order?.id ? 'different orders' : ''; replayBoth(cp); }); renderPicker(); }
+    if (!chipA) return;
+    const cp = counterpart(chipA); chipB = cp.chip;
+    playA(chipA, ''); playB(chipB, cp.note);
+  } else if (chipA) playA(chipA, '');
+  requestAnimationFrame(() => { A.resize(); B?.resize(); });
+}
+function replayBoth(note) { if (chipA) playA(chipA, ''); if (chipB) playB(chipB, note || ''); }
+
+function markShelf() {
+  const cur = chipA?.run.version, have = new Set(state.chips.map(c => c.run.version));
+  document.querySelectorAll('#shelf .vbtn').forEach(b => { b.classList.toggle('cur', b.dataset.v === cur); b.classList.toggle('none', !have.has(b.dataset.v)); });
+}
+function renderShelf(versions) {
+  const s = $('#shelf'); s.innerHTML = '';
+  (versions || []).forEach(v => {
+    const b = el('button', 'vbtn mono', v); b.dataset.v = v;
+    b.title = state.chips.some(c => c.run.version === v) ? `Show a chip built by ${v}` : `${v} has no recorded chip yet`;
+    b.onclick = () => pickVersion(v);
+    s.append(b);
+  });
+  markShelf();
+}
+function pickVersion(v) {
+  const sameOrder = chipA && state.chips.find(c => c.run.version === v && c.run.order?.id === chipA.run.order?.id);
+  const any = state.chips.find(c => c.run.version === v);
+  const c = sameOrder || any;
+  const target = state.race ? 'B' : 'A';
+  if (!c) { const msg = `${v}: no chip recorded yet`; if (state.race && B) B.capNote.textContent = msg; else A.capNote.textContent = msg; return; }
+  const note = sameOrder ? '' : `${v}: showing a different order (this order has no ${v} run yet)`;
+  if (state.race) { playB(c, note); } else playA(c, note);
+}
+
+function renderScore(d) {
+  const ex = d.exam || {}, vs = Object.keys(ex);
+  const parts = (d.versions || vs).map(v => ex[v] ? `<span class="k">${v}</span> <b>${Math.round(ex[v].pass_rate * 100)}%</b>` : `<span class="k">${v}</span> —`);
+  let cats = null, catV = null;
+  for (const v of [d.current_version, ...vs.slice().reverse()]) if (v && ex[v]?.categories) { cats = ex[v].categories; catV = v; break; }
+  if (!cats) { const s = (d.shifts || []).slice(-1)[0]; if (s?.categories) { cats = s.categories; catV = 'shift ' + s.shift; } }
+  const c = cats ? Object.entries(cats).filter(([, n]) => n > 0).map(([k, n]) => `${k} ${n}`).join(' · ') : '';
+  $('#score').innerHTML = `<span class="k">exam (40 unseen chips)</span> ${parts.join('<span class="sep">|</span>')}` +
+    (c ? `<span class="sep">||</span><span class="k">failures ${catV}</span> ${c}` : '');
+}
+function renderGauges(g) {
+  g = g || {};
+  const cell = (k, v) => `<span>${k} <b>${v}</b></span>`;
+  $('#gauges').innerHTML = [cell('tok/s', fmt(g.tok_s)), cell('TTFT', g.ttft_s != null ? g.ttft_s + ' s' : '—'),
+    cell('cache', g.cache_rate != null ? Math.round(g.cache_rate * 100) + '%' : '—'), cell('$/total', g.cost_total_usd != null ? '$' + Number(g.cost_total_usd).toFixed(2) : '—'),
+    cell('chips/h', fmt(g.chips_per_hour)), cell('human pings', fmt(g.human_pings))].join('');
+}
+
+/* ── data ── */
+let lastText = '', liveId = null, apiMode = null;
+async function detectMode() {
+  if (new URLSearchParams(location.search).get('data') === 'sample') return false;
+  try { const r = await fetch(location.href, { method: 'HEAD' }); const s = r.headers.get('server') || '';
+    if (/SimpleHTTP|http\.server/i.test(s)) return false; } catch (e) {}
+  return true;
+}
+async function fetchData() {
+  if (apiMode === null) apiMode = await detectMode();
+  const tries = apiMode ? ['/run.json', '/samples/run.sample.json', '../samples/run.sample.json'] : ['/samples/run.sample.json', '../samples/run.sample.json'];
+  for (const u of tries) {
+    try { const r = await fetch(u, { cache: 'no-store' }); if (r.ok) return { text: await r.text(), src: u }; } catch (e) {}
+  }
+  return null;
+}
+async function poll() {
+  const r = await fetchData();
+  if (!r) { $('#err').textContent = 'no run.json — is the server up?'; return; }
+  $('#err').textContent = r.src.includes('sample') ? 'showing samples/run.sample.json' : '';
+  if (r.text === lastText) return; lastText = r.text;
+  let d; try { d = JSON.parse(r.text); } catch (e) { $('#err').textContent = 'run.json is not valid JSON yet'; return; }
+  state.data = d; const old = state.chips; state.chips = collect(d);
+  renderShelf(d.versions); renderScore(d); renderGauges(d.gauges);
+  if (!chipA) { if (state.chips.length) playA(state.chips[0], ''); }
+  else { const same = state.chips.find(c => c.id === chipA.id); if (same) { chipA = same; if (A.run?.run_id === same.id && same.run.events.length !== A.events.length) A.setEvents(same.run); } }
+  if (chipB) { const sameB = state.chips.find(c => c.id === chipB.id); if (sameB) { chipB = sameB; if (B?.run?.run_id === sameB.id && sameB.run.events.length !== B.events.length) B.setEvents(sameB.run); } }
+  if (old.map(c => c.id).join() !== state.chips.map(c => c.id).join()) renderPicker();
+  if (d.live && d.live.run_id !== liveId) { liveId = d.live.run_id; const c = state.chips.find(x => x.id === d.live.run_id); if (c) { playA(c, 'live order'); if (state.race) { const cp = counterpart(c); playB(cp.chip, cp.note); } } }
+  if (d.live && d.live.run_id === liveId) { const c = state.chips.find(x => x.id === liveId); if (c && A.run?.run_id === liveId && c.run.events.length !== A.events.length) A.setEvents(c.run); }
+  markShelf();
+}
+
+/* ── wiring ── */
+$('#picker').addEventListener('change', e => { const c = state.chips.find(x => x.id === e.target.value); if (c) { chipA = c; if (state.race) { const cp = counterpart(c); chipB = cp.chip; playA(c, ''); playB(chipB, cp.note); } else playA(c, ''); } });
+$('#bReplay').onclick = replay;
+$('#bPause').onclick = () => { state.paused = !state.paused; $('#bPause').classList.toggle('on', state.paused); };
+$('#bRace').onclick = () => setRace(!state.race);
+$('#speed').oninput = e => { state.speed = +e.target.value; $('#speedV').textContent = state.speed + '×'; };
+$('#bLights').onclick = () => { state.lights = !state.lights; document.body.classList.toggle('lights', state.lights); $('#bLights').classList.toggle('on', state.lights);
+  [A, B].forEach(b => { if (b) b.bloomPass.strength = state.lights ? .6 : .5; }); };
+addEventListener('keydown', e => { if (e.code === 'Space' && e.target.tagName !== 'SELECT' && e.target.tagName !== 'INPUT') { e.preventDefault(); $('#bPause').click(); } });
+
+let last = performance.now(), lastFrame = last;
+function frame(now) {
+  const dt = Math.min(.1, (now - last) / 1000); last = now; lastFrame = now;
+  A.tick(dt); if (B && state.race) B.tick(dt);
+}
+function loop(now) { frame(now); requestAnimationFrame(loop); }
+requestAnimationFrame(loop);
+// if the browser throttles rAF (hidden pane, minimised window) keep the replay clock moving anyway
+setInterval(() => { const n = performance.now(); if (n - lastFrame > 400) frame(n); }, 120);
+poll(); setInterval(poll, 1000);
+window.__autofab = { A, get B() { return B; }, state, setRace, replay };
+</script>
+</body>
+</html>

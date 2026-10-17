@@ -21,5 +21,10 @@ Owner A = laptop A (Prem + Claude Max session, the architect/reviewer). Owner B 
 
 | 16 | `web/present.html` — presentation mode, one scene at a time (Opus subagent) | A | `web/present` | — | ✅ merged |
 | 17 | `web/ops.html` — judge page: 3D chip, Circuit Test with switches/lamps, Compare, logs, lessons (Opus subagent) | A | `web/ops` | — | ✅ merged |
+| 18 | `web/fab.html` — dark-glass dashboard (sidebar, pipeline strip, design workspace, charts) | A | `web/fab` | — | ✅ landed 5f06337 |
+| 19 | `web/home.html` — plain-English page: chip cards, 3D assembly replay, live circuit test, lessons, diary, scoreboard; served at `/` | A | `web/home` | — | ✅ landed 595b700 |
+| 20 | `web/compare.html` — judge's Compare: past exam order or typed note, two versions side by side, linked switches, verdict | A | `web/compare` | — | ✅ landed fa9f443 |
+| 21 | `web/dash.html` — dashboard from the hand-drawn wireframe: Version/Chip/Compare/Run, Order → 3D build → Circuit test, graphs, log, lessons by version | A | `web/dash` | — | ✅ landed 6c43348 |
+| 22 | runner `--live`: parallel judge orders, events published as they happen (`run.json.live_runs`), `POST /order {note}` → real order | A | main | — | ✅ 7e54c54, rehearsed 14:50 |
 
-**Freeze:** 14:30. **Cut order if slipping:** live race → recorded comparison · agent tree → text list · exam v1+v8 only · lights-off/gauges · VL inspector · night shift. **Never cut:** inspector, live order, one real failure, exam numbers.
+**Freeze:** 15:15 (moved from 14:30 for the plain-English pages). Runner is in `--live` mode since 14:43; exams final v1 12.5% · v5 37.5% · v8 40%. **Cut order if slipping:** live race → recorded comparison · agent tree → text list · exam v1+v8 only · lights-off/gauges · VL inspector · night shift. **Never cut:** inspector, live order, one real failure, exam numbers.

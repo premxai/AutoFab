@@ -114,7 +114,7 @@ async def run_shifts(n_shifts, n_practice, n_validation, parallel, exam_versions
         STATE["versions"].append(snapshot["version"])
     exam = exam_orders()
     orders_by_id = {o["id"]: o for o in exam}
-    if "v1" in exam_versions and "v1" not in STATE["exam"]:
+    if snapshot["version"] in exam_versions and snapshot["version"] not in STATE["exam"]:   # v1 at start, or a version due after a resume
         await run_exam(snapshot, library, exam, parallel)
     for shift in range(first_shift, n_shifts + 1):
         practice = ORD.make_orders("practice", n_practice, seed + 100 * shift)

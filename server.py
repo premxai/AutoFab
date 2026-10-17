@@ -96,6 +96,12 @@ def run_file(run_id: str):
     return _json_file(os.path.join(RUNS, run_id + ".json"), "run")
 
 
+@app.get("/library.json")
+def library_json():
+    """The shared brain: verified parts + lessons (snapshots/library.json)."""
+    return _json_file(os.path.join(SNAPSHOTS, "library.json"), "library")
+
+
 @app.get("/snapshots/{version}.json")
 def snapshot(version: str):
     if not VERSION.match(version):

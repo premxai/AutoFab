@@ -61,7 +61,8 @@ def library_for(snapshot, library):
     return view
 
 
-async def run_batch(orders_, snapshot, library, parallel, learn, shift, tag):
+async def run_batch(orders_, snapshot, library, parallel, learn, shift, tag, sink=None):
+    """`sink`: a list inside STATE that receives each stripped ChipRun as it finishes, so the stage fills in live."""
     global _chips_done
     sem = asyncio.Semaphore(parallel)
     results = [None] * len(orders_)
@@ -86,6 +87,8 @@ async def run_batch(orders_, snapshot, library, parallel, learn, shift, tag):
             _chips_done += 1
             results[i] = run
             save_run(run)
+            if sink is not None:
+                sink.append(_strip(run))
             write_state()
 
     await asyncio.gather(*[one(i, o) for i, o in enumerate(orders_)])
@@ -107,8 +110,7 @@ async def run_shifts(n_shifts, n_practice, n_validation, parallel, exam_versions
         orders_by_id.update({o["id"]: o for o in practice})
         entry = {"shift": shift, "version": snapshot["version"], "practice": [], "validation": None, "lessons_added": [], "categories": {}}
         STATE["shifts"].append(entry); write_state()
-        runs = await run_batch(practice, snapshot, library, parallel, True, shift, f"p{shift}")
-        entry["practice"] = [_strip(r) for r in runs]
+        runs = await run_batch(practice, snapshot, library, parallel, True, shift, f"p{shift}", sink=entry["practice"])
         inv = await INV.investigate_shift(runs, orders_by_id, library, shift, snapshot["routing"], snapshot["flags"]["schema_on"], learn=True)
         entry["categories"], entry["lessons_added"] = inv["categories"], inv["lessons_added"]
         library.save()
@@ -150,11 +152,13 @@ def exam_orders():
 
 async def run_exam(snapshot, library, exam, parallel):
     view = library_for(snapshot, library)
-    runs = await run_batch(exam, snapshot, view, parallel, False, 0, f"exam_{snapshot['version']}")
+    entry = {"pass_rate": None, "by_rung": {}, "gates_vs_best": None, "cost_per_chip": None, "attempts": None, "categories": {},
+             "runs": [], "in_progress": True, "total": len(exam)}
+    STATE["exam"][snapshot["version"]] = entry; write_state()
+    runs = await run_batch(exam, snapshot, view, parallel, False, 0, f"exam_{snapshot['version']}", sink=entry["runs"])
     s = GATE.summarize(runs)
-    STATE["exam"][snapshot["version"]] = {"pass_rate": round(s["pass"], 3), "by_rung": s["by_rung"], "gates_vs_best": s["gates_vs_best"],
-                                          "cost_per_chip": s["cost_usd"], "attempts": s["attempts"],
-                                          "categories": INV.categories(runs), "runs": [_strip(r) for r in runs]}
+    entry.update({"pass_rate": round(s["pass"], 3), "by_rung": s["by_rung"], "gates_vs_best": s["gates_vs_best"],
+                  "cost_per_chip": s["cost_usd"], "attempts": s["attempts"], "categories": INV.categories(runs), "in_progress": False})
     print(f"EXAM {snapshot['version']}: pass {s['pass']:.2f} by_rung {s['by_rung']} gates/best {s['gates_vs_best']} cost {s['cost_usd']}")
     write_state()
 

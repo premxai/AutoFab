@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AutoFab</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='4' fill='%23FBF8F3'/%3E%3Crect x='4' y='4' width='8' height='8' rx='1.5' fill='none' stroke='%23E8A33D' stroke-width='1.6'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="home.css">
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+"three/addons/":"https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/"}}
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="wrap topin">
+    <a class="brand" href="#build"><i data-lucide="cpu"></i><span>AutoFab</span></a>
+    <nav class="links">
+      <a href="#build">Build</a><span class="sep">·</span>
+      <a href="#learned">What it learned</a><span class="sep">·</span>
+      <a href="#score">Scoreboard</a>
+    </nav>
+    <div class="pill" id="verPill"><span class="live" id="liveDot" hidden></span><span id="verTxt">Factory version —</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="build">
+    <div class="chips" id="chips"></div>
+
+    <div class="grid">
+      <div class="col-stage">
+        <div class="card stage">
+          <div class="head" id="stageHead"></div>
+          <div class="canvas" id="canvas3d">
+            <div class="stamp" id="stamp" hidden></div>
+          </div>
+          <div class="under">
+            <p class="caption" id="caption">&nbsp;</p>
+            <div class="ctrl">
+              <button class="btn" id="btnPause" type="button"><i data-lucide="pause"></i><span>Pause</span></button>
+              <button class="btn" id="btnReplay" type="button"><i data-lucide="rotate-ccw"></i><span>Replay</span></button>
+            </div>
+          </div>
+          <div class="steps" id="steps"></div>
+        </div>
+
+        <div class="card order">
+          <form id="orderForm" autocomplete="off">
+            <label for="orderIn">What should the factory build?</label>
+            <div class="orow">
+              <input id="orderIn" type="text" placeholder="e.g. a door lock, a calculator that adds">
+              <button class="btn primary" type="submit"><i data-lucide="play"></i><span>Build</span></button>
+            </div>
+          </form>
+          <p class="note" id="orderNote"></p>
+        </div>
+      </div>
+
+      <div class="col-try">
+        <div class="card try">
+          <div class="head"><i data-lucide="pointer"></i><h2>Try it</h2></div>
+          <div id="bench"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card work">
+      <button class="btn ghost" id="btnWork" type="button" aria-expanded="false"><i data-lucide="eye"></i><span>Show the team's work</span></button>
+      <ol class="log" id="log" hidden></ol>
+    </div>
+  </section>
+
+  <section id="learned">
+    <h2 class="sec">What it learned</h2>
+    <div class="two">
+      <div class="card"><h3>What the team learned</h3><ul class="plain" id="lessons"></ul></div>
+      <div class="card"><h3>Factory diary</h3><ul class="plain" id="diary"></ul></div>
+    </div>
+  </section>
+
+  <section id="score">
+    <h2 class="sec">Same 40 orders, every version</h2>
+    <div class="card">
+      <div class="bars" id="bars"></div>
+      <div class="tablewrap" id="examTable"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap foot">Built on Crusoe · Nemotron 3.5 Lightning 30B and Nemotron 3 Super 120B · every number on this page comes from run.json</footer>
+
+<script type="module" src="home.js"></script>
+</body>
+</html>

@@ -144,9 +144,11 @@ async def post_order(request: Request):
 
 @app.get("/")
 def index():
-    page = os.path.join(ROOT, "web", "index.html")
-    if not os.path.isfile(page):                      # stage not merged yet: serve the 2D mock so / is never empty
-        page = os.path.join(ROOT, "web", "mock-2d.html")
+    page = os.path.join(ROOT, "web", "home.html")      # the plain-English page; the older stages stay at /web/*.html
+    for alt in ("index.html", "mock-2d.html"):
+        if os.path.isfile(page):
+            break
+        page = os.path.join(ROOT, "web", alt)
     return FileResponse(page, headers={"Cache-Control": "no-store"})
 
 

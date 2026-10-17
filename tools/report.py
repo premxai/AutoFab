@@ -1,6 +1,10 @@
 """Print the README tables from runs/run.json: the exam ablation, the shift log (kept/rejected), lessons.
   python tools/report.py [runs/run.json]"""
 import json, sys, os
+try:
+    sys.stdout.reconfigure(encoding="utf-8")      # Windows consoles default to cp1252
+except Exception:
+    pass
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 path = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, "runs", "run.json")

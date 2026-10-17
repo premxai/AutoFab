@@ -1297,6 +1297,9 @@ async function poll() {
   const latest = latestVer(), verBefore = S.ver;
   if (first && params.get('v')) { const pv = params.get('v'); S.ver = /^v/.test(pv) ? pv : 'v' + pv; S.verPinned = S.ver !== latest; }
   if (!S.ver || (!S.verPinned && latest && S.ver !== latest)) S.ver = latest;
+  if (!S.verPinned && S.ver && !chipsFor(d, S.ver).length) {        // a freshly minted version has no chips yet: open on the newest one that does
+    const vs = d.versions || []; for (let i = vs.length - 1; i >= 0; i--) if (chipsFor(d, vs[i]).length) { S.ver = vs[i]; break; }
+  }
   // follow a live run: the one we ordered, or any new one that starts building
   const lives = liveRuns(d), seenBefore = S.seenLive; S.seenLive = new Set(lives.map(x => x.id));
   let follow = null;

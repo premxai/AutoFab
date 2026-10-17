@@ -41,8 +41,19 @@ def write_state():
     STATE["updated"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     os.makedirs(RUNS, exist_ok=True)
     tmp = RUN_JSON + ".tmp"
-    json.dump(STATE, open(tmp, "w", encoding="utf-8"))
-    os.replace(tmp, RUN_JSON)
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(STATE, f)
+    for i in range(20):                               # Windows: the swap fails while the API server (or OneDrive) holds the file open
+        try:
+            os.replace(tmp, RUN_JSON); break
+        except PermissionError:
+            time.sleep(0.05 * (i + 1))
+    else:
+        try:
+            with open(RUN_JSON, "w", encoding="utf-8") as f:    # last resort: write in place rather than lose the heartbeat
+                json.dump(STATE, f)
+        except OSError:
+            pass
 
 
 def save_run(run):

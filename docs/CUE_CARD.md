@@ -21,6 +21,19 @@
 
 **Timing:** the live lock takes 3–6 minutes on Lightning. Post it the second you walk up. If it is not done at 2:50, open the finished one from the chip menu: "here's the one from the last run."
 
+
+## Demo picks (from the real run data)
+
+| Part | Chip | Why | Open |
+|---|---|---|---|
+| 2 · finished chip | **Door lock, codes 0, 11, 15** · version 7 · validation batch, shift 7 | 2 tries: a real **wrong wire** turns red in the 3D replay, then it is fixed and passes all 16 codes | `http://localhost:8000/web/dash.html?run=vn7_v7_ord_v767_002&v=7` |
+| 2 · backup | **Calculator that adds two 4-bit numbers** · version 8 · exam | 3 tries: got stuck thinking twice, then right on all 256 answers; ties to the "stop thinking in circles" lesson | `http://localhost:8000/web/dash.html?run=exam_v8_v8_ord_x4242_038&v=8` |
+| 3 · live order | type **a door lock that opens for 3, 5 and 8** · latest version | rung 2, builds in 3–6 min; passed on v8 in rehearsal | Run button on the dashboard |
+| 4 · compare | **Calculator that adds two 4-bit numbers plus a carry-in** · v1 vs v8 | v1 failed (unreadable plan), v8 passed first try, 512 answers; the missing lesson shows green | `http://localhost:8000/web/compare.html?order=ord_x4242_001&a=v1&b=v8` |
+| 4 · backup | **Down counter 0, 3, 2, 1** · v1 vs v8 | v1 got stuck, v8 first try; the Tick button is fun to press | `http://localhost:8000/web/compare.html?order=ord_x4242_002&a=v1&b=v8` |
+
+Other v1-failed / v8-passed exam orders if a judge asks for another: 3-bit adder (ord_x4242_004), odd-parity 5 bits (011), 3-bit adder with carry (014), door lock 7, 9, 13 (027), door lock 2, 8, 9, 13 (039).
+
 ## Speaker craft (the stuff that makes it land)
 
 - **Open with the chip, not the architecture.** The first 15 seconds are for a person who has never heard the words "logic gate". Switches and wires, that's all.
